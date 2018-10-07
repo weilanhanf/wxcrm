@@ -1,0 +1,207 @@
+{% extends 'teacher/left_content.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    基本信息修改
+{% endblock title %}
+
+{% block css %}
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}">
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.page.dashboard.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+{% endblock css %}
+
+
+{% block right_content %}
+    <div id="content-block" class="col-sm-11 col-md-10">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url 'teacher:teacher_index' %}">首页</a>
+            </li>
+            <li>
+                教师
+            </li>
+            <li>
+                汉阳
+            </li>
+        </ul>
+        <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
+             data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
+             data-class-sm="navbar content-navbar navbar-default navbar-xs">
+            <div class="navbar-header">
+                <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    个人信息：{{ teacher_name }}
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+                <div class="navbar-btn pull-right hide-xs">
+                </div>
+            </div>
+        </div>
+
+        <form class="exform" enctype="multipart/form-data" action="{% url 'teacher:teacher_info' %}" method="post" id="teacherinfo_form">
+            {% csrf_token %}
+            {#            <input type='hidden' id='_portal_key' value='teachers_teacherinfo_editform_portal'/>#}
+            <div class="form-container row clearfix">
+                <div id="column-0"
+                     class="formColumn column form-column full col col-sm-12 form-horizontal" span="12" horizontal>
+                    <div class="panel panel-default fieldset unsort no_title" id="box-0">
+                        <div class="panel-heading"><i class='icon fa fa-chevron-up chevron'></i>
+                            <h3 class="panel-title"></h3></div>
+                        <div class="panel-body ">
+                            <div id="div_id_number" class="value form-group row">
+                                <label for="id_number" class="control-label  requiredField">教师序号<span
+                                        class="asteriskField">*</span> </label>
+                                <div class="controls"><p class="form-control-static ">{{ teacher.number }}</p></div>
+                            </div>
+                            <div id="div_id_name" class="form-group">
+                                <label for="id_name" class="control-label  requiredField">
+                                    姓名<span class="asteriskField">*</span> </label>
+                                <div class="controls ">
+                                    <input type="text" name="name" value="{{ teacher.name }}" maxlength="5"
+                                           id="id_name" class="text-field admintextinputwidget form-control" required/>
+                                </div>
+                            </div>
+                            <div id="div_id_gender" class="form-group"> <label for="id_gender" class="control-label  requiredField">
+                                性别<span class="asteriskField">*</span> </label> <div class="controls ">
+                                <select name="gender" required id="id_gender" class="adminselectwidget form-control">
+                                    <option value="male" selected>男</option>
+                                    <option value="female">女</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div id="div_id_password" class="form-group"><label for="id_password"
+                                                                                class="control-label  requiredField">
+                                密码<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="password" value="{{ teacher.password }}"
+                                                              maxlength="16"
+                                                              id="id_password"
+                                                              class="text-field admintextinputwidget form-control"
+                                                              required/></div>
+                            </div>
+                            <div class="form-group">
+                                <div id="div_id_is_class_leader" class="checkbox"><label for="id_is_class_leader"
+                                                                                         class=""> <input
+                                        type="checkbox" name="is_class_leader" id="id_is_class_leader"
+                                        class="checkboxinput" {% if teacher.is_class_leader %}checked{% endif %}/>
+                                    是否为班主任
+                                </label></div>
+                            </div>
+                            <div id="div_id_email" class="form-group"><label for="id_email"
+                                                                             class="control-label  requiredField">
+                                邮箱<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="email" value="{{ teacher.email }}"
+                                                              maxlength="254" id="id_email"
+                                                              class="text-field admintextinputwidget form-control"
+                                                              required/>
+                                    <p id="hint_id_email" class="help-block">该邮箱将用来验证登录</p></div>
+                            </div>
+                            <div id="div_id_phone" class="form-group"><label for="id_phone"
+                                                                             class="control-label  requiredField">
+                                电话<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="phone" value="{{ teacher.phone }}"
+                                                              maxlength="11" minlength="11"
+                                                              id="id_phone"
+                                                              class="text-field admintextinputwidget form-control"
+                                                              required/>
+                                    <p id="hint_id_phone" class="help-block">请输入正确的联系方式</p></div>
+                            </div>
+                            <div id="div_id_ID" class="form-group"><label for="id_ID"
+                                                                          class="control-label  requiredField">
+                                身份证号<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="ID" value="{{ teacher.ID }}"
+                                                              maxlength="18" minlength="18" id="id_ID"
+                                                              class="text-field admintextinputwidget form-control"
+                                                              required/>
+                                    <p id="hint_id_ID" class="help-block">请输入真实的身份证号</p></div>
+                            </div>
+                            <div id="div_id_subject" class="form-group"><label for="id_subject" class="control-label ">
+                                教授科目
+                            </label>
+                                <div class="controls "><input type="text" name="subject" value="{{ teacher.subject }}"
+                                                              maxlength="25"
+                                                              id="id_subject"
+                                                              class="text-field admintextinputwidget form-control"/>
+                                    <p id="hint_id_subject" class="help-block">您教授的科目，如：语文</p></div>
+                            </div>
+                            <div id="div_id_remark" class="form-group"><label for="id_remark" class="control-label ">
+                                备注
+                            </label>
+                                <div class="controls "> <textarea name="remark" cols="40" rows="10" id="id_remark"
+                                                                  class="textarea-field admintextareawidget form-control"
+                                                                  maxlength="100">{{ teacher.remark }}</textarea>
+                                    <p id="hint_id_remark" class="help-block">备注不超过一百个汉字</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions well well-sm clearfix fixed">
+
+                <button type="submit" class="default btn btn-primary hide-xs" onclick="remindSubmit()">保存</button>
+            </div>
+        </form>
+
+    </div>
+{% endblock right_content %}
+
+{% block js %}
+<script type="text/javascript">
+    function remindSubmit() {
+        if($('input[name="name"]').val() == ''){
+            alert('姓名不能为空');
+            $('input[name="name"]').focus();
+            return false;
+        }
+        var password = $('input[name="password"]').val();
+        if(password == '' || password.length < 6 || password.length > 16){
+            alert('密码不为空且长度为6位到16位');
+            $('input[name="name"]').focus();
+            return false;
+        }
+        if($('input[name="email"]').val() == ''){
+            alert('邮箱不能为空');
+            $('input[name="email"]').focus();
+            return false;
+        }
+        phone = $('input[name="phone"]').val();
+        if(phone == '' && phone.length <= 11){
+            alert('电话不能为空且最长不超过11位');
+            $('input[name="phone"]').focus();
+            return false;
+        }
+        ID = $('input[name="ID"]').val();
+        if(ID == '' && ID.length != 18){
+            alert('身份证不能为空且长度为18位');
+            $('input[name="phone"]').focus();
+            return false;
+        }
+    }
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.dashboard.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.portal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+{% endblock js %}

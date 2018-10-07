@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="NONE,NOARCHIVE"/>
+    <title>基本信息 | 温县第一高级中学后台管理</title>
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}">
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.page.dashboard.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+</head>
+<body class="students-studentinfo change-form">
+
+<!-- Header -->
+
+    <div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">温县第一高级中学后台管理</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                        <strong>欢迎， root</strong> <span class="caret"></span></a>
+                    <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                        <li><a href="/"><i class="fa fa-key"></i> 更改密码</a></li>
+                    </ul>
+                </li>
+
+                <li><a href=""><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a></li>
+            </ul>
+
+
+        </div>
+    </div>
+
+    <div id="body-content" class="clearfix row">
+        <div id="left-side" class="col-sm-1 col-md-2">
+            <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                               href="#nav-panel-1">
+                                &nbsp;个人中心
+                            </a>
+                        </h6>
+                    </div>
+
+                    <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                        <a href="{% url 'student:student_info' %}" class="list-group-item">
+                            &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#nav-accordion"
+                               href="#nav-panel-2">
+                                &nbsp;成绩列表
+                            </a>
+                        </h6>
+                    </div>
+                    <div id="nav-panel-2" class="list-group panel-collapse collapse">
+                        <a href="{% url 'student:student_score' %}" class="list-group-item">
+                            &nbsp;&nbsp;&nbsp;&nbsp;成绩详情
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="content-block" class="col-sm-11 col-md-10">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="{% url 'students:student_index' %}">首页</a>
+                </li>
+                <li>
+                    基本信息
+                </li>
+
+            </ul>
+
+
+            <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
+                 data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
+                 data-class-sm="navbar content-navbar navbar-default navbar-xs">
+                <div class="navbar-header">
+                    <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                        欢迎您：{{ student.student_name }}
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                    <div class="navbar-btn pull-right hide-xs">
+                    </div>
+                </div>
+            </div>
+
+            <form class="exform" enctype="multipart/form-data" action="" method="post" id="studentinfo_form">
+                <input type='hidden' id='_portal_key' value='students_studentinfo_editform_portal'/>
+                <div class="form-container row clearfix">
+                    <div id="column-0"
+                         class="formColumn column form-column full col col-sm-12 form-horizontal" span="12" horizontal>
+                        <div class="panel panel-default fieldset unsort no_title" id="box-0">
+                            <div class="panel-heading"><i class='icon fa fa-chevron-up chevron'></i>
+                                <h3 class="panel-title"></h3></div>
+                            <div class="panel-body ">
+                                <div id="div_file_number" class="value form-group row">
+                                    <div class="control-label">档案号</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.file_number }}</p></div>
+                                </div>
+                                <div id="div_student_name" class="value form-group row">
+                                    <div class="control-label">姓名</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.student_name }}</p></div>
+                                </div>
+                                <div id="div_ID" class="value form-group row">
+                                    <div class="control-label">身份证号</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.ID }}</p></div>
+                                </div>
+                                <div id="div_gender" class="value form-group row">
+                                    <div class="control-label">性别</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.get_gender_display }}</p></div>
+                                </div>
+                                <div id="div_password" class="value form-group row">
+                                    <div class="control-label">密码</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.password }}</p></div>
+                                </div>
+                                <div id="div_phone" class="value form-group row">
+                                    <div class="control-label">电话</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.phone }}</p></div>
+                                </div>
+                                <div id="div_teacher" class="value form-group row">
+                                    <div class="control-label">班主任</div>
+                                    <div class="controls"><p class="form-control-static "><span class="text-muted">{{ student.teacher }}</span>
+                                    </p></div>
+                                </div>
+                                <div id="div_year_join" class="value form-group row">
+                                    <div class="control-label">入学年份</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.year_join }}</p></div>
+                                </div>
+                                <div id="div_grade" class="value form-group row">
+                                    <div class="control-label">年级</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.grade }}</p></div>
+                                </div>
+                                <div id="div_clas" class="value form-group row">
+                                    <div class="control-label">班级</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.clas }}</p></div>
+                                </div>
+                                <div id="div_art_science" class="value form-group row">
+                                    <div class="control-label">文理科</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.get_art_science_display }}</p></div>
+                                </div>
+                                <div id="div_nation" class="value form-group row">
+                                    <div class="control-label">民族</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.nation }}</p></div>
+                                </div>
+                                <div id="div_dormitory_number" class="value form-group row">
+                                    <div class="control-label">宿舍号</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.dormitory_number }}</p></div>
+                                </div>
+                                <div id="div_bed_number" class="value form-group row">
+                                    <div class="control-label">床号</div>
+                                    <div class="controls"><p class="form-control-static ">{{ student.bed_number }}</p></div>
+                                </div>
+                                <div id="div_address" class="value form-group row">
+                                    <div class="control-label">地址</div>
+                                    <div class="controls"><p class="form-control-static "><span class="text-muted">{{ student.address }}</span>
+                                    </p></div>
+                                </div>
+                                <div id="div_remark" class="value form-group row">
+                                    <div class="control-label">备注</div>
+                                    <div class="controls"><p class="form-control-static "><span class="text-muted">{{ student.remark }}</span>
+                                    </p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+    {#            <div class="form-actions well well-sm clearfix">#}
+    {#                <a href="" class="btn btn-danger deletelink col-xs-2 show-xs"><i class="fa fa-trash-o"></i></a>#}
+    {#                <div class="btn-group clearfix show-xs save-group col-xs-10">#}
+    {#                    <button type="submit" class="default btn btn-primary col-xs-10" name="_save" data-loading-text="保存中..">#}
+    {#                    <i class="fa fa-save"></i> 保存</button>#}
+    {#                    <button type="button" class="more btn btn-primary col-xs-2" data-toggle="collapse"#}
+    {#                            data-target=".nav-collapse.more-btns"><i class="fa fa-ellipsis-vertical"></i></button>#}
+    {#                </div>#}
+    {#                <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="保存中..">#}
+    {#                <i class="fa fa-save"></i> 保存</button>#}
+    {#                #}
+    {#                <div class="nav-collapse collapse more-btns">#}
+    {#                    <input type="submit" class="btn btn-default" value="保存并增加另一个" name="_addanother"/>#}
+    {#                    <input type="submit" class="btn btn-default" value="保存并继续编辑" name="_continue"/>#}
+    {#                </div>#}
+    {#                <a href="" class="btn btn-danger deletelink pull-right hide-xs"><i class="fa fa-trash-o"></i> 删除</a>#}
+    {#                #}
+    {#            </div>#}
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <div id="footer">
+        <hr/>
+        <footer class="text-center">
+            <p>&copy; welcome to 温县第一高级中学后台管理 如果有问题请联系：XXXXXXXXXXX</p>
+        </footer>
+    </div>
+
+
+    <script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.page.dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.plugin.portal.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+
+</body>
+</html>

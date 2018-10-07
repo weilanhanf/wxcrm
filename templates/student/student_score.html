@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en-us">
+{% load static %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="robots" content="NONE,NOARCHIVE"/>
+    <title>成绩列表列表 | 温县第一高级中学后台管理</title>
+
+
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}">
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.page.dashboard.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+
+    <link href="{% static 'css/select2.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/selectize.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/selectize.bootstrap3.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.widget.editable.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+
+    <style type="text/css">
+        .btn-toolbar {
+            margin-top: 0;
+        }
+
+        #content-block.full-content {
+            margin-left: 0;
+        }
+    </style>
+
+
+</head>
+<body class="change-list">
+
+<!-- Header -->
+
+<div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">温县第一高级中学后台管理</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav pull-right">
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                    <strong>欢迎， {{ student_name }}</strong> </a>
+            </li>
+
+            <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="body-content" class="clearfix row">
+    <div id="left-side" class="col-sm-1 col-md-2">
+        <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-1">
+                            &nbsp;个人中心
+                        </a>
+                    </h6>
+                </div>
+
+                <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'student:student_info' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                    </a>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-2">
+                            &nbsp;成绩列表
+                        </a>
+                    </h6>
+                </div>
+                <div id="nav-panel-2" class="list-group panel-collapse collapse">
+                    <a href="{% url 'student:student_score' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;成绩详情
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content-block" class="col-sm-11 col-md-10">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url 'students:student_index' %}">首页</a>
+            </li>
+            <li>
+                成绩列表
+            </li>
+        </ul>
+
+
+        <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
+             data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
+             data-class-sm="navbar content-navbar navbar-default navbar-xs">
+            <div class="navbar-header">
+                <button class="navbar-toggle pull-left" data-toggle="class" data-target="#body-content"
+                        data-class-name="show_menu">
+                    <i class="fa fa-list"></i>
+                </button>
+                <a href="" class="navbar-toggle pull-right"><i class="fa fa-plus"></i></a>
+                <button class="navbar-toggle pull-right" data-toggle="collapse"
+                        data-target=".content-navbar .navbar-collapse">
+                    <i class="fa fa-filter"></i>
+                </button>
+                <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    成绩列表
+                </a>
+            </div>
+        </div>
+
+        <ul class="pagination pagination-sm pagination-left pagination-inline">
+            <li><span><span class="text-success">{{ score_list_count }}</span> 成绩列表</span></li>
+        </ul>
+        <form id="changelist-form" action="" method="post">
+            <div class="results table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+
+                        <th scope="col" class="sortable sorted ascending">
+
+                            <div class="pull-right">
+
+                                <a class="toggle" href="?o=which_exam.-file_number"><i class="fa fa-sort-up"></i></a>
+
+                            </div>
+
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    学生
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li class="active"><a href="?o=file_number.which_exam" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-file_number.which_exam" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                    <li><a href="?o=which_exam" class="active"><i class="fa fa-times"></i> 取消排序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable sorted ascending">
+
+                            <div class="pull-right">
+
+                                <a class="toggle" href="?o=-which_exam.file_number"><i class="fa fa-sort-up"></i></a>
+
+                            </div>
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    考试
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li class="active"><a href="?o=which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                    <li><a href="?o=file_number" class="active"><i class="fa fa-times"></i> 取消排序</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col">
+
+
+                            班级
+
+                        </th>
+                        <th scope="col">
+
+
+                            年级
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    语文
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=chinese.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-chinese.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    数学
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=math.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-math.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    英语
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=english.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-english.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    物理
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=physical.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-physical.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    化学
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=chemistry.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-chemistry.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    生物
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=biology.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-biology.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    政治
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=politics.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-politics.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    地理
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=geography.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-geography.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    历史
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=history.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-history.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    总分
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=sum_score.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-sum_score.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    年级排名
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=grade_rank.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-grade_rank.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    班级排名
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=class_rank.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-class_rank.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+
+
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    备注
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+
+                                    <li><a href="?o=remark.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-up"></i> 正序</a></li>
+
+                                    <li><a href="?o=-remark.which_exam.file_number" class="active"><i
+                                            class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for score in score_list.object_list %}
+                        <tr class="grid-item">
+                            <td class="nowrap">{{ score.file_number.student_name }}</td>
+                            <td class="nowrap">{{ score.which_exam }}</td>
+                            <td>{{ score.get_student_class }}</td>
+                            <td>{{ score.get_student_grade }}</td>
+                            <td>{{ score.chinese }}</td>
+                            <td>{{ score.math }}</td>
+                            <td>{{ score.english }}</td>
+                            <td>{{ score.physical }}</td>
+                            <td>{{ score.chemistry }}</td>
+                            <td>{{ score.biology }}</td>
+                            <td>{{ score.politics }}</td>
+                            <td>{{ score.geography }}</td>
+                            <td>{{ score.history }}</td>
+                            <td>{{ score.sum_score }}</td>
+                            <td>{{ score.grade_rank }}</td>
+                            <td>{{ score.class_rank }}</td>
+                            <td>{{ score.remark }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </form>
+        <ul class="pagination">
+            <li><span><span class="text-success">{{ score_list_count }}</span> 成绩列表</span></li>
+            {% if score_list.has_previous %}
+                <li><a href="?{{ score_list.previous_page_number.querystring }}">上一页</a></li>
+            {% endif %}
+
+            {% for page in score_list.pages %}
+                {% if page %}
+                    {% ifequal page score_list.number %}
+                        <li><span class="this-page">{{ page }}</span></li>
+                    {% else %}
+                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="dot-page"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if score_list.has_next %}
+                <li><a href="?{{ score_list.next_page_number.querystring }}">下一页</a></li>
+            {% endif %}
+            <li>
+                {% ifequal all '1' %}
+                    <a href="?" class="showall">取消显示全部</a>
+                {% else %}
+                    <a href="?all=1" class="showall">显示全部</a>
+                {% endifequal %}
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div id="footer">
+    <hr/>
+    <footer class="text-center">
+        <p>&copy; welcome to 温县第一高级中学后台管理 如果有问题请联系：XXXXXXXXXXX</p>
+    </footer>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.dashboard.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.portal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/selectize.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select2_locale_zh-hans.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.widget.select.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.quick-form.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.editable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.details.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.bookmark.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.filters.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.list.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.form.js' %}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block header %}
+    <div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'student:student_index' %}">温县第一高级中学后台管理</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                    <strong>欢迎， {{ request.session.username }}</strong>
+                    </a>
+{#                        <span class="caret"></span>#}
+{#                    <ul id="g-account-menu" class="dropdown-menu" role="menu">#}
+{#                        <li><a href="http://127.0.0.1:8000/xadmin/account/password/"><i class="fa fa-key"></i> 更改密码</a></li>#}
+{#                    </ul>#}
+                </li>
+                <li class=""><a href="{% url 'logout' %}">
+                    <i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock header %}
+
+{% block content %}
+    <div id="body-content" class="clearfix row">
+        <div id="left-side" class="col-sm-1 col-md-2">
+            <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                               href="#nav-panel-1">
+                                &nbsp;个人中心
+                            </a>
+                        </h6>
+                    </div>
+
+                    <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                        <a href="{% url 'student:student_info' %}" class="list-group-item">
+                            &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#nav-accordion"
+                               href="#nav-panel-2">
+                                &nbsp;成绩列表
+                            </a>
+                        </h6>
+                    </div>
+                    <div id="nav-panel-2" class="list-group panel-collapse collapse">
+                        <a href="{% url 'student:student_score' %}" class="list-group-item">
+                            &nbsp;&nbsp;&nbsp;&nbsp;成绩详情
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block right_content %}
+        {% endblock right_content %}
+    </div>
+
+
+
+
+{% endblock content %}

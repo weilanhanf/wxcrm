@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../MxOnline/.idea/MxOnline.iml" filepath="$PROJECT_DIR$/../MxOnline/.idea/MxOnline.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/wxcrm.iml" filepath="$PROJECT_DIR$/.idea/wxcrm.iml" />
+    </modules>
+  </component>
+</project>

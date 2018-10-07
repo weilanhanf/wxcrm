@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="robots" content="NONE,NOARCHIVE"/>
+    <title>班级信息列表 | 温县第一高级中学后台管理</title>
+
+
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}"/>
+
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/select2.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/selectize.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/selectize.bootstrap3.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.widget.editable.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+
+    <style type="text/css">
+        .btn-toolbar {
+            margin-top: 0;
+        }
+
+        #content-block.full-content {
+            margin-left: 0;
+        }
+    </style>
+
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+
+{#    <script type="text/javascript">#}
+{#        window.__admin_media_prefix__ = "{% static ''%}xadmin/";#}
+{#        window.__admin_path_prefix__ = "/xadmin/";#}
+{#        window.__admin_language_code__ = "";#}
+{#    </script>#}
+    <script type="text/javascript" src="/xadmin/jsi18n/"></script>
+
+
+</head>
+<body class="change-list">
+
+<!-- Header -->
+
+<div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">温县第一高级中学后台管理</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav pull-right">
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                    <strong>欢迎， {{ teacher_name }}</strong> <span class="caret"></span></a>
+                <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+
+<div id="body-content" class="clearfix row">
+
+
+    <div id="left-side" class="col-sm-1 col-md-2">
+        <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-1">
+                            &nbsp;个人中心
+                        </a>
+                    </h6>
+                </div>
+                <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                    </a>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-2">
+                            &nbsp;学生管理
+                        </a>
+                    </h6>
+                </div>
+                <div id="nav-panel-2" class="list-group panel-collapse collapse">
+
+                    <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+                    </a>
+
+                    <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
+                    </a>
+
+                    <a href="" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;考试列表
+                    </a>
+
+                    <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;班级管理
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content-block" class="col-sm-11 col-md-10">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url 'teacher:teacher_index' %}">首页</a>
+            </li>
+            <li>
+                班级信息
+            </li>
+        </ul>
+
+
+        <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
+             data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
+             data-class-sm="navbar content-navbar navbar-default navbar-xs">
+            <div class="navbar-header">
+                <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    班级信息
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li class="dropdown">
+                        <a id="drop-filter" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                            <i class="fa fa-filter"></i> 过滤器
+                            {% if filter_count %}
+                            <span class="badge badge-success">{{ filter_count }}</span>
+                            {% endif %}
+                            <span class="caret"></span></a>
+                        <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
+                            {% if filter_count %}
+                            <li><a href="?">
+                                <i class="fa fa-trash-o"></i> 清除过滤器</a>
+                            </li>
+                                <li class="divider"></li>
+                            {% endif %}
+{#                            <li class="dropdown-submenu filter-multiselect">#}
+{##}
+{#                                <a><i class="icon-filter text-muted"></i> 班级</a>#}
+{#                                <ul class="dropdown-menu">#}
+{##}
+{#                                    <li class="active">#}
+{#                                        <a href="">#}
+{#                                            <input type="checkbox" checked="checked">#}
+{#                                            全部#}
+{#                                        </a>#}
+{#                                    </li>#}
+{##}
+{#                                    <li>#}
+{#                                        <a href="?_p_class_number__in=1">#}
+{#                                            <input type="checkbox">#}
+{#                                            1#}
+{#                                        </a>#}
+{#                                    </li>#}
+{##}
+{#                                </ul>#}
+{#                            </li>#}
+                            <li class="dropdown-submenu">
+                                <a><i class="fa fa-filter text-muted"></i> 年级</a>
+                                <ul class="dropdown-menu">
+
+                                    <li class="active">
+                                        <a href="?">全部</a></li>
+                                    {% for grade in grade_list %}
+                                    <li>
+                                        <a href="?grade={{ grade.id }}">{{ grade }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <form class="navbar-form navbar-left" action="" method="get">
+                    {% csrf_token %}
+                    <div class="input-group search-group">
+                        <input id="searchbar" class="form-control" type="text" name="_q_" value=""
+                               placeholder="搜索 班主任">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="submit"><i
+                                class="fa fa-search"></i></button></span>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+        <div class="content-toolbar btn-toolbar pull-right clearfix">
+            <div class="btn-group layout-btns" data-toggle="buttons">
+                <label class="btn btn-default btn-sm layout-normal active">
+                    <input type="radio"> <i class="fa fa-th-large"></i>
+                </label>
+                <label class="btn btn-default btn-sm layout-condensed">
+                    <input type="radio"> <i class="fa fa-th"></i>
+                </label>
+
+            </div>
+            <div class="btn-group layout-btns" data-toggle="buttons-checkbox">
+                <button type="button" class="btn btn-default btn-sm layout-full"><i class="fa fa-expand"></i></button>
+            </div>
+        </div>
+
+        <ul class="pagination pagination-sm pagination-left pagination-inline">
+            <li><span><span class="text-success">{{ class_list_count }}</span> 班级信息</span></li>
+        </ul>
+
+        <form id="changelist-form" action="" method="post">
+            {% csrf_token %}
+            <div class="results table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="sortable sorted ascending">
+                            <div class="pull-right">
+                                <a class="toggle" href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}">
+                                    {% ifequal o 'class_number' %}
+                                    <i class="fa fa-sort-up"></i>
+                                    {% endifequal %}
+                                </a>
+                                <a class="toggle" href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}">
+                                    {% ifequal o '-class_number' %}
+                                    <i class="fa fa-sort-down"></i>
+                                    {% endifequal %}
+                                </a>
+                            </div>
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    班级
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li {% ifequal o 'class_number' %} class="active"{% endifequal %}>
+                                        <a href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <i class="fa fa-caret-up"></i> 正序</a></li>
+                                    <li {% ifequal o '-class_number' %} class="active"{% endifequal %}>
+                                        <a href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                            <i class="fa fa-caret-down"></i> 倒序</a></li>
+                                    <li><a href="?{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <i class="fa fa-times"></i> 取消排序</a></li>
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col" class="sortable sorted ascending">
+                            <div class="pull-right">
+                                <a class="toggle" href="?o={% if o %}{{ o }}{% endif %}&p=-grade&all={% if all %}{{ all }}{% endif %}">
+                                    {% ifequal p 'grade' %}
+                                    <i class="fa fa-sort-up"></i>
+                                    {% endifequal %}
+                                </a>
+                                <a class="toggle" href="?o={% if o %}{{ o }}{% endif %}&p=grade&all={% if all %}{{ all }}{% endif %}">
+                                    {% ifequal p '-grade' %}
+                                    <i class="fa fa-sort-down"></i>
+                                    {% endifequal %}
+                                </a>
+                            </div>
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    年级
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li {% ifequal p 'grade' %} class="active"{% endifequal %}>
+                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                            <i class="fa fa-caret-up"></i> 正序</a></li>
+                                    <li {% ifequal p '-grade' %} class="active"{% endifequal %}>
+                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=-grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <i class="fa fa-caret-down"></i> 倒序</a></li>
+                                    <li><a href="?{% if o %}o={{ o }}{% endif %}&p={% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <i class="fa fa-times"></i> 取消排序</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </th>
+                        <th scope="col" class="sortable">
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
+                                    班主任档案号
+                                </a>
+                            </div>
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            语文
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            数学
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            英语
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            物理
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            化学
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            生物
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            政治
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            地理
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            生物
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            体育
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            音乐
+                        </th>
+                        <th scope="col" style="color: #428bca">
+                            班级人数
+                        </th>
+                        <th scope="col" class="sortable">
+                            <div class="dropdown pull-left">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
+                                    备注
+                                </a>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            &nbsp;
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for class in class_list.object_list %}
+                    <tr class="grid-item">
+                        <td>
+                            <a style="text-decoration: none;">{{ class.class_number }}</a>
+                        </td>
+                        <td class="nowrap">
+                            {{ class.grade }}
+                        </td>
+                        <td class="nowrap">
+                            {{ class.header }}
+                        </td>
+                        <td class="nowrap">
+                            {% if class.chinese_teacher %}{{ class.chinese_teacher }}{% else %}暂无{% endif %}
+                        </td>
+                        <td class="nowrap">
+                        {% if class.math_teacher %}{{ class.math_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                         {% if class.english_teacher %}{{ class.english_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                       {% if class.physical_teacher %}{{ class.physical_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.chemistry_teacher %}{{ class.chemistry_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                         {% if class.biology_teacher %}{{ class.biology_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.politics_teacher %}{{ class.politics_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.geography_teacher %}{{ class.geography_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.history_teacher %}{{ class.history_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.sport_teacher %}{{ class.sport_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td class="nowrap">
+                        {% if class.music_teacher %}{{ class.music_teacher }}{% else %}暂无{% endif %}
+
+                        </td>
+                        <td>
+                            {{ class.get_class_student_number }}
+                        </td>
+                        <td>
+                            {% if teacher == class.header %}
+                                <div class="btn-group pull-right">
+                                    <a class="editable-handler" title="输入备注" data-editable-field="remark"
+                                       data-editable-loadurl="">
+                                        未写  不确定
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            <span class="editable-field">&nbsp;</span>
+                            {% else %}
+                                未写  不确定
+                                {{ class.remark }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="dropdown related_menu pull-right">
+                                <a title="关联数据" class="relate_menu dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon fa fa-list"></i>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="with_menu_btn">
+                                        <a href="{% url 'teacher:teacher_studentlist' %}?_rel_clas__id__exact={{ class.id }}" title="学生信息表">
+                                            <i class="icon fa fa-th-list"></i> 学生信息表</a>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-actions well well-sm" style="">
+{#                {% if filter_count != '0' and class_list_count %}#}
+{#                <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#">#}
+{#                <i class="fa fa-wrench"></i>#}
+{#                <span class="">暂无数据，请清除过滤器{{ filter_count }}</span>#}
+{#                <span class="caret" style="display: none;"></span></a>#}
+{#                {% endif %}#}
+                <script type="text/javascript">var _actions_icnt = "1";</script>
+            </div>
+
+        </form>
+
+        <ul class="pagination">
+            <li><span><span class="text-success">{{ class_list_count }}</span> 班级信息</span></li>
+            {% if class_list.has_previous %}
+                <li><a href="?{{ class_list.previous_page_number.querystring }}">
+                    上一页</a></li>
+            {% endif %}
+            {% for page in class_list.pages %}
+                {% if page %}
+                    {% ifequal page class_list.number %}
+                        <li><span class="this-page">{{ page }}</span></li>
+                    {% else %}
+                        <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="dot-page"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if class_list.has_next %}
+                <li><a href="?{{ class_list.next_page_number.querystring }}">
+                    下一页</a></li>
+            {% endif %}
+            <li>
+                {% ifequal all '1' %}
+                    <a href="?{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="showall">取消显示全部</a>
+                {% else %}
+                    <a href="?all=1{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="showall">显示全部</a>
+                {% endifequal %}
+            </li>
+        </ul>
+
+    </div>
+</div>
+
+
+<div id="footer">
+    <hr/>
+    <footer class="text-center">
+        <p>&copy; welcome to 温县第一高级中学后台管理 如果有问题请联系：XXXXXXXXXXX</p>
+    </footer>
+</div>
+
+
+<script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/selectize.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/select2_locale_zh-hans.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.widget.select.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.quick-form.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.editable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.details.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.bookmark.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.filters.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.list.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.form.js' %}"></script>
+
+
+</body>
+</html>
