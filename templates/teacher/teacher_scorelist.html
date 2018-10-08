@@ -1,140 +1,131 @@
-        <!DOCTYPE html>
-    {% load staticfiles %}
-    <html lang="en-us">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
-        <meta name="description" content="">
-        <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <meta name="robots" content="NONE,NOARCHIVE"/>
-        <title>学生信息表列表 | 温县第一高级中学后台管理</title>
-
-
-        <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-
-        <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}"/>
-
-        <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-        <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-        <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-        <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-        <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-        <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-
-        <style type="text/css">
-            .btn-toolbar {
-                margin-top: 0;
-            }
-
-            #content-block.full-content {
-                margin-left: 0;
-            }
-        </style>
-
-        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-
-        <script type="text/javascript">
-            window.__admin_media_prefix__ = "{% static '/' %}/";
-            window.__admin_path_prefix__ = "/xadmin/";
-            window.__admin_language_code__ = "";
-        </script>
-        <script type="text/javascript" src="/xadmin/jsi18n/"></script>
+    <meta name="robots" content="NONE,NOARCHIVE"/>
+    <title>学生信息表列表 | 温县第一高级中学后台管理</title>
 
 
-    </head>
-    <body class="change-list">
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet"/>
 
-    <!-- Header -->
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}"/>
 
-    <div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">温县第一高级中学后台管理</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav pull-right">
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
 
-                <li class="dropdown">
-                    <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                        <strong>欢迎， root</strong> <span class="caret"></span></a>
-                    <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                        <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>
-                    </ul>
-                </li>
+    <style type="text/css">
+        .btn-toolbar {
+            margin-top: 0;
+        }
 
-                <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a></li>
-            </ul>
+        #content-block.full-content {
+            margin-left: 0;
+        }
+    </style>
+
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+
+    <script type="text/javascript">
+        window.__admin_media_prefix__ = "{% static '/' %}/";
+        window.__admin_path_prefix__ = "/xadmin/";
+        window.__admin_language_code__ = "";
+    </script>
+    <script type="text/javascript" src="/xadmin/jsi18n/"></script>
 
 
-        </div>
+</head>
+<body class="change-list">
+
+<!-- Header -->
+
+<div id="top-nav" class="navbar navbar-xs navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">温县第一高级中学后台管理</a>
     </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav pull-right">
 
-    <div id="body-content" class="clearfix row">
+            <li class="dropdown">
+                <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                    <strong>欢迎， {{ teacher_name }}</strong> <span class="caret"></span></a>
+                <ul id="g-account-menu" class="dropdown-menu" role="menu">
+                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>
+                </ul>
+            </li>
 
-        <div id="left-side" class="col-sm-1 col-md-2">
-            <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-1">
-                                &nbsp;个人中心
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
-                        <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+            <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+
+<div id="body-content" class="clearfix row">
+
+    <div id="left-side" class="col-sm-1 col-md-2">
+        <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-1">
+                            &nbsp;个人中心
                         </a>
-                    </div>
+                    </h6>
                 </div>
+                <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                    </a>
+                </div>
+            </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-2">
-                                &nbsp;学生管理
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="nav-panel-2" class="list-group panel-collapse collapse">
-
-                        <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-2">
+                            &nbsp;学生管理
                         </a>
-
-                        <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
-                        </a>
-
-                        <a href="" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;考试列表
-                        </a>
-
-                        <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;班级管理
-                        </a>
-
-                    </div>
+                    </h6>
+                </div>
+                <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+                    </a>
+                    <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
+                    </a>
+                    <a href="" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;考试列表
+                    </a>
+                    <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;班级管理
+                    </a>
                 </div>
             </div>
         </div>
-        <div id="content-block" class="col-sm-11 col-md-10">
+    </div>
+
+    <div id="content-block" class="col-sm-11 col-md-10">
 
         <ul class="breadcrumb">
-
-
             <li>
-                <a href="/">首页</a>
+                <a href="{% url 'teacher:teacher_index' %}">首页</a>
             </li>
-
             <li>
                 成绩列表
-
             </li>
-
-
         </ul>
 
 
@@ -142,22 +133,6 @@
              data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
              data-class-sm="navbar content-navbar navbar-default navbar-xs">
             <div class="navbar-header">
-
-
-                <button class="navbar-toggle pull-left" data-toggle="class" data-target="#body-content"
-                        data-class-name="show_menu">
-                    <i class="fa fa-list"></i>
-                </button>
-
-                <a href="/xadmin/students/scoreinfo/add/" class="navbar-toggle pull-right"><i
-                        class="fa fa-plus"></i></a>
-
-                <button class="navbar-toggle pull-right" data-toggle="collapse"
-                        data-target=".content-navbar .navbar-collapse">
-                    <i class="fa fa-filter"></i>
-                </button>
-
-
                 <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
                     成绩列表
                 </a>
@@ -287,124 +262,6 @@
             </div>
         </div>
 
-
-        <div class="content-toolbar btn-toolbar pull-right clearfix">
-
-            <div class="btn-group">
-                <a class="dropdown-toggle btn btn-default btn-sm" data-toggle="dropdown" href="#">
-                    <i class="fa fa-list-alt"></i> 显示列 <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu model_fields pull-right" role="menu" aria-labelledby="dLabel">
-                    <li><a href="?"><i class="fa fa-refresh"></i> 恢复显示列</a></li>
-                    <li class="divider"></li>
-
-                    <li>
-                        <a href="?_cols=score_id.file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-blank"></i>
-                            成绩ID</a></li>
-
-                    <li>
-                        <a href="?_cols=which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            学生</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark.exam_number">
-                            <i class="fa fa-blank"></i>
-                            准考证号</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            考试</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            语文</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            数学</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            英语</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            物理</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.biology.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            化学</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.politics.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            生物</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.geography.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            政治</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.history.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            地理</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.sum_score.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            历史</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.class_rank">
-                            <i class="fa fa-check"></i>
-                            备注</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.grade_rank.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            总分</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.class_rank.remark">
-                            <i class="fa fa-check"></i>
-                            年级排名</a></li>
-
-                    <li>
-                        <a href="?_cols=file_number.which_exam.get_student_class.get_student_grade.chinese.math.english.physical.chemistry.biology.politics.geography.history.sum_score.grade_rank.remark">
-                            <i class="fa fa-check"></i>
-                            班级排名</a></li>
-
-                </ul>
-            </div>
-
-
-            <div class="btn-group layout-btns" data-toggle="buttons">
-                <label class="btn btn-default btn-sm layout-normal active">
-                    <input type="radio"> <i class="fa fa-th-large"></i>
-                </label>
-                <label class="btn btn-default btn-sm layout-condensed">
-                    <input type="radio"> <i class="fa fa-th"></i>
-                </label>
-
-            </div>
-
-
-            <div class="btn-group layout-btns" data-toggle="buttons-checkbox">
-                <button type="button" class="btn btn-default btn-sm layout-full"><i class="fa fa-expand"></i></button>
-
-            </div>
-
-
-        </div>
 
         <ul class="pagination pagination-sm pagination-left pagination-inline">
 
@@ -862,18 +719,20 @@
                             1
                         </td>
 
-                        <td >
+                        <td>
 
-            <div class="btn-group pull-right open">
+                            <div class="btn-group pull-right open">
 
-                <a class="editable-handler" title="输入备注" data-editable-field="remark" data-editable-loadurl="/xadmin/students/scoreinfo/69/patch/?fields=remark"><i class="fa fa-edit"></i></a>
+                                <a class="editable-handler" title="输入备注" data-editable-field="remark"
+                                   data-editable-loadurl="/xadmin/students/scoreinfo/69/patch/?fields=remark"><i
+                                        class="fa fa-edit"></i></a>
 
-            </div>
+                            </div>
 
 
-            <span class="editable-field">&nbsp;</span>
+                            <span class="editable-field">&nbsp;</span>
 
-        </td>
+                        </td>
                     </tr>
 
                     </tbody>
@@ -915,34 +774,33 @@
     </div>
 
 
-
-    </div>
-
-
-    <div id="footer">
-        <hr/>
-        <footer class="text-center">
-            <p>&copy; welcome to 温县第一高级中学后台管理 如果有问题请联系：XXXXXXXXXXX</p>
-        </footer>
-    </div>
+</div>
 
 
-    <script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.plugin.details.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.plugin.bookmark.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.plugin.filters.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.plugin.actions.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.page.list.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/xadmin.page.form.js' %}"></script>
+<div id="footer">
+    <hr/>
+    <footer class="text-center">
+        <p>&copy; welcome to 温县第一高级中学后台管理 如果有问题请联系：XXXXXXXXXXX</p>
+    </footer>
+</div>
 
 
-    </body>
-    </html>
+<script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.details.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.bookmark.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.filters.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.plugin.actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.list.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xadmin.page.form.js' %}"></script>
+
+
+</body>
+</html>

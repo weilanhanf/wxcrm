@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, reverse
 from django.views import View
+from django.db.models import Q
 from pure_pagination import Paginator, PageNotAnInteger
 
 from utils.mixin_utils import LoginRequiredMixin
 from .models import TeacherInfo
-from administrator.models import GradeInfo
+from administrator.models import GradeInfo, ClassInfo
 
 from django.core.exceptions import FieldError
 
@@ -142,7 +143,7 @@ class TeacherClassListView(LoginRequiredMixin, View):
 
         # 过滤器
         grade_list = GradeInfo.objects.all().order_by('-year')
-        grade_filter_condition = request.GET.get('grade')
+        grade_filter_condition = request.GET.get('grade_id')
         filter_condition_list = []
         if grade_filter_condition:
             class_list = class_list.filter(grade__id__exact=grade_filter_condition)
@@ -197,7 +198,58 @@ class TeacherStudentListView(LoginRequiredMixin, View):
         # 通过session确定老师对象
         username = request.session.get('username')
         teacher = TeacherInfo.objects.get(number__exact=username)
+
+        # 找出老师所教的班，只考虑老师当班主任或者当任课老师，不存在当班主任却教其他版的课
+        if teacher.is_class_leader:
+            class_queryset = teacher.classinfo_set.all()
+        else:
+            class_queryset = ClassInfo.objects.filter(
+             Q(chinese_teacher__number__exact=teacher.number) |
+             Q(math_teacher__number__exact=teacher.number) |
+             Q(english_teacher__number__exact=teacher.number) |
+             Q(physical_teacher__number__exact=teacher.number) |
+             Q(chemistry_teacher__number__exact=teacher.number) |
+             Q(biology_teacher__number__exact=teacher.number) |
+             Q(politics_teacher__number__exact=teacher.number) |
+             Q(geography_teacher__number__exact=teacher.number) |
+             Q(history_teacher__number__exact=teacher.number) |
+             Q(sport_teacher__number__exact=teacher.number) |
+             Q(music_teacher__number__exact=teacher.number)
+        )
+
+        print(class_queryset, type(class_queryset))
+
+        if len(class_queryset) > 0:
+            student_list = []
+            for class_ in class_queryset:
+                class_student_list = list(class_.studentinfo_set.all())
+                if len(class_student_list) > 0:
+                    student_list.extend(class_student_list)
+        else:
+            student_list = []
+
+        print(student_list, type(student_list))
+
+        # 获取筛选过的总数据量并传到前段
+        student_list_count = len(student_list)
+
+        # 分页功能
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        if request.GET.get('all') and student_list_count > 0:
+            # 每一页显示几条数据 如果all=1则显示全部
+            page_count = student_list_count
+        else:
+            page_count = 1
+        p = Paginator(student_list, page_count, request=request)
+        student_list = p.page(page)
+
         context = {
+            'student_list_count': student_list_count,
+            'all': request.GET.get('all'),
+            'student_list': student_list,
             'teacher': teacher,
             'teacher_name': teacher.name,
             'title': '基本信息'

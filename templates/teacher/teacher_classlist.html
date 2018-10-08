@@ -38,11 +38,11 @@
 
     <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
-{#    <script type="text/javascript">#}
-{#        window.__admin_media_prefix__ = "{% static ''%}xadmin/";#}
-{#        window.__admin_path_prefix__ = "/xadmin/";#}
-{#        window.__admin_language_code__ = "";#}
-{#    </script>#}
+    <script type="text/javascript">
+        window.__admin_media_prefix__ = "{% static ''%}xadmin/";
+        window.__admin_path_prefix__ = "/xadmin/";
+        window.__admin_language_code__ = "";
+    </script>
     <script type="text/javascript" src="/xadmin/jsi18n/"></script>
 
 
@@ -104,24 +104,20 @@
                         </a>
                     </h6>
                 </div>
-                <div id="nav-panel-2" class="list-group panel-collapse collapse">
-
+{#                <div id="nav-panel-2" class="list-group panel-collapse collapse">#}
+                <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
                         &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
                     </a>
-
                     <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
                         &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
                     </a>
-
                     <a href="" class="list-group-item">
                         &nbsp;&nbsp;&nbsp;&nbsp;考试列表
                     </a>
-
                     <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
                         &nbsp;&nbsp;&nbsp;&nbsp;班级管理
                     </a>
-
                 </div>
             </div>
         </div>
@@ -188,11 +184,11 @@
                                 <a><i class="fa fa-filter text-muted"></i> 年级</a>
                                 <ul class="dropdown-menu">
 
-                                    <li class="active">
+                                    <li {% if grade_id %}{% else %}class="active"{% endif %}>
                                         <a href="?">全部</a></li>
                                     {% for grade in grade_list %}
-                                    <li>
-                                        <a href="?grade={{ grade.id }}">{{ grade }}</a></li>
+                                    <li {% if grade_id == grade.id %}class="active"{% endif %}>
+                                        <a href="?grade_id={{ grade.id }}">{{ grade }} ad {{ grade_id }} {{ grade.id }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </li>
@@ -214,23 +210,6 @@
 
             </div>
         </div>
-
-
-        <div class="content-toolbar btn-toolbar pull-right clearfix">
-            <div class="btn-group layout-btns" data-toggle="buttons">
-                <label class="btn btn-default btn-sm layout-normal active">
-                    <input type="radio"> <i class="fa fa-th-large"></i>
-                </label>
-                <label class="btn btn-default btn-sm layout-condensed">
-                    <input type="radio"> <i class="fa fa-th"></i>
-                </label>
-
-            </div>
-            <div class="btn-group layout-btns" data-toggle="buttons-checkbox">
-                <button type="button" class="btn btn-default btn-sm layout-full"><i class="fa fa-expand"></i></button>
-            </div>
-        </div>
-
         <ul class="pagination pagination-sm pagination-left pagination-inline">
             <li><span><span class="text-success">{{ class_list_count }}</span> 班级信息</span></li>
         </ul>
@@ -243,12 +222,12 @@
                     <tr>
                         <th scope="col" class="sortable sorted ascending">
                             <div class="pull-right">
-                                <a class="toggle" href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}">
+                                <a class="toggle" href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}">
                                     {% ifequal o 'class_number' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}">
+                                <a class="toggle" href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}">
                                     {% ifequal o '-class_number' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -260,12 +239,12 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li {% ifequal o 'class_number' %} class="active"{% endifequal %}>
-                                        <a href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <a href="?o=class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                         <i class="fa fa-caret-up"></i> 正序</a></li>
                                     <li {% ifequal o '-class_number' %} class="active"{% endifequal %}>
-                                        <a href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <a href="?o=-class_number{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                             <i class="fa fa-caret-down"></i> 倒序</a></li>
-                                    <li><a href="?{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                    <li><a href="?{% if p %}&p={{ p }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a></li>
                                 </ul>
                             </div>
@@ -289,12 +268,12 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li {% ifequal p 'grade' %} class="active"{% endifequal %}>
-                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                             <i class="fa fa-caret-up"></i> 正序</a></li>
                                     <li {% ifequal p '-grade' %} class="active"{% endifequal %}>
-                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=-grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                        <a href="?{% if o %}o={{ o }}{% endif %}&p=-grade{% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                         <i class="fa fa-caret-down"></i> 倒序</a></li>
-                                    <li><a href="?{% if o %}o={{ o }}{% endif %}&p={% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="active">
+                                    <li><a href="?{% if o %}o={{ o }}{% endif %}&p={% if all %}&all={{ all }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a>
                                     </li>
 
@@ -344,13 +323,6 @@
                         </th>
                         <th scope="col" style="color: #428bca">
                             班级人数
-                        </th>
-                        <th scope="col" class="sortable">
-                            <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
-                                    备注
-                                </a>
-                            </div>
                         </th>
                         <th scope="col">
                             &nbsp;
@@ -415,21 +387,6 @@
                         <td>
                             {{ class.get_class_student_number }}
                         </td>
-                        <td>
-                            {% if teacher == class.header %}
-                                <div class="btn-group pull-right">
-                                    <a class="editable-handler" title="输入备注" data-editable-field="remark"
-                                       data-editable-loadurl="">
-                                        未写  不确定
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </div>
-                            <span class="editable-field">&nbsp;</span>
-                            {% else %}
-                                未写  不确定
-                                {{ class.remark }}
-                            {% endif %}
-                        </td>
 
                         <td>
                             <div class="dropdown related_menu pull-right">
@@ -472,7 +429,7 @@
                     {% ifequal page class_list.number %}
                         <li><span class="this-page">{{ page }}</span></li>
                     {% else %}
-                        <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
+                        <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
                     {% endifequal %}
                 {% else %}
                     <li class="dot-page"><a href="">...</a></li>
@@ -485,9 +442,9 @@
             {% endif %}
             <li>
                 {% ifequal all '1' %}
-                    <a href="?{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="showall">取消显示全部</a>
+                    <a href="?{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">取消显示全部</a>
                 {% else %}
-                    <a href="?all=1{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade={{ grade_id }}{% endif %}" class="showall">显示全部</a>
+                    <a href="?all=1{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">显示全部</a>
                 {% endifequal %}
             </li>
         </ul>

@@ -5,7 +5,7 @@ import xadmin
 from xadmin import views
 
 from xadmin.views.list import ListAdminView
-from .models import ScoreInfo, StudentInfo, ExamList, RewardPunishInfo, TestModel
+from .models import ScoreInfo, StudentInfo, ExamList, RewardPunishInfo
 
 
 class BaseSetting(object):
@@ -127,12 +127,6 @@ class RewardPunishInfoAdmin(object):
     show_bookmarks = False  # 去除标签功能
 
 
-class TestModelAdmin(object):
-    list_display = ['name', 'month_score', 'week_score', 'sum_score','grade_rank', 'class_rank']
-    list_editable = ['week_score']
-
-
-xadmin.site.register(TestModel, TestModelAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 # 基本配置管理与views绑定
 xadmin.site.register(views.CommAdminView, GlobalSettings)

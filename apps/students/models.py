@@ -142,7 +142,7 @@ class ScoreInfo(models.Model):
         ordering = ['which_exam', 'file_number']
 
     def save(self, *args, **kwargs):
-        # 重写增加功能
+        # 覆盖save方法并增加功能
 
         # save方法中需要用到的变量
         exam_id = self.which_exam.id  # 确定本次考试的ID
@@ -258,23 +258,3 @@ class RewardPunishInfo(models.Model):
     get_punish_remark.short_description = '惩罚总数'
 
 
-class TestModel(models.Model):
-
-    name = models.CharField(verbose_name='姓名', default='1', max_length=10, null=True, blank=True)
-    month_score = models.FloatField(verbose_name='月考分', db_column='月考分', default=1, null=True, blank=True)
-    week_score = models.FloatField(verbose_name='周考分', db_column='周考分', default=1, null=True, blank=True)
-    sum_score = models.FloatField(verbose_name='总分', db_column='总分', null=True, blank=True, default=0)
-    grade_rank = models.PositiveSmallIntegerField(verbose_name='年级排名', db_column='年级排名', default=0, null=True, blank=True)
-    class_rank = models.PositiveSmallIntegerField(verbose_name='班级排名', db_column='班级排名', default=0, null=True, blank=True)
-
-    class Meta:
-        verbose_name = '龙门'
-        verbose_name_plural = verbose_name
-        db_table = '龙门详情表'
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        self.sum_score = self.month_score * 0.7 + self.week_score * 0.3
-        super(TestModel, self).save(*args, **kwargs)

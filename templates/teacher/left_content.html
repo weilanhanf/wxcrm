@@ -31,55 +31,50 @@
 {% block content %}
     <div id="body-content" class="clearfix row" style="margin-top: 65px;">
 
-        <div id="left-side" class="col-sm-1 col-md-2">
-            <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-1">
-                                &nbsp;个人中心
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
-                        <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+    <div id="left-side" class="col-sm-1 col-md-2">
+        <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-1">
+                            &nbsp;个人中心
                         </a>
-                    </div>
+                    </h6>
                 </div>
+                <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                    </a>
+                </div>
+            </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-2">
-                                &nbsp;学生管理
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="nav-panel-2" class="list-group panel-collapse collapse">
-
-                        <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
+                           href="#nav-panel-2">
+                            &nbsp;学生管理
                         </a>
-
-                        <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
-                        </a>
-
-                        <a href="" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;考试列表
-                        </a>
-
-                        <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;班级管理
-                        </a>
-
-                    </div>
+                    </h6>
+                </div>
+                <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+                    </a>
+                    <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
+                    </a>
+                    <a href="" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;考试列表
+                    </a>
+                    <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
+                        &nbsp;&nbsp;&nbsp;&nbsp;班级管理
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
 
         {% block right_content %}
 
