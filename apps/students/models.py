@@ -256,5 +256,3 @@ class RewardPunishInfo(models.Model):
         punish_list = [i for i in self.punish_remark.replace('，', ',').split(',') if i is not '']
         return len(punish_list)
     get_punish_remark.short_description = '惩罚总数'
-
-

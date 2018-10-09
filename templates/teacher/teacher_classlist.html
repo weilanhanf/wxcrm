@@ -84,13 +84,15 @@
                     <h6 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
                            href="#nav-panel-1">
+                            <i class="fa-fw fa fa-lock"></i>
                             &nbsp;个人中心
                         </a>
                     </h6>
                 </div>
                 <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;基本信息
                     </a>
                 </div>
             </div>
@@ -100,23 +102,27 @@
                     <h6 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
                            href="#nav-panel-2">
+                            <i class="fa-fw fa fa-group"></i>
                             &nbsp;学生管理
                         </a>
                     </h6>
                 </div>
-{#                <div id="nav-panel-2" class="list-group panel-collapse collapse">#}
                 <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;学生信息表
                     </a>
                     <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;成绩列表
                     </a>
                     <a href="" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;考试列表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;考试列表
                     </a>
                     <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;班级管理
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;班级管理
                     </a>
                 </div>
             </div>
@@ -184,9 +190,9 @@
                                 <a><i class="fa fa-filter text-muted"></i> 年级</a>
                                 <ul class="dropdown-menu">
 
-                                    <li {% if grade_id %}{% else %}class="active"{% endif %}>
+                                    <li {% if not grade_id %}class="active"{% endif %}>
                                         <a href="?">全部</a></li>
-                                    {% for grade in grade_list %}
+                                    {% for grade in grade_queryset %}
                                     <li {% if grade_id == grade.id %}class="active"{% endif %}>
                                         <a href="?grade_id={{ grade.id }}">{{ grade }} ad {{ grade_id }} {{ grade.id }}</a></li>
                                     {% endfor %}
@@ -211,7 +217,7 @@
             </div>
         </div>
         <ul class="pagination pagination-sm pagination-left pagination-inline">
-            <li><span><span class="text-success">{{ class_list_count }}</span> 班级信息</span></li>
+            <li><span><span class="text-success">{{ class_queryset_count }}</span> 班级信息</span></li>
         </ul>
 
         <form id="changelist-form" action="" method="post">
@@ -330,7 +336,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for class in class_list.object_list %}
+                    {% for class in class_page.object_list %}
                     <tr class="grid-item">
                         <td>
                             <a style="text-decoration: none;">{{ class.class_number }}</a>
@@ -419,14 +425,14 @@
         </form>
 
         <ul class="pagination">
-            <li><span><span class="text-success">{{ class_list_count }}</span> 班级信息</span></li>
-            {% if class_list.has_previous %}
-                <li><a href="?{{ class_list.previous_page_number.querystring }}">
+            <li><span><span class="text-success">{{ class_queryset_count }}</span> 班级信息</span></li>
+            {% if class_page.has_previous %}
+                <li><a href="?{{ class_page.previous_page_number.querystring }}">
                     上一页</a></li>
             {% endif %}
-            {% for page in class_list.pages %}
+            {% for page in class_page.pages %}
                 {% if page %}
-                    {% ifequal page class_list.number %}
+                    {% ifequal page class_page.number %}
                         <li><span class="this-page">{{ page }}</span></li>
                     {% else %}
                         <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
@@ -436,8 +442,8 @@
                 {% endif %}
             {% endfor %}
 
-            {% if class_list.has_next %}
-                <li><a href="?{{ class_list.next_page_number.querystring }}">
+            {% if class_page.has_next %}
+                <li><a href="?{{ class_page.next_page_number.querystring }}">
                     下一页</a></li>
             {% endif %}
             <li>

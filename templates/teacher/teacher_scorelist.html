@@ -79,13 +79,15 @@
                     <h6 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
                            href="#nav-panel-1">
+                            <i class="fa-fw fa fa-lock"></i>
                             &nbsp;个人中心
                         </a>
                     </h6>
                 </div>
                 <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_infoshow' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;基本信息
                     </a>
                 </div>
             </div>
@@ -95,22 +97,27 @@
                     <h6 class="panel-title">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
                            href="#nav-panel-2">
+                            <i class="fa-fw fa fa-group"></i>
                             &nbsp;学生管理
                         </a>
                     </h6>
                 </div>
                 <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;学生信息表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;学生信息表
                     </a>
                     <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;成绩列表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;成绩列表
                     </a>
                     <a href="" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;考试列表
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;考试列表
                     </a>
                     <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;班级管理
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;班级管理
                     </a>
                 </div>
             </div>
@@ -146,101 +153,50 @@
                             <span class="caret"></span></a>
                         <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
 
-
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> 学生</a>
-                                <ul class="dropdown-menu">
-
-                                    <li class="active">
-                                        <a href="?">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__file_number__exact=111">甘南</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__isnull=True">空</a></li>
-
-                                </ul>
-                            </li>
                             <li class="dropdown-submenu">
                                 <a><i class="fa fa-filter text-muted"></i> 考试</a>
                                 <ul class="dropdown-menu">
 
-                                    <li class="active">
+                                    <li {% if not exam_id %}class="active"{% endif %}>
                                         <a href="?">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=1">第1次考试，时间为2016年08月08日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=2">第2次考试，时间为2018年08月15日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=3">第3次考试，时间为2019年07月19日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=4">第4次考试，时间为2016年08月09日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=5">第5次考试，时间为2016年08月01日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=6">第6次考试，时间为2018年01月12日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__id__exact=7">第7次考试，时间为2016年09月04日</a></li>
-
-                                    <li>
-                                        <a href="?_p_which_exam__isnull=True">空</a></li>
+                                    {% for exam in exam_queryset %}
+                                    <li {% if exam.id == exam_id %}class="active"{% endif %}>
+                                        <a href="?
+                                        {% if exam_id %}exam_id={{ exam_id }}{% endif %}
+                                        {% if grade_id %}&grade_id={{ grade_id }}{% endif %}
+                                        {% if class_id %}&grade_id={{ class_id }}{% endif %}
+                                                ">{{ exam }}</a></li>
+                                    {% endfor %}
 
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> file_number 年级</a>
+                                <a><i class="fa fa-filter text-muted"></i> 年级</a>
                                 <ul class="dropdown-menu">
 
-                                    <li class="active">
+                                    <li {% if not grade_id %}class="active"{% endif %}>
                                         <a href="?">全部</a></li>
-
+                                    {% for grade in grade_queryset %}
                                     <li>
-                                        <a href="?_p_file_number__grade__id__exact=0">年级：0</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__grade__id__exact=1">年级：1</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__grade__isnull=True">空</a></li>
+                                        <a href="{% if exam_id %}exam_id={{ exam_id }}{% endif %}
+                                        {% if grade_id %}&grade_id={{ grade_id }}{% endif %}
+                                        {% if class_id %}&grade_id={{ class_id }}{% endif %}">{{ grade }}</a></li>
+                                    {% endfor %}
 
                                 </ul>
                             </li>
                             <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> file_number 班级</a>
+                                <a><i class="fa fa-filter text-muted"></i> 班级</a>
                                 <ul class="dropdown-menu">
 
-                                    <li class="active">
+                                    <li {% if class_id %}class="active"{% endif %}>
                                         <a href="?">全部</a></li>
-
+                                    {% for clas in class_queryset %}
                                     <li>
-                                        <a href="?_p_file_number__clas__id__exact=1">班级：1</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__clas__isnull=True">空</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> file_number 班主任编号</a>
-                                <ul class="dropdown-menu">
-
-                                    <li class="active">
-                                        <a href="?">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__teacher__number__exact=4">曹冬冬</a></li>
-
-                                    <li>
-                                        <a href="?_p_file_number__teacher__isnull=True">空</a></li>
-
+                                        <a href="{% if exam_id %}exam_id={{ exam_id }}{% endif %}
+                                        {% if grade_id %}&grade_id={{ grade_id }}{% endif %}
+                                        {% if class_id %}&grade_id={{ class_id }}{% endif %}">{{ clas }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </li>
                         </ul>
@@ -265,7 +221,7 @@
 
         <ul class="pagination pagination-sm pagination-left pagination-inline">
 
-            <li><span><span class="text-success">5</span> 成绩列表</span></li>
+            <li><span><span class="text-success">{{ score_list_count }}</span> 成绩列表</span></li>
 
 
         </ul>
@@ -278,7 +234,6 @@
                     <thead>
                     <tr>
                         <th scope="col" class="action-checkbox-column">
-                            <input type="checkbox" id="action-toggle"/>
 
                         </th>
                         <th scope="col" class="sortable sorted ascending">
@@ -565,176 +520,74 @@
                                     班级排名
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-
                                     <li><a href="?o=class_rank.which_exam.file_number" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
-
                                     <li><a href="?o=-class_rank.which_exam.file_number" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
-
                                 </ul>
                             </div>
-
-                        </th>
-                        <th scope="col" class="sortable">
-
-
-                            <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    备注
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=remark.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-remark.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
-                            </div>
-
                         </th>
                     </tr>
-
                     </thead>
-
-
                     <tbody>
-
+                    {% for score in score_list.object_list %}
                     <tr class="grid-item">
                         <td class="action-checkbox">
-
-
-                            <input type="checkbox" name="_selected_action" value="69" class="action-select"/>
-
+                            <a class="dropdown-toggle" style="text-decoration: none">
+                                {{ forloop.counter }}
+                            </a>
+                        </td>
+                        <td class="nowrap">
+                            <a href="/xadmin/students/scoreinfo/69/update/">{{ score.file_number }}</a>
                         </td>
 
                         <td class="nowrap">
-
-
-                            <a href="/xadmin/students/scoreinfo/69/update/">123</a>
-
+                            {{ score.which_exam }}
                         </td>
-
-                        <td class="nowrap">
-
-
-                            第1次考试，时间为2016年08月08日
-
-                        </td>
-
                         <td>
-
-
-                            班级：1
-
+                            {{ score.get_student_class }}
                         </td>
-
                         <td>
-
-
-                            年级：1
-
+                            {{ score.get_student_grade }}
                         </td>
-
                         <td>
-
-
-                            123
-
+                            {{ score.chinese }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.math }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.english }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.physical }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.chemistry }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.biology }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.politics }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.geography }}
                         </td>
-
                         <td>
-
-
-                            0
-
+                            {{ score.history }}
                         </td>
-
                         <td>
-
-
-                            123
-
+                            {{ score.sum_score }}
                         </td>
-
                         <td>
-
-
-                            1
-
+                            {{ score.grade_rank }}
                         </td>
-
                         <td>
-                            1
-                        </td>
-
-                        <td>
-
-                            <div class="btn-group pull-right open">
-
-                                <a class="editable-handler" title="输入备注" data-editable-field="remark"
-                                   data-editable-loadurl="/xadmin/students/scoreinfo/69/patch/?fields=remark"><i
-                                        class="fa fa-edit"></i></a>
-
-                            </div>
-
-
-                            <span class="editable-field">&nbsp;</span>
-
+                            {{ score.class_rank }}
                         </td>
                     </tr>
-
+                    {% endfor %}
                     </tbody>
 
                 </table>
@@ -748,16 +601,7 @@
                 <div class="btn-group clearfix dropup">
                     <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#">
                         <i class="fa fa-wrench"></i>
-                        <span class="action-counter">5 个中 0 个被选</span>
-                        <span class="all" style="display: none;">选中了 5 个</span>
                         <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-
-                        <li><a onclick="$.do_action('delete_selected');"><i class="fa fa-times"></i> 删除所选的 成绩列表</a></li>
-
-                        <li><a onclick="$.do_action('really_delete_selected');"><i class="tasks"></i> X 删除并更新排名</a></li>
-
-                    </ul>
                 </div>
 
             </div>
@@ -766,14 +610,36 @@
 
         <ul class="pagination">
 
-            <li><span><span class="text-success">5</span> 成绩列表</span></li>
+            <li><span><span class="text-success">{{ score_list_count }}</span> 成绩列表</span></li>
+            {% if score_list.has_previous %}
+                <li><a href="?{{ score_list.previous_page_number.querystring }}">
+                    上一页</a></li>
+            {% endif %}
+            {% for page in score_list.pages %}
+                {% if page %}
+                    {% ifequal page score_list.number %}
+                        <li><span class="this-page">{{ page }}</span></li>
+                    {% else %}
+                        <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="dot-page"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
 
-
+            {% if score_list.has_next %}
+                <li><a href="?{{ score_list.next_page_number.querystring }}">
+                    下一页</a></li>
+            {% endif %}
+            <li>
+                {% ifequal all '1' %}
+                    <a href="?{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">取消显示全部</a>
+                {% else %}
+                    <a href="?all=1{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">显示全部</a>
+                {% endifequal %}
+            </li>
         </ul>
-
     </div>
-
-
 </div>
 
 
