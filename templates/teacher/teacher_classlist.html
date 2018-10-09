@@ -110,15 +110,11 @@
                 <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;学生信息表
+                        &nbsp;学生信息管理
                     </a>
                     <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;成绩列表
-                    </a>
-                    <a href="" class="list-group-item">
-                        <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;考试列表
+                        &nbsp;学生成绩管理
                     </a>
                     <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
@@ -158,7 +154,7 @@
                             <span class="badge badge-success">{{ filter_count }}</span>
                             {% endif %}
                             <span class="caret"></span></a>
-                        <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
+                            <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
                             {% if filter_count %}
                             <li><a href="?">
                                 <i class="fa fa-trash-o"></i> 清除过滤器</a>

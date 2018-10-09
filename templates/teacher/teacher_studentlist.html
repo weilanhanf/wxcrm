@@ -105,15 +105,11 @@
                 <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'teacher:teacher_studentlist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;学生信息表
+                        &nbsp;学生信息管理
                     </a>
                     <a href="{% url 'teacher:teacher_scorelist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;成绩列表
-                    </a>
-                    <a href="" class="list-group-item">
-                        <i class="fa-fw fa fa-circle-o"></i>
-                        &nbsp;考试列表
+                        &nbsp;学生成绩管理
                     </a>
                     <a href="{% url 'teacher:teacher_classlist' %}" class="list-group-item">
                         <i class="fa-fw fa fa-circle-o"></i>
@@ -131,7 +127,7 @@
 
 
             <li>
-                <a href="/xadmin/">首页</a>
+                <a href="{% url 'teacher:teacher_index' %}">首页</a>
             </li>
 
             <li>
@@ -154,7 +150,7 @@
                     <i class="fa fa-list"></i>
                 </button>
 
-                <a href="/xadmin/students/studentinfo/add/" class="navbar-toggle pull-right"><i class="fa fa-plus"></i></a>
+                <a href="" class="navbar-toggle pull-right"><i class="fa fa-plus"></i></a>
 
                 <button class="navbar-toggle pull-right" data-toggle="collapse"
                         data-target=".content-navbar .navbar-collapse">

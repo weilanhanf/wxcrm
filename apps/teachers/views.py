@@ -6,7 +6,7 @@ from pure_pagination import Paginator, PageNotAnInteger
 from utils.mixin_utils import LoginRequiredMixin
 from .models import TeacherInfo
 from administrator.models import GradeInfo, ClassInfo
-from students.models import ExamList
+from students.models import ExamList, StudentInfo, ScoreInfo
 
 from django.core.exceptions import FieldError
 
@@ -144,8 +144,8 @@ class TeacherClassListView(LoginRequiredMixin, View):
             class_queryset = class_queryset.all()
 
         # 过滤器
-        grade_queryset = GradeInfo.objects.all().order_by('-year')
         grade_filter_condition = request.GET.get('grade_id')
+        grade_queryset = GradeInfo.objects.all().order_by('-year')
         filter_condition_list = []
         if grade_filter_condition:
             class_queryset = class_queryset.filter(grade__id__exact=grade_filter_condition)
@@ -221,22 +221,17 @@ class TeacherStudentListView(LoginRequiredMixin, View):
 
         print(class_queryset, type(class_queryset))
 
-        if len(class_queryset) > 0:
-            student_list = []
-            for class_ in class_queryset:
-                class_student_list = list(class_.studentinfo_set.all())
-                if len(class_student_list) > 0:
-                    student_list.extend(class_student_list)
-        else:
-            student_list = []
+        # 根据班级的id反向查询所有的学生
+        class_id_list = [clas_.id for clas_ in class_queryset]
+        student_queryset = StudentInfo.objects.filter(clas__id__in=class_id_list).all()
 
-        print(student_list, type(student_list))
+        print(student_queryset, type(student_queryset))
 
         # 从前端获取筛选条件
         all_page_condition = request.GET.get('all')
 
         # 获取筛选过的总数据量并传到前段
-        student_list_count = len(student_list)
+        student_list_count = len(student_queryset)
 
         # 分页功能
         try:
@@ -248,7 +243,7 @@ class TeacherStudentListView(LoginRequiredMixin, View):
             page_count = student_list_count
         else:
             page_count = 1
-        p = Paginator(student_list, page_count, request=request)
+        p = Paginator(student_queryset, page_count, request=request)
         student_list = p.page(page)
 
         context = {
@@ -305,30 +300,54 @@ class TeacherScoreListView(LoginRequiredMixin, View):
                 Q(music_teacher__number__exact=teacher.number)
             ).order_by('grade__year')
 
-        print(class_queryset, type(class_queryset))
+        # print(class_queryset, type(class_queryset))
 
         # 先查询出所有老师教的班 再查所有班的学生
+        # 根据班级的id查询所有的学生
+        class_id_list = [clas_.id for clas_ in class_queryset]
+        student_queryset = StudentInfo.objects.filter(clas__id__in=class_id_list).all()
+        # print(student_queryset, student_queryset.count())
 
-        student_list = []
-        if len(class_queryset) > 0:
-            for class_ in class_queryset:
-                class_student_list = list(class_.studentinfo_set.all())
-                if len(class_student_list) > 0:
-                    student_list.extend(class_student_list)
+        # 根据学生的档案号查询学生所有的成绩
+        student_id_list = [student.file_number for student in student_queryset]
+        score_queryset = ScoreInfo.objects.filter(file_number__file_number__in=student_id_list).order_by('-sum_score')
+        # print(score_queryset, len(score_queryset))
 
-        print(student_list, len(student_list))
+        # 从前端获取筛选条件并放入列表中
+        chinese_select_condition = request.GET.get('chinese')
+        math_select_condition = request.GET.get('math')
+        english_select_condition = request.GET.get('english')
+        physical_select_condition = request.GET.get('physical')
+        chemistry_select_condition = request.GET.get('chemistry')
+        biology_select_condition = request.GET.get('biology')
+        politics_select_condition = request.GET.get('politics')
+        geography_select_condition = request.GET.get('geography')
+        history_select_condition = request.GET.get('history')
+        sum_score_select_condition = request.GET.get('sum_score')
+        grade_rank_select_condition = request.GET.get('grade_rank')
+        class_rank_select_condition = request.GET.get('class_rank')
 
-        score_list = []
-        if len(student_list) > 0:
-            for student in student_list:
-                score_student_list = list(student.scoreinfo_set.all())
-                if len(score_student_list) > 0:
-                    score_list.extend(score_student_list)
+        all_page_condition = request.GET.get('all')  # 是否全部显示
+        print(chinese_select_condition)
 
-        print(score_list, len(score_list))
+        # 如果不为空,则放入同一个列表中
+        select_condition_list = [chinese_select_condition, math_select_condition, english_select_condition,
+                                 physical_select_condition, chemistry_select_condition, biology_select_condition,
+                                 politics_select_condition, geography_select_condition, history_select_condition,
+                                 sum_score_select_condition, grade_rank_select_condition, class_rank_select_condition, ]
 
-        # 从前端获取筛选条件
-        all_page_condition = request.GET.get('all')
+        # 强制类型转换去除重复条件
+        order_condition_list = [condition for condition in select_condition_list if condition]  # 去杂
+        select_condition_set = set(order_condition_list)
+        select_condition_list = list(select_condition_set)
+        print(select_condition_list)
+
+        # 利用排序条件并通过外键关联查询老师当过班主任的班级
+        try:
+            select_condition_tuple = tuple(select_condition_list)  # 传入多个排序条件
+            score_queryset = score_queryset.order_by(*select_condition_tuple)
+        except Exception:
+            score_queryset = score_queryset.all()
 
         exam_queryset = ExamList.objects.all().order_by('time')
         grade_queryset = GradeInfo.objects.all()
@@ -339,34 +358,69 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         grade_filter_condition = request.GET.get('grade_id')
         class_filter_condition = request.GET.get('class_id')
 
+        # print(exam_filter_condition, grade_filter_condition, class_filter_condition, type(exam_filter_condition))
+
         # 过滤器筛选
+        if exam_filter_condition and exam_filter_condition is not 'None':
+            score_queryset = score_queryset.filter(which_exam__id__exact=int(exam_filter_condition))
+            filter_condition_list.append(exam_filter_condition)
+        if grade_filter_condition and grade_filter_condition is not 'None':
+            score_queryset = score_queryset.filter(file_number__grade_id__exact=int(grade_filter_condition))
+            filter_condition_list.append(grade_filter_condition)
+        if class_filter_condition and class_filter_condition is not 'None':
+            score_queryset = score_queryset.filter(file_number__clas_id__exact=int(class_filter_condition))
+            filter_condition_list.append(class_filter_condition)
 
         # 过滤器个数
+        filter_count = len(filter_condition_list)
+        # print(filter_condition_list, filter_count, score_queryset.count())
 
-
-        # 获取筛选过的总数据量并传到前段
-        score_list_count = len(score_list)
+        # 搜索功能
+        q_search_condition = request.GET.get('q')
+        if q_search_condition:
+            score_queryset = score_queryset.filter(file_number__student_name__icontains=q_search_condition)
 
         # 分页功能
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
-        if all_page_condition and score_list_count > 0:
+        if all_page_condition and score_queryset.count() > 0:
             # 每一页显示几条数据 如果all=1则显示全部
-            page_count = score_list_count
+            page_count = score_queryset.count()
         else:
             page_count = 1
-        p = Paginator(score_list, page_count, request=request)
-        score_list = p.page(page)
+        p = Paginator(score_queryset, page_count, request=request)
+        score_page = p.page(page)
 
         context = {
-            'class_queryset': class_queryset,
+            'chinese': chinese_select_condition, # 排序条件
+            'math': math_select_condition,
+            'english': english_select_condition,
+            'physical': physical_select_condition,
+            'chemistry': chemistry_select_condition,
+            'biology': biology_select_condition,
+            'politics': politics_select_condition,
+            'geography': geography_select_condition,
+            'history': history_select_condition,
+            'sum_score': sum_score_select_condition,
+            'class_rank': class_rank_select_condition,
+            'grade_rank': grade_rank_select_condition,
+
+            'q': q_search_condition,  # 搜索框
+
+            'grade_id': grade_filter_condition, # 过滤器
+            'class_id': class_filter_condition,
+            'exam_id': exam_filter_condition,
+            'filter_count': filter_count,
+
+            'class_queryset': class_queryset, # queryset对象
             'grade_queryset': grade_queryset,
             'exam_queryset': exam_queryset,
+            'score_queryset': score_queryset,
+
             'all': all_page_condition,
-            'score_list_count': score_list_count,
-            'score_list': score_list,
+            'score_page': score_page,
             'teacher': teacher,
             'teacher_name': teacher.name,
             'title': '基本信息'

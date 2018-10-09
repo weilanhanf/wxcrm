@@ -38,7 +38,7 @@ class ClassInfoAdmin(object):
     list_editable = ['remark']
     list_filter = ['class_number', 'grade', 'header', ]
     unique_together = ['year', 'class_number']
-    search_fields = ['header_name', ]
+    search_fields = ['header__name', ]
     show_bookmarks = False  # 去除标签功能
 
 
