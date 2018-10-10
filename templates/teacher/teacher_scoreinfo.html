@@ -1,0 +1,203 @@
+{% extends 'teacher/left_content.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+    基本信息修改
+{% endblock title %}
+
+{% block css %}
+    <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" id="site-theme" href="{% static 'css/bootstrap-xadmin.css' %}">
+    <link href="{% static 'css/font-awesome.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.main.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.responsive.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.page.dashboard.css' %}" type="text/css" media="screen" rel="stylesheet">
+    <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
+{% endblock css %}
+
+
+{% block right_content %}
+
+    <div id="content-block" class="col-sm-11 col-md-10">
+        <ul class="breadcrumb">
+            <li>
+                <a href="{% url 'teacher:teacher_index' %}">首页</a>
+            </li>
+
+            <li>
+                <a href="{% url 'teacher:teacher_scorelist' %}">成绩列表</a>
+            </li>
+            <li>
+                {{ student }}：{{ score.which_exam }}
+            </li>
+        </ul>
+
+
+        <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
+             data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
+             data-class-sm="navbar content-navbar navbar-default navbar-xs">
+            <div class="navbar-header">
+                <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    {{ student }}：{{ score.which_exam }}
+                </a>
+            </div>
+        </div>
+
+
+        <form class="exform" enctype="multipart/form-data" >
+
+            <div
+                    class="form-container row clearfix">
+                <div id="column-0"
+                     class="formColumn column form-column full col col-sm-12 form-horizontal" span="12" horizontal>
+                    <div class="panel panel-default fieldset unsort no_title" id="box-0">
+                        <div class="panel-heading"><i class='icon fa fa-chevron-up chevron'></i>
+                            <h3 class="panel-title"></h3></div>
+                        <div class="panel-body ">
+                            <div id="div_file_number" class="value form-group row">
+                                <div class="control-label">学生</div>
+                                <div class="controls"><p class="form-control-static ">{{ student.student_name }}</p></div>
+                            </div>
+                            <div id="div_which_exam" class="value form-group row">
+                                <div class="control-label">考试</div>
+                                <div class="controls"><p class="form-control-static ">{{ score.which_exam }}</p></div>
+                            </div>
+                            <div id="div_exam_number" class="value form-group row">
+                                <div class="control-label">准考证号</div>
+                                <div class="controls"><p class="form-control-static ">{{ score.exam_number }}</p></div>
+                            </div>
+                            <div id="div_id_chinese" class="form-group"><label for="id_chinese"
+                                                                               class="control-label  requiredField">
+                                语文<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="chinese"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_chinese" required/></div>
+                            </div>
+                            <div id="div_id_math" class="form-group"><label for="id_math"
+                                                                            class="control-label  requiredField">
+                                数学<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="math"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_math" required/></div>
+                            </div>
+                            <div id="div_id_english" class="form-group"><label for="id_english"
+                                                                               class="control-label  requiredField">
+                                英语<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="english"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_english" required/></div>
+                            </div>
+                            <div id="div_id_physical" class="form-group"><label for="id_physical"
+                                                                                class="control-label  requiredField">
+                                物理<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="physical"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_physical" required/></div>
+                            </div>
+                            <div id="div_id_chemistry" class="form-group"><label for="id_chemistry"
+                                                                                 class="control-label  requiredField">
+                                化学<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="chemistry"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_chemistry" required/></div>
+                            </div>
+                            <div id="div_id_biology" class="form-group"><label for="id_biology"
+                                                                               class="control-label  requiredField">
+                                生物<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="biology"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_biology" required/></div>
+                            </div>
+                            <div id="div_id_politics" class="form-group"><label for="id_politics"
+                                                                                class="control-label  requiredField">
+                                政治<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="politics"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_politics" required/></div>
+                            </div>
+                            <div id="div_id_geography" class="form-group"><label for="id_geography"
+                                                                                 class="control-label  requiredField">
+                                地理<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="geography"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_geography" required/></div>
+                            </div>
+                            <div id="div_id_history" class="form-group"><label for="id_history"
+                                                                               class="control-label  requiredField">
+                                历史<span class="asteriskField">*</span> </label>
+                                <div class="controls "><input type="text" name="history"
+                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                              class="int-field adminintegerfieldwidget form-control"
+                                                              id="id_history" required/></div>
+                            </div>
+                            <div id="div_id_remark" class="form-group"><label for="id_remark" class="control-label ">
+                                备注
+                            </label>
+                                <div class="controls "> <textarea name="remark" rows="10" cols="40"
+                                                                  class="textarea-field admintextareawidget form-control"
+                                                                  id="id_remark" maxlength="100">
+                                                        {{ score.remark }}
+                                                        </textarea></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions well well-sm clearfix fixed">
+
+                <button type="submit" class="default btn btn-primary hide-xs" onclick="remindSubmit()">保存</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock right_content %}
+
+{% block js %}
+    <script type="text/javascript">
+    function remindSubmit() {
+        var allinput = $('input[type="text"]');
+        for(var i=0; i<allinput.length; i++){
+            val = i.value;
+            if(isNaN(val) && val < 150 && val > 0){
+
+            }
+            else {
+                alert('成绩小于150且大于0');
+                i.focus();
+                return false;
+            }
+        }
+
+    }
+</script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.responsive.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.plugin.themes.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.page.dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xadmin.plugin.portal.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.sortable.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.effect.js' %}"></script>
+{% endblock js %}
+

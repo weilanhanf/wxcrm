@@ -32,12 +32,9 @@
                 <li class="dropdown">
                     <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                         <strong>欢迎， root</strong> <span class="caret"></span></a>
-                    <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                        <li><a href="/"><i class="fa fa-key"></i> 更改密码</a></li>
-                    </ul>
                 </li>
 
-                <li><a href=""><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a></li>
+                <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a></li>
             </ul>
 
 
@@ -45,42 +42,46 @@
     </div>
 
     <div id="body-content" class="clearfix row">
-        <div id="left-side" class="col-sm-1 col-md-2">
-            <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-1">
-                                &nbsp;个人中心
-                            </a>
-                        </h6>
-                    </div>
 
-                    <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
-                        <a href="{% url 'student:student_info' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+        <div id="left-side" class="col-sm-1 col-md-2">
+        <div class="panel-group hide-sm nav-sitemenu col-md-2" id="nav-accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion" href="#nav-panel-1">
+                        <i class="fa-fw fa fa-lock"></i>
+                        个人中心
                         </a>
-                    </div>
+                    </h6>
                 </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h6 class="panel-title">
-                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#nav-accordion"
-                               href="#nav-panel-2">
-                                &nbsp;成绩列表
-                            </a>
-                        </h6>
-                    </div>
-                    <div id="nav-panel-2" class="list-group panel-collapse collapse">
-                        <a href="{% url 'student:student_score' %}" class="list-group-item">
-                            &nbsp;&nbsp;&nbsp;&nbsp;成绩详情
+                <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'student:student_info' %}" class="list-group-item">
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;基本信息
+                    </a>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6 class="panel-title">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion" href="#nav-panel-2">
+                        <i class="fa-fw fa fa-group"></i>
+                        成绩信息
                         </a>
-                    </div>
+                    </h6>
+                </div>
+                <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
+                    <a href="{% url 'student:student_score' %}" class="list-group-item">
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;成绩详情
+                    </a>
                 </div>
             </div>
         </div>
+</div>
+
         <div id="content-block" class="col-sm-11 col-md-10">
             <ul class="breadcrumb">
                 <li>
@@ -109,7 +110,7 @@
                 </div>
             </div>
 
-            <form class="exform" enctype="multipart/form-data" action="" method="post" id="studentinfo_form">
+            <form class="exform" enctype="multipart/form-data">
                 <input type='hidden' id='_portal_key' value='students_studentinfo_editform_portal'/>
                 <div class="form-container row clearfix">
                     <div id="column-0"
@@ -189,26 +190,6 @@
                         </div>
                     </div>
                 </div>
-
-
-    {#            <div class="form-actions well well-sm clearfix">#}
-    {#                <a href="" class="btn btn-danger deletelink col-xs-2 show-xs"><i class="fa fa-trash-o"></i></a>#}
-    {#                <div class="btn-group clearfix show-xs save-group col-xs-10">#}
-    {#                    <button type="submit" class="default btn btn-primary col-xs-10" name="_save" data-loading-text="保存中..">#}
-    {#                    <i class="fa fa-save"></i> 保存</button>#}
-    {#                    <button type="button" class="more btn btn-primary col-xs-2" data-toggle="collapse"#}
-    {#                            data-target=".nav-collapse.more-btns"><i class="fa fa-ellipsis-vertical"></i></button>#}
-    {#                </div>#}
-    {#                <button type="submit" class="default btn btn-primary hide-xs" name="_save" data-loading-text="保存中..">#}
-    {#                <i class="fa fa-save"></i> 保存</button>#}
-    {#                #}
-    {#                <div class="nav-collapse collapse more-btns">#}
-    {#                    <input type="submit" class="btn btn-default" value="保存并增加另一个" name="_addanother"/>#}
-    {#                    <input type="submit" class="btn btn-default" value="保存并继续编辑" name="_continue"/>#}
-    {#                </div>#}
-    {#                <a href="" class="btn btn-danger deletelink pull-right hide-xs"><i class="fa fa-trash-o"></i> 删除</a>#}
-    {#                #}
-    {#            </div>#}
 
             </form>
 

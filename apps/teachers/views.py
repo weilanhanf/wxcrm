@@ -155,9 +155,9 @@ class TeacherClassListView(LoginRequiredMixin, View):
         filter_count = len(filter_condition_list)
 
         # 搜索框
-        search_condition = request.GET.get('_q_')
-        if search_condition:
-            class_queryset = class_queryset.filter(header__name__icontains=search_condition)
+        q_search_condition = request.GET.get('q')
+        if q_search_condition:
+            class_queryset = class_queryset.filter(header__name__icontains=q_search_condition)
 
         # 获取筛选过的总数据量并传到前段
         class_queryset_count = len(class_queryset)
@@ -176,7 +176,7 @@ class TeacherClassListView(LoginRequiredMixin, View):
         class_page = p.page(page)
 
         context = {
-            '_q_': search_condition,
+            'q': q_search_condition,
             'grade_id': grade_filter_condition,
             'filter_count': filter_count,
             'grade_queryset': grade_queryset,
@@ -219,37 +219,101 @@ class TeacherStudentListView(LoginRequiredMixin, View):
              Q(music_teacher__number__exact=teacher.number)
         )
 
-        print(class_queryset, type(class_queryset))
-
         # 根据班级的id反向查询所有的学生
         class_id_list = [clas_.id for clas_ in class_queryset]
         student_queryset = StudentInfo.objects.filter(clas__id__in=class_id_list).all()
 
-        print(student_queryset, type(student_queryset))
-
         # 从前端获取筛选条件
         all_page_condition = request.GET.get('all')
+        clas_select_condition = request.GET.get('clas')
+        year_join_select_condition = request.GET.get('year_join')
+        grade_select_condition = request.GET.get('grade')
 
-        # 获取筛选过的总数据量并传到前段
-        student_list_count = len(student_queryset)
+        # 如果不为空,则放入同一个列表中
+        select_condition_list = [clas_select_condition, year_join_select_condition, grade_select_condition]
+
+        # 强制类型转换去除重复条件
+        order_condition_list = [condition for condition in select_condition_list if condition]  # 去杂
+        select_condition_set = set(order_condition_list)
+        select_condition_list = list(select_condition_set)
+        # print(select_condition_list)
+
+        # 利用排序条件并通过外键关联查询老师当过班主任的班级
+        try:
+            select_condition_tuple = tuple(select_condition_list)  # 传入多个排序条件
+            student_queryset = student_queryset.order_by(*select_condition_tuple)
+        except Exception:
+            student_queryset = student_queryset.all()
+
+        # 过滤器
+        grade_queryset = GradeInfo.objects.all().order_by('-year')
+        class_filter_queryset = class_queryset
+        filter_condition_list = []
+        grade_filter_condition = request.GET.get('grade_id')
+        class_filter_condition = request.GET.get('class_id')
+        art_science_filter_condition = request.GET.get('art_science')
+        gender_filter_condition = request.GET.get('gender')
+
+
+        # 过滤器筛选
+        if grade_filter_condition and grade_filter_condition is not 'None':
+            student_queryset = student_queryset.filter(grade_id__exact=int(grade_filter_condition))
+            filter_condition_list.append(grade_filter_condition)
+        if class_filter_condition and class_filter_condition is not 'None':
+            student_queryset = student_queryset.filter(clas_id__exact=int(class_filter_condition))
+            filter_condition_list.append(class_filter_condition)
+        if art_science_filter_condition:
+            student_queryset = student_queryset.filter(art_science__exact=art_science_filter_condition)
+            filter_condition_list.append(art_science_filter_condition)
+        if gender_filter_condition:
+            student_queryset = student_queryset.filter(gender__exact=gender_filter_condition)
+            filter_condition_list.append(gender_filter_condition)
+
+        # 过滤器个数
+        filter_count = len(filter_condition_list)
+        # print(filter_condition_list, filter_count, score_queryset.count())
+
+        # 搜索功能
+        q_search_condition = request.GET.get('q')
+        if q_search_condition:
+            student_queryset = student_queryset.filter(
+                Q(student_name__icontains=q_search_condition) |
+                Q(teacher__name__icontains=q_search_condition)
+                                                       )
 
         # 分页功能
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
-        if all_page_condition and student_list_count > 0:
+        if all_page_condition and student_queryset.count() > 0:
             # 每一页显示几条数据 如果all=1则显示全部
-            page_count = student_list_count
+            page_count = student_queryset.count()
         else:
             page_count = 1
         p = Paginator(student_queryset, page_count, request=request)
-        student_list = p.page(page)
+        student_page = p.page(page)
 
         context = {
-            'student_list_count': student_list_count,
+            'grade_queryset': grade_queryset,
+            'class_filter_queryset': class_filter_queryset,
+
+            'grade_id': grade_filter_condition,  # 过滤器
+            'art_science': art_science_filter_condition,
+            'class_id': class_filter_condition,
+            'gender': gender_filter_condition,
+            'filter_count': filter_count,
+
+            'q': q_search_condition,  # 搜索框
+
+            'clas': clas_select_condition,  # 排序条件
+            'grade': grade_select_condition,
+            'year_join': year_join_select_condition,
+
             'all': all_page_condition,
-            'student_list': student_list,
+            'student_queryset_count': student_queryset.count(),  # 分页
+            'student_page': student_page,
+
             'teacher': teacher,
             'teacher_name': teacher.name,
             'title': '基本信息'
@@ -265,7 +329,12 @@ class TeacherStudentInfoView(LoginRequiredMixin, View):
         # 通过session确定老师对象
         username = request.session.get('username')
         teacher = TeacherInfo.objects.get(number__exact=username)
+
+        student_file_number = request.GET.get('file_number')
+        student = StudentInfo.objects.get(file_number__exact=int(student_file_number))
+
         context = {
+            'student': student,
             'teacher': teacher,
             'teacher_name': teacher.name,
             'title': '基本信息'
@@ -310,7 +379,7 @@ class TeacherScoreListView(LoginRequiredMixin, View):
 
         # 根据学生的档案号查询学生所有的成绩
         student_id_list = [student.file_number for student in student_queryset]
-        score_queryset = ScoreInfo.objects.filter(file_number__file_number__in=student_id_list).order_by('-sum_score')
+        score_queryset = ScoreInfo.objects.filter(file_number__file_number__in=student_id_list)
         # print(score_queryset, len(score_queryset))
 
         # 从前端获取筛选条件并放入列表中
@@ -328,7 +397,7 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         class_rank_select_condition = request.GET.get('class_rank')
 
         all_page_condition = request.GET.get('all')  # 是否全部显示
-        print(chinese_select_condition)
+        # print(chinese_select_condition)
 
         # 如果不为空,则放入同一个列表中
         select_condition_list = [chinese_select_condition, math_select_condition, english_select_condition,
@@ -340,7 +409,7 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         order_condition_list = [condition for condition in select_condition_list if condition]  # 去杂
         select_condition_set = set(order_condition_list)
         select_condition_list = list(select_condition_set)
-        print(select_condition_list)
+        # print(select_condition_list)
 
         # 利用排序条件并通过外键关联查询老师当过班主任的班级
         try:
@@ -349,10 +418,9 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         except Exception:
             score_queryset = score_queryset.all()
 
+        # 过滤器
         exam_queryset = ExamList.objects.all().order_by('time')
         grade_queryset = GradeInfo.objects.all()
-
-        # 过滤器
         filter_condition_list = []
         exam_filter_condition = request.GET.get('exam_id')
         grade_filter_condition = request.GET.get('grade_id')
@@ -393,6 +461,8 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         p = Paginator(score_queryset, page_count, request=request)
         score_page = p.page(page)
 
+        # print(class_filter_condition)
+
         context = {
             'chinese': chinese_select_condition, # 排序条件
             'math': math_select_condition,
@@ -430,5 +500,23 @@ class TeacherScoreListView(LoginRequiredMixin, View):
 
 
 class TeacherScoreInfoView(LoginRequiredMixin, View):
+    # 学生成绩详情页
 
-    pass
+    def get(self, request):
+
+        # 确定老师身份
+        username = request.session.get('username')
+        teacher = TeacherInfo.objects.get(number__exact=username)
+
+        # 确定当前成绩和学生对象
+        student_score_id = request.GET.get('score_id')
+        score = ScoreInfo.objects.get(score_id__exact=int(student_score_id))
+        student = score.file_number
+
+        context = {
+            'teacher': teacher,
+            'score': score,
+            'student': student,
+        }
+
+        return render(request, 'teacher/teacher_scoreinfo.html', context)

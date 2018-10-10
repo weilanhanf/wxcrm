@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <meta name="robots" content="NONE,NOARCHIVE"/>
-    <title>学生信息表列表 | 温县第一高级中学后台管理</title>
+    <title>学生信息 | 温县第一高级中学后台管理</title>
 
 
     <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet"/>
@@ -22,24 +22,9 @@
     <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
     <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
 
-    <style type="text/css">
-        .btn-toolbar {
-            margin-top: 0;
-        }
-
-        #content-block.full-content {
-            margin-left: 0;
-        }
-    </style>
-
     <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
-    <script type="text/javascript">
-        window.__admin_media_prefix__ = "{% static '/' %}/";
-        window.__admin_path_prefix__ = "/xadmin/";
-        window.__admin_language_code__ = "";
-    </script>
-    <script type="text/javascript" src="/xadmin/jsi18n/"></script>
+{#    <script type="text/javascript" src="/xadmin/jsi18n/"></script>#}
 
 
 </head>
@@ -56,10 +41,10 @@
 
             <li class="dropdown">
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                    <strong>欢迎， {{ request.session.username }}</strong> <span class="caret"></span></a>
-                <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>
-                </ul>
+                    <strong>欢迎， {{ teacher_name }}</strong> <span class="caret"></span></a>
+{#                <ul id="g-account-menu" class="dropdown-menu" role="menu">#}
+{#                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>#}
+{#                </ul>#}
             </li>
 
             <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
@@ -122,23 +107,14 @@
 
 
     <div id="content-block" class="col-sm-11 col-md-10">
-
         <ul class="breadcrumb">
-
-
             <li>
                 <a href="{% url 'teacher:teacher_index' %}">首页</a>
             </li>
-
             <li>
                 学生信息表
-
             </li>
-
-
         </ul>
-
-
         <div class="navbar content-navbar navbar-default navbar-xs" data-toggle="breakpoint"
              data-class-xs="navbar content-navbar navbar-inverse navbar-xs"
              data-class-sm="navbar content-navbar navbar-default navbar-xs">
@@ -167,123 +143,99 @@
 
                     <li class="dropdown">
                         <a id="drop-filter" class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                            <i class="fa fa-filter"></i> 过滤器 <span class="badge badge-success">1</span>
+                            <i class="fa fa-filter"></i> 过滤器
+                            {% if filter_count %}
+                            <span class="badge badge-success">{{ filter_count }}</span>
+                            {% endif %}
                             <span class="caret"></span></a>
-                        <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
-
-                            <li><a href="?"><i class="fa fa-trash-o"></i> 清除过滤器</a></li>
-                            <li class="divider"></li>
-
-
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-success"></i> 班主任编号</a>
-                                <ul class="dropdown-menu">
-
-                                    <li>
-                                        <a href="?">全部</a></li>
-
-                                    <li class="active">
-                                        <a href="?_p_teacher__number__exact=1">李炳</a></li>
-
-                                </ul>
+                            <ul id="filter-menu" class="dropdown-menu" role="menu" aria-labelledby="drop-filter">
+                            {% if filter_count %}
+                            <li><a href="?">
+                                <i class="fa fa-trash-o"></i> 清除过滤器</a>
                             </li>
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> 班级</a>
-                                <ul class="dropdown-menu">
+                                <li class="divider"></li>
+                            {% endif %}
 
-                                    <li class="active">
-                                        <a href="?_p_teacher__number__exact=1">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_clas__id__exact=1&amp;_p_teacher__number__exact=1">班级：1</a></li>
-
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_clas__isnull=True">空</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> 性别</a>
-                                <ul class="dropdown-menu">
-
-                                    <li class="active">
-                                        <a href="?_p_teacher__number__exact=1">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_gender__exact=male&amp;_p_teacher__number__exact=1">男</a></li>
-
-                                    <li>
-                                        <a href="?_p_gender__exact=female&amp;_p_teacher__number__exact=1">女</a></li>
-
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a><i class="fa fa-filter text-muted"></i> 文理科</a>
-                                <ul class="dropdown-menu">
-
-                                    <li class="active">
-                                        <a href="?_p_teacher__number__exact=1">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_art_science__exact=art">文科</a></li>
-
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_art_science__exact=science">理科</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_art_science__exact=all">不分文理科</a>
-                                    </li>
-
-                                </ul>
-                            </li>
                             <li class="dropdown-submenu">
                                 <a><i class="fa fa-filter text-muted"></i> 年级</a>
                                 <ul class="dropdown-menu">
-
-                                    <li class="active">
-                                        <a href="?_p_teacher__number__exact=1">全部</a></li>
-
-                                    <li>
-                                        <a href="?_p_grade__id__exact=0&amp;_p_teacher__number__exact=1">年级：0</a></li>
-
-                                    <li>
-                                        <a href="?_p_grade__id__exact=1&amp;_p_teacher__number__exact=1">年级：1</a></li>
-
-                                    <li>
-                                        <a href="?_p_grade__id__exact=2&amp;_p_teacher__number__exact=1">年级：2</a></li>
-
-                                    <li>
-                                        <a href="?_p_grade__id__exact=3&amp;_p_teacher__number__exact=1">年级：3</a></li>
-
-                                    <li>
-                                        <a href="?_p_grade__id__exact=4&amp;_p_teacher__number__exact=1">年级：4</a></li>
-
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_grade__isnull=True">空</a></li>
-
+                                    <li {% if not grade_id %}class="active"{% endif %}>
+                                        <a href="?{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a></li>
+                                    {% for grade in grade_queryset %}
+                                    <li {% ifequal grade_id grade.id|lower %}class="active"{% endifequal%}>
+                                        <a
+                                        href="?grade_id={{ grade.id }}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}"
+                                        >{{ grade }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </li>
-                            <li class="dropdown-submenu filter-multiselect">
-                                <a><i class="icon-filter text-muted"></i> 民族</a>
+
+                            <li class="dropdown-submenu">
+                                <a><i class="fa fa-filter text-muted"></i> 班级</a>
                                 <ul class="dropdown-menu">
+                                    <li {% if not class_id %}class="active"{% endif %}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a></li>
+                                    {% for clas in class_filter_queryset %}
+                                    <li {% ifequal class_id clas.id|lower %}class="active"{% endifequal%}>
+                                        <a
+                                        href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}&class_id={{ clas.id }}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}"
+                                        >{{ clas }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
 
-                                    <li class="active">
-                                        <a href="">
-                                            <input type="checkbox" checked="checked">
-                                            全部
-                                        </a>
+                            <li class="dropdown-submenu">
+                                <a><i class="fa fa-filter text-muted"></i> 文理科</a>
+                                <ul class="dropdown-menu">
+                                    <li {% if not art_science %}class="active"{% endif %}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a>
                                     </li>
+                                    <li {% ifequal art_science 'science' %}class="active"{% endifequal %}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=science{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">理科</a>
+                                    </li>
+                                    <li {% ifequal art_science 'art' %}class="active"{% endifequal %}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=art{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">文科</a>
+                                    </li>
+                                </ul>
+                            </li>
 
-                                    <li>
-                                        <a href="?_p_teacher__number__exact=1&amp;_p_nation__in=%E6%B1%89%E6%97%8F">
-                                            <input type="checkbox">
-                                            汉族
-                                        </a>
+                            <li class="dropdown-submenu">
+                                <a><i class="fa fa-filter text-muted"></i> 性别</a>
+                                <ul class="dropdown-menu">
+                                    <li {% if not gender %}class="active"{% endif %}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a>
+                                    </li>
+                                    <li {% ifequal gender 'male' %}class="active"{% endifequal%}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=male{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">男</a>
+                                    </li>
+                                    <li {% ifequal gender 'female' %}class="active"{% endifequal%}>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=female{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">女</a>
                                     </li>
 
                                 </ul>
                             </li>
+
+
+{#                            <li class="dropdown-submenu filter-multiselect">#}
+{#                                <a><i class="icon-filter text-muted"></i> 民族</a>#}
+{#                                <ul class="dropdown-menu">#}
+{##}
+{#                                    <li class="active">#}
+{#                                        <a href="">#}
+{#                                            <input type="checkbox" checked="checked">#}
+{#                                            全部#}
+{#                                        </a>#}
+{#                                    </li>#}
+{##}
+{#                                    <li>#}
+{#                                        <a href="?_p_teacher__number__exact=1&amp;_p_nation__in=%E6%B1%89%E6%97%8F">#}
+{#                                            <input type="checkbox">#}
+{#                                            汉族#}
+{#                                        </a>#}
+{#                                    </li>#}
+{##}
+{#                                </ul>#}
+{#                            </li>#}
                         </ul>
                     </li>
                 </ul>
@@ -291,24 +243,25 @@
 
                 <form class="navbar-form navbar-left" action="" method="get">
                     <div class="input-group search-group">
-
-                        <input id="searchbar" class="form-control" type="text" name="_q_" value=""
-                               placeholder="搜索 学生信息表">
-                        <span class="input-group-btn"><button class="btn btn-primary" type="submit"><i
-                                class="fa fa-search"></i></button></span>
+                        {% if q %}
+                        <span class="input-group-btn"><a class="btn btn-default" href="?">x</a></span>
+                        {% endif %}
+                        <input id="searchbar" class="form-control" type="text" name="q" value="{% if q %}{{ q }}{% endif %}"
+                               placeholder="搜索 学生或班主任姓名">
+                        <span class="input-group-btn"><button class="btn btn-primary" type="submit">
+                            <i class="fa fa-search"></i></button></span>
                     </div>
-                    <input type="hidden" name="_p_teacher__number__exact" value="1"/>
                 </form>
 
 
-                <div class="navbar-btn pull-right hide-xs">
-
-
-                    <a href="/xadmin/students/studentinfo/add/" class="btn btn-primary"><i class="fa fa-plus"></i>
-                        增加 学生信息表</a>
-
-
-                </div>
+{#                <div class="navbar-btn pull-right hide-xs">#}
+{##}
+{##}
+{#                    <a href="/xadmin/students/studentinfo/add/" class="btn btn-primary"><i class="fa fa-plus"></i>#}
+{#                        增加 学生信息表</a>#}
+{##}
+{##}
+{#                </div>#}
             </div>
         </div>
 
@@ -316,11 +269,10 @@
 
 
         <ul class="pagination pagination-sm pagination-left pagination-inline">
-            <li><span><span class="text-success">{{ student_list_count }}</span> 学生信息表</span></li>
+            <li><span><span class="text-success">{{ student_queryset_count }}</span> 学生信息表</span></li>
         </ul>
 
-        <form id="changelist-form" action="" method="post">
-            {% csrf_token %}
+        <form id="changelist-form">
             <div class="results table-responsive">
 
 
@@ -333,18 +285,9 @@
 
 
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     档案号
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=file_number&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-file_number&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -352,31 +295,16 @@
 
 
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     姓名
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="?o=student_name&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-                                    <li><a href="?o=-student_name&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-                                </ul>
                             </div>
                         </th>
                         <th scope="col" class="sortable">
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     班主任编号
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=teacher&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-teacher&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -384,23 +312,26 @@
 
 
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     性别
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=gender&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-gender&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
                         <th scope="col" class="sortable">
-
+                             <div class="pull-right">
+                                <a class="toggle" href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal year_join 'year_join' %}
+                                    <i class="fa fa-sort-up"></i>
+                                    {% endifequal %}
+                                </a>
+                                <a class="toggle" href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal year_join '-year_join' %}
+                                    <i class="fa fa-sort-down"></i>
+                                    {% endifequal %}
+                                </a>
+                            </div>
 
                             <div class="dropdown pull-left">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -408,11 +339,15 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=year_join&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
+                                    <li><a href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                        <i class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?o=-year_join&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
+                                    <li><a href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                        <i class="fa fa-caret-down"></i> 倒序</a></li>
+
+
+                                    <li {% if not year_join %}style="display: none"{% endif %}><a href="?{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                        <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
                             </div>
@@ -420,6 +355,18 @@
                         </th>
                         <th scope="col" class="sortable">
 
+                            <div class="pull-right">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal clas 'clas' %}
+                                    <i class="fa fa-sort-up"></i>
+                                    {% endifequal %}
+                                </a>
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal clas '-clas' %}
+                                    <i class="fa fa-sort-down"></i>
+                                    {% endifequal %}
+                                </a>
+                            </div>
 
                             <div class="dropdown pull-left">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -427,11 +374,14 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=clas&_p_teacher__number__exact=1" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?o=-clas&_p_teacher__number__exact=1" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                    <li {% if not clas %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                            <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
                             </div>
@@ -439,18 +389,32 @@
                         </th>
                         <th scope="col" class="sortable">
 
-
+                            <div class="pull-right">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal grade 'grade' %}
+                                    <i class="fa fa-sort-up"></i>
+                                    {% endifequal %}
+                                </a>
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                    {% ifequal grade '-grade' %}
+                                    <i class="fa fa-sort-down"></i>
+                                    {% endifequal %}
+                                </a>
+                            </div>
                             <div class="dropdown pull-left">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     年级
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=grade&_p_teacher__number__exact=1" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?o=-grade&_p_teacher__number__exact=1" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
+
+                                    <li {% if not grade %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                        <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
                             </div>
@@ -460,18 +424,9 @@
 
 
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     文理科
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=art_science&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-art_science&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -479,49 +434,17 @@
 
 
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     电话
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=phone&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-phone&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
                         <th scope="col" class="sortable">
                             <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="text-decoration: none">
                                     宿舍号
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="?o=dormitory_number&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-                                    <li><a href="?o=-dormitory_number&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-                                </ul>
-                            </div>
-
-                        </th>
-                        <th scope="col" class="sortable">
-                            <div class="dropdown pull-left">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    备注
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=remark&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-remark&_p_teacher__number__exact=1" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -534,19 +457,19 @@
 
 
                     <tbody>
-                    {% for student in student_list.object_list %}
+                    {% for student in student_page.object_list %}
                     <tr class="grid-item">
 
                         <td>
-                            <a href="/xadmin/students/studentinfo/998/update/">{{ student.file_number }}</a>
+                            <a href="{% url 'teacher:teacher_studentinfo' %}?file_number={{ student.file_number }}">{{ student.file_number }}</a>
                         </td>
 
                         <td>
                             {{ student.student_name }}
                         </td>
 
-                        <td class="nowrap">
-                            {{ student_teacher__name }}
+                        <td>
+                            {{ student.teacher.name }}
                         </td>
 
                         <td>
@@ -575,10 +498,6 @@
                         <td class="nowrap">
                             {{ student.dormitory_number }}
                         </td>
-                        <td>
-                            {% if student.remark %}{{ student.remark }}{% else %}&nbsp;{% endif %}
-                        </td>
-
                         <td>
 
 
@@ -613,21 +532,13 @@
             </div>
 
             <div class="form-actions well well-sm">
-                <input type="hidden" id="action" name="action" value=""/>
-                <input type="hidden" id="select-across" name="select_across" value=""/>
-                <div class="btn-group clearfix dropup">
-                    <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#">
-                        <i class="fa fa-wrench"></i>
-                        <span class="action-counter">1 个中 0 个被选</span>
-                        <span class="all" style="display: none;">选中了 1 个</span>
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-
-                        <li><a onclick="$.do_action('delete_selected');"><i class="fa fa-times"></i> 删除所选的 学生信息表</a>
-                        </li>
-
-                    </ul>
-                </div>
+{#                <input type="hidden" id="action" name="action" value=""/>#}
+{#                <input type="hidden" id="select-across" name="select_across" value=""/>#}
+{#                <div class="btn-group clearfix dropup">#}
+{#                    <a class="dropdown-toggle btn btn-success" data-toggle="dropdown" href="#">#}
+{#                        <i class="fa fa-wrench"></i>#}
+{#                        <span class="caret"></span></a>#}
+{#                </div>#}
 
 
                 <script type="text/javascript">var _actions_icnt = "1";</script>
@@ -637,32 +548,32 @@
 
         <ul class="pagination">
 
-            <li><span><span class="text-success">{{ student_list_count }}</span> 学生信息表</span></li>
-            {% if student_list.has_previous %}
+            <li><span><span class="text-success">{{ student_queryset_count }}</span> 学生信息表</span></li>
+            {% if student_page.has_previous %}
                 <li><a href="?{{ class_list.previous_page_number.querystring }}">
                     上一页</a></li>
             {% endif %}
-            {% for page in student_list.pages %}
+            {% for page in student_page.pages %}
                 {% if page %}
-                    {% ifequal page student_list.number %}
+                    {% ifequal page student_page.number %}
                         <li><span class="this-page">{{ page }}</span></li>
                     {% else %}
-                        <li><a href="?{% if o %}o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}&{{ page.querystring }}">{{ page }}</a></li>
+                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
                     {% endifequal %}
                 {% else %}
                     <li class="dot-page"><a href="">...</a></li>
                 {% endif %}
             {% endfor %}
 
-            {% if student_list.has_next %}
-                <li><a href="?{{ student_list.next_page_number.querystring }}">
+            {% if student_page.has_next %}
+                <li><a href="?{{ student_page.next_page_number.querystring }}">
                     下一页</a></li>
             {% endif %}
             <li>
                 {% ifequal all '1' %}
-                    <a href="?{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">取消显示全部</a>
+                    <a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="showall">取消显示全部</a>
                 {% else %}
-                    <a href="?all=1{% if o %}&o={{ o }}{% endif %}{% if p %}&p={{ p }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}" class="showall">显示全部</a>
+                    <a href="?all=1{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="showall">显示全部</a>
                 {% endifequal %}
             </li>
 

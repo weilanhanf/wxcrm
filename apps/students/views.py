@@ -94,10 +94,9 @@ class StudentIndexView(LoginRequiredMixin, View):
 
     def get(self, request):
         username = request.session.get('username')
-        # print(username)
         student_name = StudentInfo.objects.get(file_number=username).student_name
         context = {
-            'title': '基本信息',
+            'title': '首页',
             'student_name': student_name
         }
         return render(request, 'student/student_index.html', context=context)
@@ -143,6 +142,7 @@ class StudentScoreView(LoginRequiredMixin, View):
             'title': '成绩详情页',
             'score_list': score_list,
             'student_name': student_name,
-            'score_list_count': score_list_count
+            'score_list_count': score_list_count,
+            'all': request.GET.get('all')
         }
         return render(request, 'student/student_score.html', context)

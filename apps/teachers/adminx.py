@@ -9,7 +9,8 @@ class TeacherInfoAdmin(object):
     list_display = ['number', 'name', 'is_class_leader', 'phone', 'email', 'remark', 'get_student_number', ]
     search_fields = ['name', 'ID', 'phone', 'remark', 'subject']
     list_filter = ['is_class_leader', 'subject']
-    list_editable = ['remark']
+    # list_editable = ['remark']
+
     show_bookmarks = False  # 去除标签功能
 
 

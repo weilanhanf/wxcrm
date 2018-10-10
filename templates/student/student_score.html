@@ -8,7 +8,7 @@
     <meta name="author" content="">
 
     <meta name="robots" content="NONE,NOARCHIVE"/>
-    <title>成绩列表列表 | 温县第一高级中学后台管理</title>
+    <title>成绩详情 | 温县第一高级中学后台管理</title>
 
 
     <link href="{% static 'css/bootstrap.css' %}" type="text/css" media="screen" rel="stylesheet">
@@ -26,18 +26,6 @@
     <link href="{% static 'css/xadmin.widget.editable.css' %}" type="text/css" media="screen" rel="stylesheet"/>
     <link href="{% static 'css/xadmin.form.css' %}" type="text/css" media="screen" rel="stylesheet"/>
     <link href="{% static 'css/xadmin.plugins.css' %}" type="text/css" media="screen" rel="stylesheet"/>
-
-    <style type="text/css">
-        .btn-toolbar {
-            margin-top: 0;
-        }
-
-        #content-block.full-content {
-            margin-left: 0;
-        }
-    </style>
-
-
 </head>
 <body class="change-list">
 
@@ -54,7 +42,6 @@
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                     <strong>欢迎， {{ student_name }}</strong> </a>
             </li>
-
             <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
             </li>
         </ul>
@@ -67,16 +54,17 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h6 class="panel-title">
-                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion"
-                           href="#nav-panel-1">
-                            &nbsp;个人中心
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion" href="#nav-panel-1">
+                        <i class="fa-fw fa fa-lock"></i>
+                        个人中心
                         </a>
                     </h6>
                 </div>
 
                 <div id="nav-panel-1" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'student:student_info' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;基本信息
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;基本信息
                     </a>
                 </div>
             </div>
@@ -84,15 +72,16 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h6 class="panel-title">
-                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#nav-accordion"
-                           href="#nav-panel-2">
-                            &nbsp;成绩列表
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#nav-accordion" href="#nav-panel-2">
+                        <i class="fa-fw fa fa-group"></i>
+                        成绩信息
                         </a>
                     </h6>
                 </div>
-                <div id="nav-panel-2" class="list-group panel-collapse collapse">
+                <div id="nav-panel-2" class="list-group panel-collapse in" style="height: auto;">
                     <a href="{% url 'student:student_score' %}" class="list-group-item">
-                        &nbsp;&nbsp;&nbsp;&nbsp;成绩详情
+                        <i class="fa-fw fa fa-circle-o"></i>
+                        &nbsp;成绩详情
                     </a>
                 </div>
             </div>
@@ -105,7 +94,7 @@
                 <a href="{% url 'students:student_index' %}">首页</a>
             </li>
             <li>
-                成绩列表
+                成绩详情
             </li>
         </ul>
 
@@ -132,65 +121,26 @@
         <ul class="pagination pagination-sm pagination-left pagination-inline">
             <li><span><span class="text-success">{{ score_list_count }}</span> 成绩列表</span></li>
         </ul>
-        <form id="changelist-form" action="" method="post">
+        <form>
             <div class="results table-responsive">
                 <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
 
                         <th scope="col" class="sortable sorted ascending">
-
-                            <div class="pull-right">
-
-                                <a class="toggle" href="?o=which_exam.-file_number"><i class="fa fa-sort-up"></i></a>
-
-                            </div>
-
-
-
                             <div class="dropdown pull-left">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     学生
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li class="active"><a href="?o=file_number.which_exam" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-file_number.which_exam" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                    <li><a href="?o=which_exam" class="active"><i class="fa fa-times"></i> 取消排序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
                         <th scope="col" class="sortable sorted ascending">
-
-                            <div class="pull-right">
-
-                                <a class="toggle" href="?o=-which_exam.file_number"><i class="fa fa-sort-up"></i></a>
-
-                            </div>
-
-
                             <div class="dropdown pull-left">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     考试
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li class="active"><a href="?o=which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                    <li><a href="?o=file_number" class="active"><i class="fa fa-times"></i> 取消排序</a>
-                                    </li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -213,15 +163,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     语文
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=chinese.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-chinese.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -232,15 +174,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     数学
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=math.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-math.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -251,15 +185,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     英语
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=english.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-english.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -270,15 +196,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     物理
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=physical.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-physical.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -289,15 +207,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     化学
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=chemistry.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-chemistry.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -308,15 +218,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     生物
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=biology.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-biology.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -327,15 +229,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     政治
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=politics.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-politics.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -346,15 +240,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     地理
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=geography.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-geography.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -365,15 +251,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     历史
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=history.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-history.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -384,15 +262,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     总分
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=sum_score.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-sum_score.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -403,15 +273,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     年级排名
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?o=grade_rank.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-grade_rank.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -422,15 +284,6 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     班级排名
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=class_rank.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-class_rank.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -441,15 +294,6 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     备注
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
-
-                                    <li><a href="?o=remark.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-up"></i> 正序</a></li>
-
-                                    <li><a href="?o=-remark.which_exam.file_number" class="active"><i
-                                            class="fa fa-caret-down"></i> 倒序</a></li>
-
-                                </ul>
                             </div>
 
                         </th>
@@ -504,11 +348,11 @@
                 <li><a href="?{{ score_list.next_page_number.querystring }}">下一页</a></li>
             {% endif %}
             <li>
-                {% ifequal all '1' %}
+                {% if all %}
                     <a href="?" class="showall">取消显示全部</a>
                 {% else %}
                     <a href="?all=1" class="showall">显示全部</a>
-                {% endifequal %}
+                {% endif %}
             </li>
         </ul>
 

@@ -61,7 +61,7 @@ class ScoreInfoAdmin(object):
     # 课程列表页添加字段修改功能
     list_editable = ['remark']
     # 设置只读字段
-    # readonly_fields = ['score_id']
+    readonly_fields = ['file_number', 'which_exam', 'exam_number']
     # 设置隐藏字段 与readonly_fields功能相冲突，一个字段只能使用二者之一
     exclude = ['sum_score', 'grade_rank', 'class_rank']
     show_bookmarks = False  # 去除标签功能

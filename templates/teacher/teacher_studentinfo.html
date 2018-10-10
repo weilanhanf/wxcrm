@@ -24,7 +24,10 @@
                 <a href="{% url 'teacher:teacher_index' %}">首页</a>
             </li>
             <li>
-                基本信息
+                <a href="{% url 'teacher:teacher_studentlist' %}">学生列表页</a>
+            </li>
+            <li>
+                学生个人信息
             </li>
 
         </ul>
@@ -35,7 +38,7 @@
              data-class-sm="navbar content-navbar navbar-default navbar-xs">
             <div class="navbar-header">
                 <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
-                    {{ student.student_name }} 的基本信息
+                    {{ student.student_name }} 的个人信息
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -46,8 +49,7 @@
             </div>
         </div>
 
-        <form class="exform" enctype="multipart/form-data" action="" method="post" id="studentinfo_form">
-            <input type='hidden' id='_portal_key' value='students_studentinfo_editform_portal'/>
+        <form class="exform" enctype="multipart/form-data" >
             <div class="form-container row clearfix">
                 <div id="column-0"
                      class="formColumn column form-column full col col-sm-12 form-horizontal" span="12" horizontal>
@@ -74,10 +76,10 @@
                                 <div class="controls"><p
                                         class="form-control-static ">{{ student.get_gender_display }}</p></div>
                             </div>
-                            <div id="div_password" class="value form-group row">
-                                <div class="control-label">密码</div>
-                                <div class="controls"><p class="form-control-static ">{{ student.password }}</p></div>
-                            </div>
+{#                            <div id="div_password" class="value form-group row">#}
+{#                                <div class="control-label">密码</div>#}
+{#                                <div class="controls"><p class="form-control-static ">{{ student.password }}</p></div>#}
+{#                            </div>#}
                             <div id="div_phone" class="value form-group row">
                                 <div class="control-label">电话</div>
                                 <div class="controls"><p class="form-control-static ">{{ student.phone }}</p></div>
@@ -136,10 +138,10 @@
             </div>
 
 
-            <div class="form-actions well well-sm clearfix fixed">
-
-                <button type="submit" class="default btn btn-primary hide-xs" onclick="">保存</button>
-            </div>
+{#            <div class="form-actions well well-sm clearfix fixed">#}
+{##}
+{#                <button type="submit" class="default btn btn-primary hide-xs" onclick="">保存</button>#}
+{#            </div>#}
 
         </form>
 

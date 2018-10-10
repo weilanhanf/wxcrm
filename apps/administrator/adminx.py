@@ -34,7 +34,7 @@ class ClassInfoAdmin(object):
     list_per_page = 10
     list_display = ['class_number', 'grade', 'header', 'chinese_teacher', 'math_teacher', 'english_teacher',
                     'physical_teacher', 'chemistry_teacher', 'biology_teacher', 'politics_teacher', 'geography_teacher',
-                    'history_teacher', 'sport_teacher', 'music_teacher', 'get_class_student_number', 'remark',]
+                    'history_teacher', 'sport_teacher', 'music_teacher', 'get_class_student_number', 'remark', ]
     list_editable = ['remark']
     list_filter = ['class_number', 'grade', 'header', ]
     unique_together = ['year', 'class_number']

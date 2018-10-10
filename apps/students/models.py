@@ -139,7 +139,7 @@ class ScoreInfo(models.Model):
         verbose_name = '成绩列表'
         verbose_name_plural = verbose_name
         db_table = '具体成绩详情表'
-        ordering = ['which_exam', 'file_number']
+        ordering = ['-which_exam', '-sum_score']
 
     def save(self, *args, **kwargs):
         # 覆盖save方法并增加功能
