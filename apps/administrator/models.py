@@ -72,7 +72,7 @@ class DormitoryInfo(models.Model):
     class Meta:
         verbose_name = '宿舍'
         verbose_name_plural = verbose_name
-        ordering = ['year', 'dormitory_number']
+        # ordering = ['year', 'dormitory_number']
         db_table = '宿舍信息表'
         unique_together = ['dormitory_number', 'year']
 
@@ -80,13 +80,13 @@ class DormitoryInfo(models.Model):
         return "{0}年入住,宿舍号：{1}".format(self.year, self.dormitory_number)
 
     def get_dormitory_students(self):
-        students_list = self.studentinfo_set.filter(year_join=self.year).all()
+        students_list = self.studentinfo_set.all()
         students_list = ','.join([i.student_name for i in students_list])
         return students_list
     get_dormitory_students.short_description = '宿舍学生'
 
     def get_student_number(self):
-        num = self.studentinfo_set.filter(year_join=self.year).all().count()
+        num = self.studentinfo_set.all().count()
         return num
     get_student_number.short_description = '宿舍当前人数'
 
@@ -109,7 +109,8 @@ class GradeInfo(models.Model):
         verbose_name = '年级信息'
         verbose_name_plural = verbose_name
         db_table = '年级信息表'
-        ordering = ['-year', 'grade_number']  # datetime.time 对象不可序列化
+        unique_together = ['grade_number', 'year']
+        # ordering = ['-year', 'grade_number']  # datetime.time 对象不可序列化
 
     def __str__(self):
 
@@ -131,7 +132,6 @@ class GradeInfo(models.Model):
             return '{0}届入学, 目前{1}年级'.format(self.year, grade)
 
     def save(self, *args, **kwargs):
-
         super(GradeInfo, self).save(*args, **kwargs)
 
     def get_class_number(self):
@@ -203,20 +203,16 @@ class ClassInfo(models.Model):
     class Meta:
         verbose_name = '班级信息'
         verbose_name_plural = verbose_name
-        ordering = ['grade', 'class_number']
+        # ordering = ['grade', 'class_number']
         db_table = '班级信息表'
-        unique_together = ['grade', 'class_number']
+        unique_together = ['grade', 'class_number', 'header']
 
     def __str__(self):
         return '班级：{}'.format(self.class_number)
 
     def get_class_student_number(self):
         # 根据班主任还有入学年份筛选
-        from students.models import StudentInfo
-        num = StudentInfo.objects.filter(
-            year_join=self.grade.year,
-            clas_id=self.id
-        ).count()
+        num = self.studentinfo_set.all().count()
         return num
     get_class_student_number.short_description = '班级人数'
 

@@ -46,8 +46,8 @@
         </div>
 
 
-        <form class="exform" enctype="multipart/form-data" >
-
+        <form class="exform" enctype="multipart/form-data" action="{% url 'teacher:teacher_scoreinfo' %}?score_id={{ score.score_id }}" method="post" >
+            {% csrf_token %}
             <div
                     class="form-container row clearfix">
                 <div id="column-0"
@@ -68,87 +68,226 @@
                                 <div class="control-label">准考证号</div>
                                 <div class="controls"><p class="form-control-static ">{{ score.exam_number }}</p></div>
                             </div>
-                            <div id="div_id_chinese" class="form-group"><label for="id_chinese"
-                                                                               class="control-label  requiredField">
-                                语文<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="chinese"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_chinese" required/></div>
-                            </div>
-                            <div id="div_id_math" class="form-group"><label for="id_math"
-                                                                            class="control-label  requiredField">
-                                数学<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="math"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_math" required/></div>
-                            </div>
-                            <div id="div_id_english" class="form-group"><label for="id_english"
-                                                                               class="control-label  requiredField">
-                                英语<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="english"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_english" required/></div>
-                            </div>
-                            <div id="div_id_physical" class="form-group"><label for="id_physical"
+
+                            {% if teacher.is_class_leader %}
+                                <div id="div_id_chinese" class="form-group"><label for="id_chinese"
+                                                                                   class="control-label  requiredField">
+                                    语文<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="chinese"
+                                                                  value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_chinese" required/></div>
+                                </div>
+                                <div id="div_id_math" class="form-group"><label for="id_math"
                                                                                 class="control-label  requiredField">
-                                物理<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="physical"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_physical" required/></div>
-                            </div>
-                            <div id="div_id_chemistry" class="form-group"><label for="id_chemistry"
-                                                                                 class="control-label  requiredField">
-                                化学<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="chemistry"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_chemistry" required/></div>
-                            </div>
-                            <div id="div_id_biology" class="form-group"><label for="id_biology"
-                                                                               class="control-label  requiredField">
-                                生物<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="biology"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_biology" required/></div>
-                            </div>
-                            <div id="div_id_politics" class="form-group"><label for="id_politics"
-                                                                                class="control-label  requiredField">
-                                政治<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="politics"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_politics" required/></div>
-                            </div>
-                            <div id="div_id_geography" class="form-group"><label for="id_geography"
-                                                                                 class="control-label  requiredField">
-                                地理<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="geography"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_geography" required/></div>
-                            </div>
-                            <div id="div_id_history" class="form-group"><label for="id_history"
-                                                                               class="control-label  requiredField">
-                                历史<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="history"
-                                                              value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
-                                                              class="int-field adminintegerfieldwidget form-control"
-                                                              id="id_history" required/></div>
-                            </div>
-                            <div id="div_id_remark" class="form-group"><label for="id_remark" class="control-label ">
-                                备注
-                            </label>
-                                <div class="controls "> <textarea name="remark" rows="10" cols="40"
-                                                                  class="textarea-field admintextareawidget form-control"
-                                                                  id="id_remark" maxlength="100">
-                                                        {{ score.remark }}
-                                                        </textarea></div>
-                            </div>
+                                    数学<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="math"
+                                                                  value="{% if score.math %}{{ score.math }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_math" required/></div>
+                                </div>
+                                <div id="div_id_english" class="form-group"><label for="id_english"
+                                                                                   class="control-label  requiredField">
+                                    英语<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="english"
+                                                                  value="{% if score.english %}{{ score.english }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_english" required/></div>
+                                </div>
+                                <div id="div_id_physical" class="form-group"><label for="id_physical"
+                                                                                    class="control-label  requiredField">
+                                    物理<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="physical"
+                                                                  value="{% if score.physcial %}{{ score.physcial }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_physical" required/></div>
+                                </div>
+                                <div id="div_id_chemistry" class="form-group"><label for="id_chemistry"
+                                                                                     class="control-label  requiredField">
+                                    化学<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="chemistry"
+                                                                  value="{% if score.chemistry %}{{ score.chemistry }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_chemistry" required/></div>
+                                </div>
+                                <div id="div_id_biology" class="form-group"><label for="id_biology"
+                                                                                   class="control-label  requiredField">
+                                    生物<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="biology"
+                                                                  value="{% if score.biology %}{{ score.biology }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_biology" required/></div>
+                                </div>
+                                <div id="div_id_politics" class="form-group"><label for="id_politics"
+                                                                                    class="control-label  requiredField">
+                                    政治<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="politics"
+                                                                  value="{% if score.politics %}{{ score.politics }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_politics" required/></div>
+                                </div>
+                                <div id="div_id_geography" class="form-group"><label for="id_geography"
+                                                                                     class="control-label  requiredField">
+                                    地理<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="geography"
+                                                                  value="{% if score.geography %}{{ score.geography }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_geography" required/></div>
+                                </div>
+                                <div id="div_id_history" class="form-group"><label for="id_history"
+                                                                                   class="control-label  requiredField">
+                                    历史<span class="asteriskField">*</span> </label>
+                                    <div class="controls "><input type="text" name="history"
+                                                                  value="{% if score.history %}{{ score.history }}{% else %}0{% endif %}"
+                                                                  class="int-field adminintegerfieldwidget form-control"
+                                                                  id="id_history" required/></div>
+                                </div>
+                                <div id="div_id_remark" class="form-group"><label for="id_remark" class="control-label ">
+                                    备注
+                                </label>
+                                    <div class="controls "> <textarea name="remark" rows="10" cols="40"
+                                                                      class="textarea-field admintextareawidget form-control"
+                                                                      id="id_remark" maxlength="100">
+                                                            {{ score.remark }}
+                                                            </textarea></div>
+                                </div>
+                                {% else %}
+                                    {% ifequal teacher.subject '语文' %}
+                                    <div id="div_id_chinese" class="form-group"><label for="id_chinese"
+                                                                                       class="control-label  requiredField">
+                                        语文<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="chinese"
+                                                                      value="{% if score.chinese %}{{ score.chinese }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_chinese" required/></div>
+                                    </div>
+                                    {% else %}
+                                    <div id="div_chinese" class="value form-group row"> <div class="control-label">语文</div>
+                                        <div class="controls"> <p class="form-control-static ">{{ score.chinese }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '数学' %}
+                                    <div id="div_id_math" class="form-group"><label for="id_math"
+                                                                                    class="control-label  requiredField">
+                                        数学<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="math"
+                                                                      value="{% if score.math %}{{ score.math }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_math" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_math" class="value form-group row"> <div class="control-label">数学</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.math }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '英语' %}
+                                    <div id="div_id_english" class="form-group"><label for="id_english"
+                                                                                       class="control-label  requiredField">
+                                        英语<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="english"
+                                                                      value="{% if score.english %}{{ score.english }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_english" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_english" class="value form-group row"> <div class="control-label">英语</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.english }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '物理' %}
+                                    <div id="div_id_physical" class="form-group"><label for="id_physical"
+                                                                                        class="control-label  requiredField">
+                                        物理<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="physical"
+                                                                      value="{% if score.physical %}{{ score.physical }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_physical" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_physical" class="value form-group row"> <div class="control-label">物理</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.physical }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '化学' %}
+                                    <div id="div_id_chemistry" class="form-group"><label for="id_chemistry"
+                                                                                         class="control-label  requiredField">
+                                        化学<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="chemistry"
+                                                                      value="{% if score.chemistry %}{{ score.chemistry }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_chemistry" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_chemistry" class="value form-group row"> <div class="control-label">化学</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.chemistry }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '生物' %}
+                                    <div id="div_id_biology" class="form-group"><label for="id_biology"
+                                                                                       class="control-label  requiredField">
+                                        生物<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="biology"
+                                                                      value="{% if score.biology %}{{ score.biology }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_biology" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_biology" class="value form-group row"> <div class="control-label">生物</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.biology }}</p> </div></div>
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '政治' %}
+                                    <div id="div_id_politics" class="form-group"><label for="id_politics"
+                                                                                        class="control-label  requiredField">
+                                        政治<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="politics"
+                                                                      value="{% if score.politics %}{{ score.politics }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_politics" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_politics" class="value form-group row"> <div class="control-label">政治</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.politics }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '地理' %}
+                                    <div id="div_id_geography" class="form-group"><label for="id_geography"
+                                                                                         class="control-label  requiredField">
+                                        地理<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="geography"
+                                                                      value="{% if score.geography %}{{ score.geography }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_geography" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_geography" class="value form-group row"> <div class="control-label">地理</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.geography }}</p> </div></div>
+
+                                    {% endifequal %}
+
+                                    {% ifequal teacher.subject '历史' %}
+                                    <div id="div_id_history" class="form-group"><label for="id_history"
+                                                                                       class="control-label  requiredField">
+                                        历史<span class="asteriskField">*</span> </label>
+                                        <div class="controls "><input type="text" name="history"
+                                                                      value="{% if score.history %}{{ score.history }}{% else %}0{% endif %}"
+                                                                      class="int-field adminintegerfieldwidget form-control"
+                                                                      id="id_history" required/></div>
+                                    </div>
+                                    {% else %}
+                                            <div id="div_history" class="value form-group row"> <div class="control-label">历史</div>
+                                                <div class="controls"> <p class="form-control-static ">{{ score.history }}</p> </div></div>
+
+                                    {% endifequal %}
+                                    <div id="div_remark" class="value form-group row"> <div class="control-label">备注</div>
+                                        <div class="controls"> <p class="form-control-static "><span class="text-muted">{{ score.remark }}</span></p> </div></div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -170,18 +309,62 @@
 {% block js %}
     <script type="text/javascript">
     function remindSubmit() {
-        var allinput = $('input[type="text"]');
-        for(var i=0; i<allinput.length; i++){
-            val = i.value;
-            if(isNaN(val) && val < 150 && val > 0){
-
-            }
-            else {
-                alert('成绩小于150且大于0');
-                i.focus();
-                return false;
-            }
+        chinese = $('input[name="chinese"]').val();
+        if(chinese>150 || chinese<0 || chinese==''){
+            alert('成绩小于150且大于0');
+            $('input[name="chinese"]').focus();
+            return false;
         }
+        math = $('input[name="math"]').val();
+        if(math>150 || math<0 || math==''){
+            alert('成绩小于150且大于0');
+            $('input[name="math"]').focus();
+            return false;
+        }
+        english = $('input[name="english"]').val();
+        if(english>150 || english<0 || english==''){
+            alert('成绩小于150且大于0');
+            $('input[name="english"]').focus();
+            return false;
+        }
+        physical = $('input[name="physical"]').val();
+        if(physical>150 || physical<0 || physical==''){
+            alert('成绩小于150且大于0');
+            $('input[name="physical"]').focus();
+            return false;
+        }
+        chemistry = $('input[name="chemistry"]').val();
+        if(chemistry>150 || chemistry<0 || chemistry==''){
+            alert('成绩小于150且大于0');
+            $('input[name="chemistry"]').focus();
+            return false;
+        }
+        biology = $('input[name="biology"]').val();
+        if(biology>150 || biology<0 || biology==''){
+            alert('成绩小于150且大于0');
+            $('input[name="biology"]').focus();
+            return false;
+        }
+        politics = $('input[name="politics"]').val();
+        if(politics>150 || politics<0 || politics==''){
+            alert('成绩小于150且大于0');
+            $('input[name="politics"]').focus();
+            return false;
+        }
+        geography = $('input[name="geography"]').val();
+        if(geography>150 || geography<0 || geography==''){
+            alert('成绩小于150且大于0');
+            $('input[name="geography"]').focus();
+            return false;
+        }
+        history = $('input[name="history"]').val();
+        if(history>150 || history<0 || history==''){
+            alert('成绩小于150且大于0');
+            $('input[name="history"]').focus();
+            return false;
+        }
+
+
 
     }
 </script>

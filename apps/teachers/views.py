@@ -223,6 +223,11 @@ class TeacherStudentListView(LoginRequiredMixin, View):
         class_id_list = [clas_.id for clas_ in class_queryset]
         student_queryset = StudentInfo.objects.filter(clas__id__in=class_id_list).all()
 
+        # 外键关联筛选
+        rel_class_condition = request.GET.get('rel_clas__id')
+        if rel_class_condition and rel_class_condition is not None:
+            student_queryset = student_queryset.filter(clas_id__exact=int(rel_class_condition))
+
         # 从前端获取筛选条件
         all_page_condition = request.GET.get('all')
         clas_select_condition = request.GET.get('clas')
@@ -295,6 +300,7 @@ class TeacherStudentListView(LoginRequiredMixin, View):
         student_page = p.page(page)
 
         context = {
+            'student_queryset': student_queryset,
             'grade_queryset': grade_queryset,
             'class_filter_queryset': class_filter_queryset,
 
@@ -305,6 +311,8 @@ class TeacherStudentListView(LoginRequiredMixin, View):
             'filter_count': filter_count,
 
             'q': q_search_condition,  # 搜索框
+
+            'rel_clas__id': rel_class_condition,  # 外键筛选条件
 
             'clas': clas_select_condition,  # 排序条件
             'grade': grade_select_condition,
@@ -380,7 +388,11 @@ class TeacherScoreListView(LoginRequiredMixin, View):
         # 根据学生的档案号查询学生所有的成绩
         student_id_list = [student.file_number for student in student_queryset]
         score_queryset = ScoreInfo.objects.filter(file_number__file_number__in=student_id_list)
-        # print(score_queryset, len(score_queryset))
+
+        # 关联查询
+        rel_student_condition = request.GET.get('rel_student_number')
+        if rel_student_condition and rel_student_condition is not None:
+            score_queryset = score_queryset.filter(file_number__file_number__exact=int(rel_student_condition))
 
         # 从前端获取筛选条件并放入列表中
         chinese_select_condition = request.GET.get('chinese')
@@ -477,6 +489,8 @@ class TeacherScoreListView(LoginRequiredMixin, View):
             'class_rank': class_rank_select_condition,
             'grade_rank': grade_rank_select_condition,
 
+            'rel_student_number': rel_student_condition,  # 关联查询条件
+
             'q': q_search_condition,  # 搜索框
 
             'grade_id': grade_filter_condition, # 过滤器
@@ -510,13 +524,62 @@ class TeacherScoreInfoView(LoginRequiredMixin, View):
 
         # 确定当前成绩和学生对象
         student_score_id = request.GET.get('score_id')
+        self.score_id = student_score_id
+        if student_score_id:
+            score = ScoreInfo.objects.get(score_id__exact=int(student_score_id))
+            student = score.file_number
+            context = {
+                'teacher': teacher,
+                'score': score,
+                'student': student,
+            }
+            return render(request, 'teacher/teacher_scoreinfo.html', context)
+        else:
+            return redirect(reverse('teacher:teacher_scorelist'))
+
+    def post(self, request):
+        # 确定老师身份
+        username = request.session.get('username')
+        teacher = TeacherInfo.objects.get(number__exact=username)
+
+        # 确定当前成绩对象
+        student_score_id = request.GET.get('score_id')
         score = ScoreInfo.objects.get(score_id__exact=int(student_score_id))
-        student = score.file_number
 
-        context = {
-            'teacher': teacher,
-            'score': score,
-            'student': student,
-        }
+        chinese = request.POST.get('chinese')
+        math = request.POST.get('math')
+        english = request.POST.get('english')
+        physical = request.POST.get('physical')
+        chemistry = request.POST.get('chemistry')
+        biology = request.POST.get('biology')
+        politics = request.POST.get('politics')
+        geography = request.POST.get('geography')
+        history = request.POST.get('history')
 
-        return render(request, 'teacher/teacher_scoreinfo.html', context)
+        if teacher.is_class_leader:
+            score.chinese, score.math, score.english, score.physical, score.chemistry, score.biology, score.politics, \
+            score.geography, score.history = int(chinese), int(math), int(english), int(physical), int(chemistry), \
+                                             int(biology), int(politics), int(geography), int(history)
+            score.save()
+        else:
+            if teacher.subject == '语文' and chinese:
+                score.chinese = int(chinese)
+            elif teacher.subject == '数学' and math:
+                score.math = int(math)
+            elif teacher.subject == '英语' and english:
+                score.english = int(english)
+            elif teacher.subject == '物理' and physical:
+                score.physical = int(physical)
+            elif teacher.subject == '化学' and chemistry:
+                score.chemistry = int(chemistry)
+            elif teacher.subject == '生物' and biology:
+                score.biology = int(biology)
+            elif teacher.subject == '政治' and politics:
+                score.politics = int(politics)
+            elif teacher.subject == '历史' and history:
+                score.history = int(history)
+            elif teacher.subject == '地理' and geography:
+                score.geography = int(geography)
+            score.save()
+
+        return redirect(reverse('teacher:teacher_scorelist'))

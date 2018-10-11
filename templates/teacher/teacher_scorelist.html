@@ -24,8 +24,6 @@
     <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 
 {#    <script type="text/javascript" src="/xadmin/jsi18n/"></script>#}
-
-
 </head>
 <body class="change-list">
 
@@ -40,10 +38,7 @@
 
             <li class="dropdown">
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                    <strong>欢迎， {{ teacher_name }}</strong> <span class="caret"></span></a>
-                <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>
-                </ul>
+                    <strong>欢迎， {{ teacher_name }}</strong></a>
             </li>
 
             <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
@@ -121,6 +116,9 @@
              data-class-sm="navbar content-navbar navbar-default navbar-xs">
             <div class="navbar-header">
                 <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    {% if rel_student_number %}
+                    <span class='rel-brand'>{{ score_queryset.0.file_number.student_name }} <i class='fa fa-caret-right'></i></span>
+                    {% endif %}
                     成绩列表
                 </a>
             </div>
@@ -147,11 +145,11 @@
                                 <ul class="dropdown-menu">
 
                                     <li {% if not exam_id %}class="active"{% endif %}>
-                                        <a href="?{% if class_id %}class_id={{ class_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}">全部</a></li>
+                                        <a href="?{% if class_id %}class_id={{ class_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">全部</a></li>
                                     {% for exam in exam_queryset %}
                                     <li {% ifequal exam_id exam.id|lower %}class="active"{% endifequal%}>
                                         <a
-                                        href="?exam_id={{ exam.id }}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}"
+                                        href="?exam_id={{ exam.id }}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}"
                                         >{{ exam }}</a></li>
                                     {% endfor %}
 
@@ -162,11 +160,11 @@
                                 <ul class="dropdown-menu">
 
                                     <li {% if not grade_id %}class="active"{% endif %}>
-                                        <a href="?{% if exam_id %}exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}">全部</a></li>
+                                        <a href="?{% if exam_id %}exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">全部</a></li>
                                     {% for grade in grade_queryset %}
                                     <li {% ifequal grade_id grade.id|lower %}class="active"{% endifequal%}>
                                         <a
-                                        href="?grade_id={{ grade.id }}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}"
+                                        href="?grade_id={{ grade.id }}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}"
                                         >{{ grade }}</a></li>
                                     {% endfor %}
 
@@ -176,11 +174,11 @@
                                 <a><i class="fa fa-filter text-muted"></i> 班级</a>
                                 <ul class="dropdown-menu">
                                     <li {% if not class_id %}class="active"{% endif %}>
-                                        <a href="?{% if exam_id %}exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}">全部</a></li>
+                                        <a href="?{% if exam_id %}exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">全部</a></li>
                                     {% for clas in class_queryset %}
                                     <li {% ifequal class_id clas.id|lower %}class="active"{% endifequal%}>
                                         <a
-                                        href="?class_id={{ clas.id }}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}"
+                                        href="?class_id={{ clas.id }}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}"
                                         >{{ clas }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -234,14 +232,14 @@
                         <th scope="col" class="sortable">
                             <div class="pull-right">
                                 <a class="toggle" href="
-?chinese=-chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chinese=-chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 ">
                                     {% ifequal chinese 'chinese' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?chinese=chinese{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chinese=chinese{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 ">
                                     {% ifequal chinese '-chinese' %}
                                     <i class="fa fa-sort-down"></i>
@@ -255,18 +253,18 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?chinese=chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chinese=chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?chinese=-chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chinese=-chinese{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
 
                                     <li {% if not chinese %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -276,14 +274,16 @@
                         <th scope="col" class="sortable">
                             <div class="pull-right">
                                 <a class="toggle" href="
-?math=-math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?math=-math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal math 'math' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?math=math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?math=math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal math '-math' %}
                                     <i class="fa fa-sort-down"></i>
@@ -298,17 +298,20 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?math=math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?math=math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?math=-math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?math=-math{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not math %}style="display: none"{% endif %}><a href="
-?{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if chinese %}&chinese={{ chinese }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -319,14 +322,16 @@
 
                             <div class="pull-right">
                                 <a class="toggle" href="
-?english=-english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?english=-english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal english 'english' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese %}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese %}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal english '-english' %}
                                     <i class="fa fa-sort-down"></i>
@@ -340,17 +345,17 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="?
-?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="?
-?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?english=english{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not english %}style="display: none"{% endif %}><a href="?
-?{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if chinese%}&chinese={{ chinese}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -360,14 +365,14 @@
                         <th scope="col" class="sortable">
                             <div class="pull-right">
                                 <a class="toggle" href="
-?physical=-physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?physical=-physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 ">
                                     {% ifequal physical 'physical' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?physical=physical{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?physical=physical{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
 ">
                                     {% ifequal physical '-physical' %}
                                     <i class="fa fa-sort-down"></i>
@@ -382,17 +387,20 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?physical=physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?physical=physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?physical=-physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?physical=-physical{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not physical %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -402,14 +410,16 @@
                         <th scope="col" class="sortable">
                             <div class="pull-right">
                                 <a class="toggle" href="
-?chemistry=-chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chemistry=-chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal chemistry 'chemistry' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?chemistry=chemistry{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chemistry=chemistry{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal chemistry '-chemistry' %}
                                     <i class="fa fa-sort-down"></i>
@@ -424,17 +434,20 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?chemistry=chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chemistry=chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?chemistry=-chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?chemistry=-chemistry{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not chemistry %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -445,14 +458,16 @@
 
                             <div class="pull-right">
                                 <a class="toggle" href="
-?biology=-biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?biology=-biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal biology 'biology' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?biology=biology{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?biology=biology{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal biology '-biology' %}
                                     <i class="fa fa-sort-down"></i>
@@ -466,18 +481,21 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?biology=biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?biology=biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?biology=-biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?biology=-biology{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
 
                                     <li {% if not biology %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -488,14 +506,16 @@
 
                             <div class="pull-right">
                                 <a class="toggle" href="
-?politics=-politics{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?politics=-politics{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal politics 'politics' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?politics=politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?politics=politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal politics '-politics' %}
                                     <i class="fa fa-sort-down"></i>
@@ -509,18 +529,21 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?politics=politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?politics=politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?politics=-politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?politics=-politics{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
 
                                     <li {% if not politics %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -531,14 +554,16 @@
 
                             <div class="pull-right">
                                 <a class="toggle" href="
-?geography=-geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?geography=-geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal geography 'geography' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?geography=geography{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?geography=geography{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal geography '-geography' %}
                                     <i class="fa fa-sort-down"></i>
@@ -552,17 +577,20 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?geography=geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?geography=geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?geography=-geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?geography=-geography{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not geography %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if history %}&history={{ history }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -572,14 +600,16 @@
                         <th scope="col" class="sortable">
                             <div class="pull-right">
                                 <a class="toggle" href="
-?history=-history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?history=-history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal history 'history' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
                                 <a class="toggle" href="
-?history=history{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?history=history{% if math %}&math={{ math }}{% endif %}{% if english %}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 ">
                                     {% ifequal history '-history' %}
                                     <i class="fa fa-sort-down"></i>
@@ -594,17 +624,20 @@
                                 <ul class="dropdown-menu" role="menu">
 
                                     <li><a href="
-?history=history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?history=history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
                                     <li><a href="
-?history=-history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?history=-history{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
                                     <li {% if not history %}style="display: none"{% endif %}><a href="
-?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}
+?{% if math %}&math={{ math }}{% endif %}{% if english%}&english={{ english}}{% endif %}{% if physical %}&physical={{ physical }}{% endif %}{% if chemistry %}&chemistry={{ chemistry }}{% endif %}{% if biology %}&biology={{ biology }}{% endif %}{% if politics %}&politics={{ politics }}{% endif %}{% if geography %}&geography={{ geography }}{% endif %}{% if chinese %}&chinese={{ chinese }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+
 " class="active"><i class="fa fa-times"></i> 取消排序</li>
 
                                 </ul>
@@ -613,12 +646,14 @@
                         </th>
                         <th scope="col" class="sortable">
                             <div class="pull-right">
-                                <a class="toggle" href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}">
+                                <a class="toggle" href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+">
                                     {% ifequal sum_score 'sum_score' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}">
+                                <a class="toggle" href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}
+">
                                     {% ifequal sum_score '-sum_score' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -631,13 +666,13 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?sum_score=sum_score{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?sum_score=sum_score{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?sum_score=-sum_score{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
-                                    <li {% if not sum_score %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active">
+                                    <li {% if not sum_score %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active">
                                             <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -646,12 +681,12 @@
                         </th>
                         <th scope="col" class="sortable">
                             <div class="pull-right">
-                                <a class="toggle" href="?grade_rank=-grade_rank{% if all %}&all={{ all }}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% endif %}">
+                                <a class="toggle" href="?grade_rank=-grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">
                                     {% ifequal grade_rank 'grade_rank' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?grade_rank=grade_rank{% if all %}&all={{ all }}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% endif %}">
+                                <a class="toggle" href="?grade_rank=grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">
                                     {% ifequal grade_rank '-grade_rank' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -664,13 +699,13 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?grade_rank=grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?grade_rank=grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?grade_rank=-grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?grade_rank=-grade_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
-                                    <li {% if not grade_rank %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active">
+                                    <li {% if not grade_rank %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -680,12 +715,12 @@
                         <th scope="col" class="sortable">
 
                             <div class="pull-right">
-                                <a class="toggle" href="?class_rank=-class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}">
+                                <a class="toggle" href="?class_rank=-class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">
                                     {% ifequal class_rank 'class_rank' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?class_rank=class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}">
+                                <a class="toggle" href="?class_rank=class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}">
                                     {% ifequal class_rank '-class_rank' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -696,11 +731,11 @@
                                     班级排名
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="?class_rank=class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?class_rank=class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
-                                    <li><a href="?class_rank=-class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active"><i
+                                    <li><a href="?class_rank=-class_rank{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
-                                    <li {% if not class_rank %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="active">
+                                    <li {% if not class_rank %}style="display: none"{% endif %}><a href="?{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a></li>
                                 </ul>
                             </div>
@@ -811,9 +846,9 @@
             {% endif %}
             <li>
                 {% ifequal all '1' %}
-                    <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="showall">取消显示全部</a>
+                    <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="showall">取消显示全部</a>
                 {% else %}
-                    <a href="?all=1{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}" class="showall">显示全部</a>
+                    <a href="?all=1{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if exam_id %}&exam_id={{ exam_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if rel_student_number %}&rel_student_number={{ rel_student_number }}{% endif %}" class="showall">显示全部</a>
                 {% endifequal %}
             </li>
         </ul>

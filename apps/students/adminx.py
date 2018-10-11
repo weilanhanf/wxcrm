@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-__date__ = '2018/9/23 17:30'
-
 import xadmin
 from xadmin import views
 
-from xadmin.views.list import ListAdminView
 from .models import ScoreInfo, StudentInfo, ExamList, RewardPunishInfo
 
 
@@ -58,11 +55,14 @@ class ScoreInfoAdmin(object):
                     'politics', 'geography', 'history', 'sum_score', 'grade_rank', 'class_rank', 'remark']
     search_fields = ['file_number__student_name', 'which_exam__time', 'remark']
     list_filter = ['file_number', 'which_exam', 'file_number__grade', 'file_number__clas', 'file_number__teacher']
+
     # 课程列表页添加字段修改功能
-    list_editable = ['remark']
+    # list_editable = ['remark']
     # 设置只读字段
-    readonly_fields = ['file_number', 'which_exam', 'exam_number']
+    # readonly_fields = ['file_number', 'which_exam', 'exam_number','chinese', 'math', 'english', 'physical', 'chemistry', 'biology', 'politics',
+    #         'geography', 'history', 'remark']
     # 设置隐藏字段 与readonly_fields功能相冲突，一个字段只能使用二者之一
+
     exclude = ['sum_score', 'grade_rank', 'class_rank']
     show_bookmarks = False  # 去除标签功能
 
@@ -112,7 +112,7 @@ class ScoreInfoAdmin(object):
 class ExamListAdmin(object):
     list_per_page = 10
     list_display = ['id', 'time', 'remark']
-    list_editable = ['remark']
+    # list_editable = ['remark']
     search_fields = ['remark', 'time']
     list_filter = ['id', 'time']
     show_bookmarks = False  # 去除标签功能
@@ -122,7 +122,7 @@ class RewardPunishInfoAdmin(object):
     list_per_page = 10
     list_display = ['student', 'reward_remark', 'get_reward_sum', 'punish_remark', 'get_punish_remark', ]
     search_fields = ['student__student_name', 'reward_remark', 'punish_remark']
-    list_editable = ['reward_remark', 'punish_remark', ]
+    # list_editable = ['reward_remark', 'punish_remark', ]
     list_filter = ['student', 'student__clas', 'student__grade']
     show_bookmarks = False  # 去除标签功能
 

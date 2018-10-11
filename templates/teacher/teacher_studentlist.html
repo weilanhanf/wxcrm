@@ -41,10 +41,7 @@
 
             <li class="dropdown">
                 <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-                    <strong>欢迎， {{ teacher_name }}</strong> <span class="caret"></span></a>
-{#                <ul id="g-account-menu" class="dropdown-menu" role="menu">#}
-{#                    <li><a href=""><i class="fa fa-key"></i> 更改密码</a></li>#}
-{#                </ul>#}
+                    <strong>欢迎， {{ teacher_name }}</strong></a>
             </li>
 
             <li><a href="{% url 'logout' %}"><i class="show-sm fa fa-sign-out"></i><span class="hide-sm">注销</span></a>
@@ -135,6 +132,9 @@
 
 
                 <a class="navbar-brand" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+                    {% if rel_clas__id %}
+                    <span class='rel-brand'>{{ student_queryset.0.clas }} <i class='fa fa-caret-right'></i></span>
+                    {% endif %}
                     学生信息表
                 </a>
             </div>
@@ -160,11 +160,11 @@
                                 <a><i class="fa fa-filter text-muted"></i> 年级</a>
                                 <ul class="dropdown-menu">
                                     <li {% if not grade_id %}class="active"{% endif %}>
-                                        <a href="?{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a></li>
+                                        <a href="?{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">全部</a></li>
                                     {% for grade in grade_queryset %}
                                     <li {% ifequal grade_id grade.id|lower %}class="active"{% endifequal%}>
                                         <a
-                                        href="?grade_id={{ grade.id }}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}"
+                                        href="?grade_id={{ grade.id }}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}"
                                         >{{ grade }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -174,11 +174,11 @@
                                 <a><i class="fa fa-filter text-muted"></i> 班级</a>
                                 <ul class="dropdown-menu">
                                     <li {% if not class_id %}class="active"{% endif %}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a></li>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">全部</a></li>
                                     {% for clas in class_filter_queryset %}
                                     <li {% ifequal class_id clas.id|lower %}class="active"{% endifequal%}>
                                         <a
-                                        href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}&class_id={{ clas.id }}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}"
+                                        href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}&class_id={{ clas.id }}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}"
                                         >{{ clas }}</a></li>
                                     {% endfor %}
                                 </ul>
@@ -188,13 +188,13 @@
                                 <a><i class="fa fa-filter text-muted"></i> 文理科</a>
                                 <ul class="dropdown-menu">
                                     <li {% if not art_science %}class="active"{% endif %}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">全部</a>
                                     </li>
                                     <li {% ifequal art_science 'science' %}class="active"{% endifequal %}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=science{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">理科</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=science{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">理科</a>
                                     </li>
                                     <li {% ifequal art_science 'art' %}class="active"{% endifequal %}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=art{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">文科</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}&art_science=art{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">文科</a>
                                     </li>
                                 </ul>
                             </li>
@@ -203,13 +203,13 @@
                                 <a><i class="fa fa-filter text-muted"></i> 性别</a>
                                 <ul class="dropdown-menu">
                                     <li {% if not gender %}class="active"{% endif %}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">全部</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">全部</a>
                                     </li>
                                     <li {% ifequal gender 'male' %}class="active"{% endifequal%}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=male{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">男</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=male{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">男</a>
                                     </li>
                                     <li {% ifequal gender 'female' %}class="active"{% endifequal%}>
-                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=female{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">女</a>
+                                        <a href="?{% if grade_id %}grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}&gender=female{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">女</a>
                                     </li>
 
                                 </ul>
@@ -241,10 +241,10 @@
                 </ul>
 
 
-                <form class="navbar-form navbar-left" action="" method="get">
+                <form class="navbar-form navbar-left" action="{% url 'teacher:teacher_studentlist' %}{% if rel_clas__id %}?rel_clas__id={{ rel_clas__id }}{% endif %}?" method="get">
                     <div class="input-group search-group">
                         {% if q %}
-                        <span class="input-group-btn"><a class="btn btn-default" href="?">x</a></span>
+                        <span class="input-group-btn"><a class="btn btn-default" href="?{% if rel_clas__id %}rel_clas__id={{ rel_clas__id }}{% endif %}">x</a></span>
                         {% endif %}
                         <input id="searchbar" class="form-control" type="text" name="q" value="{% if q %}{{ q }}{% endif %}"
                                placeholder="搜索 学生或班主任姓名">
@@ -252,16 +252,6 @@
                             <i class="fa fa-search"></i></button></span>
                     </div>
                 </form>
-
-
-{#                <div class="navbar-btn pull-right hide-xs">#}
-{##}
-{##}
-{#                    <a href="/xadmin/students/studentinfo/add/" class="btn btn-primary"><i class="fa fa-plus"></i>#}
-{#                        增加 学生信息表</a>#}
-{##}
-{##}
-{#                </div>#}
             </div>
         </div>
 
@@ -321,12 +311,12 @@
                         </th>
                         <th scope="col" class="sortable">
                              <div class="pull-right">
-                                <a class="toggle" href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal year_join 'year_join' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal year_join '-year_join' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -339,14 +329,14 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                    <li><a href="?year_join=year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active">
                                         <i class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                    <li><a href="?year_join=-year_join{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active">
                                         <i class="fa fa-caret-down"></i> 倒序</a></li>
 
 
-                                    <li {% if not year_join %}style="display: none"{% endif %}><a href="?{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                    <li {% if not year_join %}style="display: none"{% endif %}><a href="?{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -356,12 +346,12 @@
                         <th scope="col" class="sortable">
 
                             <div class="pull-right">
-                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal clas 'clas' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal clas '-clas' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -374,13 +364,13 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}&clas=-clas{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
-                                    <li {% if not clas %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                    <li {% if not clas %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active">
                                             <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -390,12 +380,12 @@
                         <th scope="col" class="sortable">
 
                             <div class="pull-right">
-                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal grade 'grade' %}
                                     <i class="fa fa-sort-up"></i>
                                     {% endifequal %}
                                 </a>
-                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}">
+                                <a class="toggle" href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">
                                     {% ifequal grade '-grade' %}
                                     <i class="fa fa-sort-down"></i>
                                     {% endifequal %}
@@ -407,13 +397,13 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
 
-                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active"><i
                                             class="fa fa-caret-up"></i> 正序</a></li>
 
-                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active"><i
+                                    <li><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}&grade=-grade{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active"><i
                                             class="fa fa-caret-down"></i> 倒序</a></li>
 
-                                    <li {% if not grade %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="active">
+                                    <li {% if not grade %}style="display: none"{% endif %}><a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if all %}&all={{ all }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="active">
                                         <i class="fa fa-times"></i> 取消排序</a></li>
 
                                 </ul>
@@ -461,7 +451,7 @@
                     <tr class="grid-item">
 
                         <td>
-                            <a href="{% url 'teacher:teacher_studentinfo' %}?file_number={{ student.file_number }}">{{ student.file_number }}</a>
+                            <a href="{% url 'teacher:teacher_studentinfo' %}?file_number={{ student.file_number }}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}">{{ student.file_number }}</a>
                         </td>
 
                         <td>
@@ -507,17 +497,14 @@
                                     class="icon fa fa-list"></i></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li class="with_menu_btn"><a
-                                            href="/xadmin/students/scoreinfo/?_rel_file_number__file_number__exact=998"
-                                            title="成绩列表"><i class="icon fa fa-th-list"></i> 成绩列表</a><a
-                                            class="add_link dropdown-menu-btn"
-                                            href="/xadmin/students/scoreinfo/add/?_rel_file_number__file_number__exact=998"><i
-                                            class="icon fa fa-plus pull-right"></i></a></li>
-                                    <li class="with_menu_btn"><a
-                                            href="/xadmin/students/rewardpunishinfo/?_rel_student__file_number__exact=998"
-                                            title="奖惩管理"><i class="icon fa fa-th-list"></i> 奖惩管理</a><a
-                                            class="add_link dropdown-menu-btn"
-                                            href="/xadmin/students/rewardpunishinfo/add/?_rel_student__file_number__exact=998"><i
-                                            class="icon fa fa-plus pull-right"></i></a></li>
+                                            href="{% url 'teacher:teacher_scorelist' %}?rel_student_number={{ student.file_number }}"
+                                            title="学生成绩"><i class="icon fa fa-th-list"></i> 学生成绩</a>
+{#                                    <li class="with_menu_btn"><a#}
+{#                                            href="/xadmin/students/rewardpunishinfo/?_rel_student__file_number__exact=998"#}
+{#                                            title="奖惩管理"><i class="icon fa fa-th-list"></i> 奖惩管理</a><a#}
+{#                                            class="add_link dropdown-menu-btn"#}
+{#                                            href="/xadmin/students/rewardpunishinfo/add/?_rel_student__file_number__exact=998"><i#}
+{#                                            class="icon fa fa-plus pull-right"></i></a></li>#}
                                 </ul>
                             </div>
 
@@ -571,9 +558,9 @@
             {% endif %}
             <li>
                 {% ifequal all '1' %}
-                    <a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="showall">取消显示全部</a>
+                    <a href="?{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="showall">取消显示全部</a>
                 {% else %}
-                    <a href="?all=1{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}" class="showall">显示全部</a>
+                    <a href="?all=1{% if year_join %}year_join={{ year_join }}{% endif %}{% if clas %}&clas={{ clas }}{% endif %}{% if grade %}&grade={{ grade }}{% endif %}{% if grade_id %}&grade_id={{ grade_id }}{% endif %}{% if class_id %}&class_id={{ class_id }}{% endif %}{% if art_science %}&art_science={{ art_science }}{% endif %}{% if gender %}&gender={{ gender }}{% endif %}{% if q %}&q={{ q }}{% endif %}{% if rel_clas__id %}&rel_clas__id={{ rel_clas__id }}{% endif %}" class="showall">显示全部</a>
                 {% endifequal %}
             </li>
 

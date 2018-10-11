@@ -15,7 +15,7 @@ class TeacherInfo(models.Model):
                                     'max_length': '不超过十六位'
                                 })
     is_class_leader = models.BooleanField(default=False, verbose_name='是否为班主任', db_column='是否为班主任')
-    email = models.EmailField(verbose_name='邮箱', db_column='邮箱', help_text='该邮箱将用来验证登录')
+    email = models.EmailField(verbose_name='邮箱', db_column='邮箱', blank=True, null=True)
     phone = models.CharField(max_length=11, verbose_name='电话', db_column='联系电话', help_text='请输入正确的联系方式',
                              error_messages={
                                  'max_length': '手机号最多十一位'
@@ -56,4 +56,3 @@ class TeacherInfo(models.Model):
         num = self.studentinfo_set.all().count()
         return num
     get_student_number.short_description = '老师所教学生数'
-

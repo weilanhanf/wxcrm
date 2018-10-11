@@ -80,8 +80,7 @@ class StudentInfo(models.Model):
     get_grade_class.short_description = '班级年级'
 
     def get_all_score(self):
-        score_list = ScoreInfo.objects.filter(file_number=self.file_number).all()
-        return score_list
+        return self.scoreinfo_set.all()
     get_all_score.short_description = '所有成绩'
 
 
@@ -89,14 +88,15 @@ class ExamList(models.Model):
     """考试列表"""
 
     id = models.IntegerField(verbose_name='考试序号', db_column='考试序号', help_text='如：1，表示第一次考试', primary_key=True)
-    time = models.CharField(max_length=8, verbose_name='考试时间', db_column='考试时间', help_text='如：20180512表示2018年5月12日')
+    time = models.CharField(max_length=8, verbose_name='考试时间', db_column='考试时间', help_text='如：20180512表示2018年5月12日', unique=True)
     remark = models.TextField(max_length=100, verbose_name='备注', db_column='备注', default='', null=True, blank=True)
 
     class Meta:
         verbose_name = '考试列表'
         verbose_name_plural = verbose_name
         db_table = '考试次序表'
-        ordering = ['-time']
+        # unique_together = ['time']
+        # ordering = ['-time']
 
     def __str__(self):
         time = self.time
@@ -104,8 +104,7 @@ class ExamList(models.Model):
 
     def get_all_score(self):
         # 此次考试所有学生成绩
-        score_list = ScoreInfo.objects.filter(which_exam=self.id).all()
-        return score_list
+        return self.scoreinfo_set.all()
     get_all_score.short_description = '所有成绩'
 
 
@@ -113,10 +112,10 @@ class ScoreInfo(models.Model):
     """学生成绩详情表"""
 
     score_id = models.AutoField(verbose_name='成绩ID', db_column='成绩ID', primary_key=True)
-    file_number = models.ForeignKey(StudentInfo, on_delete=models.SET_NULL,
-                                    null=True, verbose_name='学生', db_column='学生')
+    file_number = models.ForeignKey(StudentInfo, on_delete=models.CASCADE,
+                                    verbose_name='学生', db_column='学生')
     exam_number = models.CharField(max_length=10, verbose_name='准考证号', db_column='准考证号', default='xxxxxx')
-    which_exam = models.ForeignKey(ExamList, on_delete=models.SET_NULL, null=True, verbose_name='考试', db_column='考试')
+    which_exam = models.ForeignKey(ExamList, on_delete=models.CASCADE, verbose_name='考试', db_column='考试')
 
     # 各项成绩
     chinese = models.PositiveSmallIntegerField(verbose_name='语文', db_column='语文', default=0)
@@ -139,7 +138,8 @@ class ScoreInfo(models.Model):
         verbose_name = '成绩列表'
         verbose_name_plural = verbose_name
         db_table = '具体成绩详情表'
-        ordering = ['-which_exam', '-sum_score']
+        unique_together = ['file_number', 'which_exam']
+        # ordering = ['-which_exam', '-sum_score']
 
     def save(self, *args, **kwargs):
         # 覆盖save方法并增加功能
@@ -241,6 +241,7 @@ class RewardPunishInfo(models.Model):
         verbose_name = '奖惩管理'
         verbose_name_plural = verbose_name
         db_table = '奖惩详情表'
+        unique_together = ['student']
 
     def __str__(self):
         return '{}同学的奖惩措施'.format(self.student)
