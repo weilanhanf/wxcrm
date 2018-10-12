@@ -5,8 +5,8 @@ from xadmin import views
 from .models import Administrator, DormitoryInfo, EmailVerifyRecord, GradeInfo, ClassInfo
 
 
-# class AdministratorAdmin(object):
-#     pass
+class AdministratorAdmin(object):
+    show_bookmarks = False  # 去除标签功能
 
 
 class DormitoryInfoAdmin(object):
@@ -14,7 +14,7 @@ class DormitoryInfoAdmin(object):
     list_display = ['dormitory_number', 'year', 'teacher', 'get_student_number', 'get_dormitory_students', 'remark', ]
     # list_editable = ['remark']
     search_fields = ['teacher__name', 'dormitory_number']
-    list_filter = ['teacher', 'year', 'dormitory_number']
+    list_filter = ['year', ]
     show_bookmarks = False  # 去除标签功能
 
 
@@ -23,8 +23,8 @@ class EmailVerifyRecordAdmin(object):
 
 
 class GradeInfoAdmin(object):
-    list_editable = ['remark']
-    list_display = ['grade_number', 'year', 'header', 'remark', 'get_class_number', 'get_grade_students_number', ]
+    # list_editable = ['remark']
+    list_display = ['grade_number', 'year', 'header', 'get_class_number', 'get_grade_students_number', ]
     show_bookmarks = False  # 去除标签功能
 
 
@@ -40,6 +40,7 @@ class ClassInfoAdmin(object):
 
 
 xadmin.site.register(DormitoryInfo, DormitoryInfoAdmin)
+# xadmin.site.unregister(DormitoryInfo)
 xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
 xadmin.site.unregister(EmailVerifyRecord)
 xadmin.site.register(ClassInfo, ClassInfoAdmin)

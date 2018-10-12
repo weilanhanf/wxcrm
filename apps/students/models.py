@@ -69,7 +69,7 @@ class StudentInfo(models.Model):
 
         # 将学生登陆密码改为身份证后六位
         if self.password == 'xxxxxx':
-            self.password = self.ID[-6:]
+            self.password = self.ID[-6:].lower()
         super(StudentInfo, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -112,10 +112,10 @@ class ScoreInfo(models.Model):
     """学生成绩详情表"""
 
     score_id = models.AutoField(verbose_name='成绩ID', db_column='成绩ID', primary_key=True)
-    file_number = models.ForeignKey(StudentInfo, on_delete=models.CASCADE,
+    file_number = models.ForeignKey(StudentInfo, on_delete=models.SET_NULL, null=True,
                                     verbose_name='学生', db_column='学生')
     exam_number = models.CharField(max_length=10, verbose_name='准考证号', db_column='准考证号', default='xxxxxx')
-    which_exam = models.ForeignKey(ExamList, on_delete=models.CASCADE, verbose_name='考试', db_column='考试')
+    which_exam = models.ForeignKey(ExamList, on_delete=models.SET_NULL, null=True, verbose_name='考试', db_column='考试')
 
     # 各项成绩
     chinese = models.PositiveSmallIntegerField(verbose_name='语文', db_column='语文', default=0)
@@ -138,7 +138,7 @@ class ScoreInfo(models.Model):
         verbose_name = '成绩列表'
         verbose_name_plural = verbose_name
         db_table = '具体成绩详情表'
-        unique_together = ['file_number', 'which_exam']
+        # unique_together = ['file_number', 'which_exam']
         # ordering = ['-which_exam', '-sum_score']
 
     def save(self, *args, **kwargs):

@@ -15,9 +15,10 @@ class Administrator(AbstractUser):
     id = models.AutoField(verbose_name='管理人员编号', db_column='管理员编号', primary_key=True)
     username = models.CharField(max_length=150, verbose_name='用户名', db_column='用户名', unique=True)
     password = models.CharField(max_length=128, verbose_name='密码', db_column='密码')
-    email = models.EmailField(verbose_name='邮箱', db_column='邮箱', help_text='该邮箱将用来验证登录')
+    email = models.EmailField(verbose_name='邮箱', db_column='邮箱', null=True, blank=True)
     add_time = models.DateTimeField(default=datetime.now, db_column='添加时间', verbose_name="添加时间")
     remark = models.TextField(max_length=100, verbose_name='备注', db_column='备注', default='',
+                              null=True , blank=True,
                               help_text='备注不超过一百个汉字',
                               error_messages={
                                   'max_length': '备注不超过一百个字'
@@ -74,7 +75,7 @@ class DormitoryInfo(models.Model):
         verbose_name_plural = verbose_name
         # ordering = ['year', 'dormitory_number']
         db_table = '宿舍信息表'
-        unique_together = ['dormitory_number', 'year']
+        # unique_together = ['dormitory_number', 'year']
 
     def __str__(self):
         return "{0}年入住,宿舍号：{1}".format(self.year, self.dormitory_number)
@@ -109,7 +110,7 @@ class GradeInfo(models.Model):
         verbose_name = '年级信息'
         verbose_name_plural = verbose_name
         db_table = '年级信息表'
-        unique_together = ['grade_number', 'year']
+        # unique_together = ['grade_number', 'year']
         # ordering = ['-year', 'grade_number']  # datetime.time 对象不可序列化
 
     def __str__(self):
@@ -141,9 +142,7 @@ class GradeInfo(models.Model):
     get_class_number.short_description = '班级数'
 
     def get_grade_students_number(self):
-        from students.models import StudentInfo
-        num = StudentInfo.objects.filter(year_join=self.year).count()
-        return num
+        return self.studentinfo_set.all().count()
     get_grade_students_number.short_description = '年级总人数'
 
 
@@ -205,7 +204,7 @@ class ClassInfo(models.Model):
         verbose_name_plural = verbose_name
         # ordering = ['grade', 'class_number']
         db_table = '班级信息表'
-        unique_together = ['grade', 'class_number', 'header']
+        # unique_together = ['grade', 'class_number', 'header']
 
     def __str__(self):
         return '班级：{}'.format(self.class_number)

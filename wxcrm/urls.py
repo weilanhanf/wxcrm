@@ -22,7 +22,7 @@ from students.views import LogoutView, LoginView, RegisterView
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^register/$', RegisterView.as_view(), name="register"),
@@ -31,5 +31,5 @@ urlpatterns = [
     # 老师相关操作
     url(r"^teacher/", include("teachers.urls", namespace='teacher')),
     # 配置验证码相关
-    url('captcha/', include('captcha.urls')),
+    # url('captcha/', include('captcha.urls')),
 ]

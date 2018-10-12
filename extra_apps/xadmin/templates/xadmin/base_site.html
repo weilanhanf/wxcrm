@@ -76,10 +76,12 @@
           </ul>
           {% view_block 'nav_form' %}
           {% block nav_form %}{% endblock %}
+
           <div class="navbar-btn pull-right hide-xs">
             {% view_block 'nav_btns' %}
             {% block nav_btns %}{% endblock %}
           </div>
+
         </div>
       </div>
       {% endblock %}
@@ -109,5 +111,8 @@
     </footer>
   </div>
   {% endblock %}
-
+<script type="text/javascript">
+    $('a[title="添加小组件"]').attr('style', 'display:none');
+</script>
 {% endblock body %}
+

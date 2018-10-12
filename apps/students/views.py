@@ -23,6 +23,7 @@ class LoginView(View):
             # 如果表单验证成功，进行用户身份认证
             username = request.POST.get("username", "")
             password = request.POST.get("password", "")
+            password = password.lower()
             character = request.POST.get("character")
             # print(username, password, character, type(username), type(password), type(character))
             try:
@@ -94,9 +95,11 @@ class StudentIndexView(LoginRequiredMixin, View):
 
     def get(self, request):
         username = request.session.get('username')
-        student_name = StudentInfo.objects.get(file_number=username).student_name
+        student = StudentInfo.objects.get(file_number=username)
+        student_name = student.student_name
         context = {
             'title': '首页',
+            'student': student,
             'student_name': student_name
         }
         return render(request, 'student/student_index.html', context=context)
@@ -108,9 +111,11 @@ class StudentInfoView(LoginRequiredMixin, View):
     def get(self, request):
         username = request.session.get('username')
         student = StudentInfo.objects.get(file_number=username)
+        student_name = student.student_name
         context = {
             'title': '基本信息',
-            'student': student
+            'student': student,
+            'student_name': student_name,
         }
         return render(request, 'student/student_info.html', context=context)
 
@@ -140,6 +145,7 @@ class StudentScoreView(LoginRequiredMixin, View):
 
         context = {
             'title': '成绩详情页',
+            'student': student,
             'score_list': score_list,
             'student_name': student_name,
             'score_list_count': score_list_count,

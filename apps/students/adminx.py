@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 import xadmin
 from xadmin import views
+from django.utils.safestring import mark_safe
 
 from .models import ScoreInfo, StudentInfo, ExamList, RewardPunishInfo
 
 
 class BaseSetting(object):
-    enable_themes = True  # 使用主体功能
-    use_bootswatch = True
+    # enable_themes = True  # 使用主体功能
+    # use_bootswatch = True
+    pass
 
 
 class GlobalSettings(object):
@@ -35,7 +37,7 @@ class GlobalSettings(object):
 
 
 class StudentInfoAdmin(object):
-    list_per_page = 10
+    list_per_page = 120
     list_display = ['file_number', 'student_name', 'teacher', 'gender', 'year_join', 'clas', 'grade', 'art_science', 'nation', 'dormitory_number', 'remark']
     search_fields = ['student_name', 'teacher__name']  # 保证在search_field这个容器类型中不存在整型，浮点型
     list_filter = ['teacher', 'clas', 'gender', 'art_science', 'grade', 'nation']
@@ -49,12 +51,12 @@ class StudentInfoAdmin(object):
 
 
 class ScoreInfoAdmin(object):
-    list_per_page = 10
+    list_per_page = 1
     list_display = ['file_number', 'which_exam', 'get_student_class', 'get_student_grade',
                     'chinese', 'math', 'english', 'physical', 'chemistry', 'biology',
                     'politics', 'geography', 'history', 'sum_score', 'grade_rank', 'class_rank', 'remark']
     search_fields = ['file_number__student_name', 'which_exam__time', 'remark']
-    list_filter = ['file_number', 'which_exam', 'file_number__grade', 'file_number__clas', 'file_number__teacher']
+    list_filter = ['which_exam', 'file_number__grade', 'file_number__clas']
 
     # 课程列表页添加字段修改功能
     # list_editable = ['remark']
@@ -66,14 +68,14 @@ class ScoreInfoAdmin(object):
     exclude = ['sum_score', 'grade_rank', 'class_rank']
     show_bookmarks = False  # 去除标签功能
 
-    actions = ['really_delete_selected']  # 增加删除行为
+    actions = ['delete_selected']  # 增加删除行为
 
     def get_actions(self, request):
         actions = super(ScoreInfoAdmin, self).get_actions(request)
         del actions['delete_selected']
         return actions
 
-    def really_delete_selected(self, request, queryset):
+    def delete_selected(self, request, queryset):
         for obj in queryset:
             # print(obj, self)
             # print(type(self).__mro__)
@@ -106,7 +108,7 @@ class ScoreInfoAdmin(object):
                 score.save()
 
             obj.delete()
-    really_delete_selected.short_description = " X 删除并更新排名"
+    delete_selected.short_description = mark_safe("删除所选的 成绩信息")
 
 
 class ExamListAdmin(object):
@@ -114,7 +116,7 @@ class ExamListAdmin(object):
     list_display = ['id', 'time', 'remark']
     # list_editable = ['remark']
     search_fields = ['remark', 'time']
-    list_filter = ['id', 'time']
+    list_filter = ['time']
     show_bookmarks = False  # 去除标签功能
 
 
@@ -133,6 +135,7 @@ xadmin.site.register(views.CommAdminView, GlobalSettings)
 # 将title和footer信息进行注册
 xadmin.site.register(StudentInfo, StudentInfoAdmin)
 xadmin.site.register(ScoreInfo, ScoreInfoAdmin)
+# xadmin.site.unregister(ScoreInfo)
 xadmin.site.register(ExamList, ExamListAdmin)
 xadmin.site.register(RewardPunishInfo, RewardPunishInfoAdmin)
 # xadmin.site.unregister(RewardPunish)

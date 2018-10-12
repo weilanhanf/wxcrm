@@ -92,33 +92,23 @@ class TeacherClassListView(LoginRequiredMixin, View):
         username = request.session.get('username')
         teacher = TeacherInfo.objects.get(number__exact=username)
 
-        # 判断老师所教科目找出关联班级
-        if teacher.subject in ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '地理', '历史', '体育', '音乐']:
-            if teacher.subject == '语文':
-                class_queryset = teacher.chinese_teacher_class.all()
-            elif teacher.subject == '数学':
-                class_queryset = teacher.math_teacher_class.all()
-            elif teacher.subject == '英语':
-                class_queryset = teacher.english_teacher_class.all()
-            elif teacher.subject == '物理':
-                class_queryset = teacher.physical_teacher_class.all()
-            elif teacher.subject == '化学':
-                class_queryset = teacher.chemistry_teacher_class.all()
-            elif teacher.subject == '生物':
-                class_queryset = teacher.biology_teacher_class.all()
-            elif teacher.subject == '政治':
-                class_queryset = teacher.politics_teacher_class.all()
-            elif teacher.subject == '地理':
-                class_queryset = teacher.geography_teacher_class.all()
-            elif teacher.subject == '历史':
-                class_queryset = teacher.history_teacher_class.all()
-            elif teacher.subject == '体育':
-                class_queryset = teacher.sport_teacher_class.all()
-            else:
-                class_queryset = teacher.music_teacher_class.all()
-        else:
-            # 无论是班主任，优先返回班主任管理班级，如果条件不符，返回一个空的queryset对象
+        # 找出老师所教的班，只考虑老师当班主任或者当任课老师，不存在当班主任却教其他版的课
+        if teacher.is_class_leader:
             class_queryset = teacher.classinfo_set.all()
+        else:
+            class_queryset = ClassInfo.objects.filter(
+                Q(chinese_teacher__number__exact=teacher.number) |
+                Q(math_teacher__number__exact=teacher.number) |
+                Q(english_teacher__number__exact=teacher.number) |
+                Q(physical_teacher__number__exact=teacher.number) |
+                Q(chemistry_teacher__number__exact=teacher.number) |
+                Q(biology_teacher__number__exact=teacher.number) |
+                Q(politics_teacher__number__exact=teacher.number) |
+                Q(geography_teacher__number__exact=teacher.number) |
+                Q(history_teacher__number__exact=teacher.number) |
+                Q(sport_teacher__number__exact=teacher.number) |
+                Q(music_teacher__number__exact=teacher.number)
+            )
 
         # 从前端获取筛选条件并放入列表中
         o_select_condition = request.GET.get('o')
