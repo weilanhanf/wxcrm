@@ -56,7 +56,7 @@ class ScoreInfoAdmin(object):
                     'chinese', 'math', 'english', 'physical', 'chemistry', 'biology',
                     'politics', 'geography', 'history', 'sum_score', 'grade_rank', 'class_rank', 'remark']
     search_fields = ['file_number__student_name', 'which_exam__time', 'remark']
-    list_filter = ['which_exam', 'file_number__grade', 'file_number__clas']
+    list_filter = ['which_exam', 'file_number__grade__grade_number', 'file_number__clas__class_number']
 
     # 课程列表页添加字段修改功能
     # list_editable = ['remark']
@@ -125,7 +125,7 @@ class RewardPunishInfoAdmin(object):
     list_display = ['student', 'reward_remark', 'get_reward_sum', 'punish_remark', 'get_punish_remark', ]
     search_fields = ['student__student_name', 'reward_remark', 'punish_remark']
     # list_editable = ['reward_remark', 'punish_remark', ]
-    list_filter = ['student', 'student__clas', 'student__grade']
+    list_filter = ['student', 'student__clas', 'student__grade', 'student__nation']
     show_bookmarks = False  # 去除标签功能
 
 

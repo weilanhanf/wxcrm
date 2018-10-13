@@ -88,7 +88,8 @@ class ExamList(models.Model):
     """考试列表"""
 
     id = models.IntegerField(verbose_name='考试序号', db_column='考试序号', help_text='如：1，表示第一次考试', primary_key=True)
-    time = models.CharField(max_length=8, verbose_name='考试时间', db_column='考试时间', help_text='如：20180512表示2018年5月12日', unique=True)
+    time = models.CharField(max_length=8, verbose_name='考试时间', db_column='考试时间',
+                            help_text='如：20180512表示2018年5月12日', unique=True)
     remark = models.TextField(max_length=100, verbose_name='备注', db_column='备注', default='', null=True, blank=True)
 
     class Meta:

@@ -98,11 +98,11 @@
                             <div id="div_id_email" class="form-group"><label for="id_email"
                                                                              class="control-label  requiredField">
                                 邮箱<span class="asteriskField">*</span> </label>
-                                <div class="controls "><input type="text" name="email" value="{{ teacher.email }}"
+                                <div class="controls "><input type="email" name="email" value="{{ teacher.email }}"
                                                               maxlength="254" id="id_email"
                                                               class="text-field admintextinputwidget form-control"
                                                               required/>
-                                    <p id="hint_id_email" class="help-block">该邮箱将用来验证登录</p></div>
+                                    <p id="hint_id_email" class="help-block">请输入正确的邮箱</p></div>
                             </div>
                             <div id="div_id_phone" class="form-group"><label for="id_phone"
                                                                              class="control-label  requiredField">
@@ -112,7 +112,7 @@
                                                               id="id_phone"
                                                               class="text-field admintextinputwidget form-control"
                                                               required/>
-                                    <p id="hint_id_phone" class="help-block">请输入正确的联系方式</p></div>
+                                    <p id="hint_id_phone" class="help-block">手机号不超过11位</p></div>
                             </div>
                             <div id="div_id_ID" class="form-group"><label for="id_ID"
                                                                           class="control-label  requiredField">
@@ -121,7 +121,7 @@
                                                               maxlength="18" minlength="18" id="id_ID"
                                                               class="text-field admintextinputwidget form-control"
                                                               required/>
-                                    <p id="hint_id_ID" class="help-block">请输入真实的身份证号</p></div>
+                                    <p id="hint_id_ID" class="help-block">身份证号不超过18位</p></div>
                             </div>
                             <div id="div_id_subject" class="form-group"><label for="id_subject" class="control-label ">
                                 教授科目

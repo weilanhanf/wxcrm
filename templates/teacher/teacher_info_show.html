@@ -46,8 +46,7 @@
             </div>
         </div>
 
-        <form class="exform" enctype="multipart/form-data" action="" method="post" id="teacherinfo_form">
-            {% csrf_token %}
+        <form class="exform" enctype="multipart/form-data" >
             <div class="form-container row clearfix">
                 <div id="column-0"
                      class="formColumn column form-column full col col-sm-12 form-horizontal" span="12" horizontal>
@@ -121,6 +120,12 @@
 
 
 {% block js %}
+<script type="text/javascript">
+    var save_success = {{ save_success }};
+    if(save_success == '1'){
+        alert('信息修改成功');
+    }
+</script>
 <script type="text/javascript" src="{% static 'js/jquery.ui.core.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.ui.widget.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.ui.mouse.js' %}"></script>

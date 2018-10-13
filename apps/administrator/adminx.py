@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import xadmin
-from xadmin import views
 
-from .models import Administrator, DormitoryInfo, EmailVerifyRecord, GradeInfo, ClassInfo
+from .models import DormitoryInfo, EmailVerifyRecord, GradeInfo, ClassInfo
 
 
 class AdministratorAdmin(object):

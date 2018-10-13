@@ -33,7 +33,9 @@ class TeacherInfoShowView(LoginRequiredMixin, View):
         # 通过session确定老师对象
         username = request.session.get('username')
         teacher = TeacherInfo.objects.get(number__exact=username)
+        success = request.GET.get('success')
         context = {
+            'save_success': success,
             'teacher': teacher,
             'teacher_name': teacher.name,
             'title': '基本信息'
@@ -78,10 +80,10 @@ class TeacherInfoView(LoginRequiredMixin, View):
         teacher.name, teacher.password, teacher.email, teacher.phone, \
         teacher.ID, teacher.subject, teacher.remark = get('name'), \
         get('password'), get('email'), get('phone'), get('ID'), get('subject'), get('remark')
-        print(get('remark'), teacher.remark)
+        # print(get('remark'), teacher.remark)
         teacher.save()  # 保存到数据库
 
-        return redirect(reverse('teacher:teacher_infoshow'))
+        return redirect(reverse('teacher:teacher_infoshow')+'?success=1')
 
 
 class TeacherClassListView(LoginRequiredMixin, View):
@@ -514,7 +516,6 @@ class TeacherScoreInfoView(LoginRequiredMixin, View):
 
         # 确定当前成绩和学生对象
         student_score_id = request.GET.get('score_id')
-        self.score_id = student_score_id
         if student_score_id:
             score = ScoreInfo.objects.get(score_id__exact=int(student_score_id))
             student = score.file_number

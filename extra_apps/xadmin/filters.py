@@ -69,7 +69,9 @@ class BaseFilter(object):
         raise NotImplementedError
 
     def get_context(self):
-        return {'title': self.title, 'spec': self, 'form_params': self.form_params()}
+        title =  self.title
+        # title = title.split(' ')[-1]
+        return {'title': title, 'spec': self, 'form_params': self.form_params()}
 
     def __str__(self):
         tpl = get_template(self.template)
