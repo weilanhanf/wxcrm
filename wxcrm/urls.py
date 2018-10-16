@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url, include
-from django.urls import path
 import xadmin
+from django.views.static import serve
 
+from .settings import STATIC_ROOT
 from students.views import LogoutView, LoginView, RegisterView
 
 urlpatterns = [
@@ -32,4 +33,7 @@ urlpatterns = [
     url(r"^teacher/", include("teachers.urls", namespace='teacher')),
     # 配置验证码相关
     # url('captcha/', include('captcha.urls')),
+    # 正式生产环境下，静态文件配置
+    # url(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
+url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
 ]
