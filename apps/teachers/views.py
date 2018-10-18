@@ -551,7 +551,9 @@ class TeacherScoreInfoView(LoginRequiredMixin, View):
             score.chinese, score.math, score.english, score.physical, score.chemistry, score.biology, score.politics, \
             score.geography, score.history = int(chinese), int(math), int(english), int(physical), int(chemistry), \
                                              int(biology), int(politics), int(geography), int(history)
+            print('asdf')
             score.save()
+            print('save after')
         else:
             if teacher.subject == '语文' and chinese:
                 score.chinese = int(chinese)

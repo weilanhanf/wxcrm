@@ -151,21 +151,19 @@ class ScoreInfo(models.Model):
         clas = self.file_number.clas  # 确定年级
 
         # 如果当前成绩仍未默认值则更新总分字段
-        if self.sum_score == 0:
-            subject = [self.chinese, self.math, self.english, self.physical, self.chemistry,
-                       self.biology, self.politics, self.geography, self.history]
-            total = sum(subject)
-            self.sum_score = total
+        # if self.sum_score == 0:
+        subject = [self.chinese, self.math, self.english, self.physical, self.chemistry,
+                   self.biology, self.politics, self.geography, self.history]
+        total = sum(subject)
 
         # 如果排名仍为0则更新年级排名
         if self.grade_rank == 0:
-            exam_id = self.which_exam.id  # 确定本次考试的ID
-            grade = self.file_number.grade  # 确定本次考试的年级
-            all_scores_list = list(ScoreInfo.objects.filter(
+            self.sum_score = total
+            all_scores_grade_list = list(ScoreInfo.objects.filter(
                 which_exam__id=exam_id,
                 file_number__grade__id=grade.id
             ).order_by('sum_score'))  # 将本次考试的所有成绩记录排序并列表化
-            ordered_scores_list = [i.sum_score for i in all_scores_list]  # 获取所有的成绩
+            ordered_scores_grade_list = [i.sum_score for i in all_scores_grade_list]  # 获取所有的成绩
 
             from bisect import bisect_right, bisect_left  # 二分法
             # 用法
@@ -173,38 +171,116 @@ class ScoreInfo(models.Model):
             # 3
             # >>> bisect.bisect_left([1, 3, 3, 4], 3)
             # 1
-            insert_position = bisect_right(ordered_scores_list, self.sum_score)
-            grade_rank = len(ordered_scores_list) - insert_position + 1
+            insert_grade_position = bisect_right(ordered_scores_grade_list, self.sum_score)
+            grade_rank = len(ordered_scores_grade_list) - insert_grade_position + 1
             self.grade_rank = grade_rank  # 更新当前成绩排名
 
             # 在更新排名之后，要将比分数小的记录排名加一
-            need_score_int = bisect_left(ordered_scores_list, self.sum_score)  # 从need_score_int之后的成绩记录排名都需要加一
-            need_scores_list = all_scores_list[:need_score_int]  # 比当前成绩总分和大的成绩记录
-            for score in need_scores_list:
+            need_score_grade_int = bisect_left(ordered_scores_grade_list, self.sum_score)  # 从need_score_int之后的成绩记录排名都需要加一
+            need_scores_grade_list = all_scores_grade_list[:need_score_grade_int]  # 比当前成绩总分和大的成绩记录
+            for score in need_scores_grade_list:
                 score.grade_rank += 1  # 每一项记录的排名加一
                 score.save()  # 保存修改
+        else:
+            if self.sum_score != total:
+                # 数据库中总分与计算后的综合不相等，则说明是修改状态
+                score_grade_queryset = ScoreInfo.objects.filter(
+                    which_exam__id=exam_id,
+                    file_number__grade__id=grade.id
+                ).order_by('-sum_score')
 
-        # 更新班级排名，流程与更新年级排名类似, 只需确定班级和修改属性class_rank
+                # 找出比total大的总分排序
+                score_gt_grade_queryset = score_grade_queryset.filter(sum_score__gt=total)
+                if self in score_gt_grade_queryset:
+                    # 如果self在比当前总分大的查询set中，说明分数是降低的,去除本身
+                    score_gt_grade_queryset = score_gt_grade_queryset.exclude(score_id__exact=self.score_id)
+
+                if score_gt_grade_queryset.exists():
+                    # 按照比自己分数大的记录数，排名+1
+                    self.grade_rank = score_gt_grade_queryset.count() + 1
+                else:
+                    # 如果不存在总分比total大的成绩，则自己排名第一
+                    self.grade_rank = 1
+
+                if self.sum_score < total:
+                    # 分数升高，则要将比自己原来分数高但又比total低的成绩排名降低，排名+1
+                    for score in score_grade_queryset:
+                        if self.sum_score <= score.sum_score < total:
+                            score.grade_rank += 1
+                            score.save()
+                else:
+                    for score in score_grade_queryset:
+                        # 分数降低，则要将比自己原来分数低但又比total高的成绩排名提高，排名-1
+                        if self.sum_score > score.sum_score >= total:
+                            score.grade_rank -= 1
+                            score.save()
+
+                # 到最后再讲total保存到数据库中
+                self.sum_score = total
+
+        # 如果排名仍为0则更新年级排名
         if self.class_rank == 0:
-
-            all_scores_list = list(ScoreInfo.objects.filter(
-                which_exam__id=exam_id,
-                file_number__grade__id=grade.id,
-                file_number__clas__id=clas.id
+            self.sum_score = total
+            all_scores_class_list = list(ScoreInfo.objects.filter(
+                which_exam__id__exact=exam_id,
+                file_number__grade__id__exact=grade.id,
+                file_number__clas_id__exact=clas.id
             ).order_by('sum_score'))  # 将本次考试的所有成绩记录排序并列表化
-            ordered_scores_list = [i.sum_score for i in all_scores_list]  # 获取所有的成绩
+            ordered_scores_class_list = [i.sum_score for i in all_scores_class_list]  # 获取所有的成绩
 
             from bisect import bisect_right, bisect_left  # 二分法
-            insert_position = bisect_right(ordered_scores_list, self.sum_score)
-            class_rank = len(ordered_scores_list) - insert_position + 1
+            # 用法
+            # >>> bisect.bisect_right([1, 3, 3, 4], 3)
+            # 3
+            # >>> bisect.bisect_left([1, 3, 3, 4], 3)
+            # 1
+            insert_class_position = bisect_right(ordered_scores_class_list, self.sum_score)
+            class_rank = len(ordered_scores_class_list) - insert_class_position + 1
             self.class_rank = class_rank  # 更新当前成绩排名
 
             # 在更新排名之后，要将比分数小的记录排名加一
-            need_score_int = bisect_left(ordered_scores_list, self.sum_score)  # 从need_score_int之后的成绩记录排名都需要加一
-            need_scores_list = all_scores_list[:need_score_int]  # 比当前成绩总分和大的成绩记录
-            for score in need_scores_list:
+            need_score_class_int = bisect_left(ordered_scores_class_list, self.sum_score)  # 从need_score_int之后的成绩记录排名都需要加一
+            need_scores_class_list = all_scores_class_list[:need_score_class_int]  # 比当前成绩总分和大的成绩记录
+            for score in need_scores_class_list:
                 score.class_rank += 1  # 每一项记录的排名加一
                 score.save()  # 保存修改
+        else:
+            if self.sum_score != total:
+                # 数据库中总分与计算后的综合不相等，则说明是修改状态
+                score_class_queryset = ScoreInfo.objects.filter(
+                    which_exam__id__exact=exam_id,
+                    file_number__grade__id__exact=grade.id,
+                    file_number__clas_id__exact=clas.id
+                ).order_by('-sum_score')
+
+                # 找出比total大的总分排序
+                score_gt_class_queryset = score_class_queryset.filter(sum_score__gt=total)
+                if self in score_gt_class_queryset:
+                    # 如果self在比当前总分大的查询set中，说明分数是降低的,去除本身
+                    score_gt_class_queryset = score_gt_class_queryset.exclude(score_id__exact=self.score_id)
+
+                if score_gt_class_queryset.exists():
+                    # 按照比自己分数大的记录数，排名+1
+                    self.class_rank = score_gt_class_queryset.count() + 1
+                else:
+                    # 如果不存在总分比total大的成绩，则自己排名第一
+                    self.class_rank = 1
+
+                if self.sum_score < total:
+                    # 分数升高，则要将比自己原来分数高但又比total低的成绩排名降低，排名+1
+                    for score in score_class_queryset:
+                        if self.sum_score <= score.sum_score < total:
+                            score.class_rank += 1
+                            score.save()
+                else:
+                    for score in score_class_queryset:
+                        # 分数降低，则要将比自己原来分数低但又比total高的成绩排名提高，排名-1
+                        if self.sum_score > score.sum_score >= total:
+                            score.class_rank -= 1
+                            score.save()
+
+                # 到最后再讲total保存到数据库中
+                self.sum_score = total
 
         super(ScoreInfo, self).save(*args, **kwargs)
 

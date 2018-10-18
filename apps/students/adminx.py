@@ -51,7 +51,7 @@ class StudentInfoAdmin(object):
 
 
 class ScoreInfoAdmin(object):
-    list_per_page = 1
+    list_per_page = 50
     list_display = ['file_number', 'which_exam', 'get_student_class', 'get_student_grade',
                     'chinese', 'math', 'english', 'physical', 'chemistry', 'biology',
                     'politics', 'geography', 'history', 'sum_score', 'grade_rank', 'class_rank', 'remark']
@@ -68,47 +68,47 @@ class ScoreInfoAdmin(object):
     exclude = ['sum_score', 'grade_rank', 'class_rank']
     show_bookmarks = False  # 去除标签功能
 
-    actions = ['delete_selected']  # 增加删除行为
-
-    def get_actions(self, request):
-        actions = super(ScoreInfoAdmin, self).get_actions(request)
-        del actions['delete_selected']
-        return actions
-
-    def delete_selected(self, request, queryset):
-        for obj in queryset:
-            # print(obj, self)
-            # print(type(self).__mro__)
-
-            # 更新班级排名
-            exam_id = obj.which_exam.id  # 确定本次考试的ID
-            grade = obj.file_number.grade  # 确定本次考试的年级
-            clas = obj.file_number.clas  # 确定年级
-
-            need_class_score_list = ScoreInfo.objects.filter(
-                which_exam__id=exam_id,
-                file_number__grade=grade,
-                file_number__clas=clas,
-                class_rank__gt=obj.class_rank
-            )  # 需要班级排名+1的所有成绩记录的列表
-
-            for score in need_class_score_list:  # 成绩记录排名逐个+1
-                score.class_rank -= 1
-                score.save()
-
-            # 更新年级排名
-            need_grade_score_list = ScoreInfo.objects.filter(
-                which_exam__id=exam_id,
-                file_number__grade=grade,
-                grade_rank__gt=obj.grade_rank
-            )  # 需要年级排名+1的所有成绩记录的列表
-
-            for score in need_grade_score_list:  # 成绩记录排名逐个+1
-                score.grade_rank -= 1
-                score.save()
-
-            obj.delete()
-    delete_selected.short_description = mark_safe("删除所选的 成绩信息")
+    # actions = ['delete_selected']  # 增加删除行为
+    #
+    # def get_actions(self, request):
+    #     actions = super(ScoreInfoAdmin, self).get_actions(request)
+    #     del actions['delete_selected']
+    #     return actions
+    #
+    # def delete_selected(self, request, queryset):
+    #     for obj in queryset:
+    #         # print(obj, self)
+    #         # print(type(self).__mro__)
+    #
+    #         # 更新班级排名
+    #         exam_id = obj.which_exam.id  # 确定本次考试的ID
+    #         grade = obj.file_number.grade  # 确定本次考试的年级
+    #         clas = obj.file_number.clas  # 确定年级
+    #
+    #         need_class_score_list = ScoreInfo.objects.filter(
+    #             which_exam__id=exam_id,
+    #             file_number__grade=grade,
+    #             file_number__clas=clas,
+    #             class_rank__gt=obj.class_rank
+    #         )  # 需要班级排名+1的所有成绩记录的列表
+    #
+    #         for score in need_class_score_list:  # 成绩记录排名逐个+1
+    #             score.class_rank -= 1
+    #             score.save()
+    #
+    #         # 更新年级排名
+    #         need_grade_score_list = ScoreInfo.objects.filter(
+    #             which_exam__id=exam_id,
+    #             file_number__grade=grade,
+    #             grade_rank__gt=obj.grade_rank
+    #         )  # 需要年级排名+1的所有成绩记录的列表
+    #
+    #         for score in need_grade_score_list:  # 成绩记录排名逐个+1
+    #             score.grade_rank -= 1
+    #             score.save()
+    #
+    #         obj.delete()
+    # delete_selected.short_description = mark_safe("删除所选的 成绩信息")
 
 
 class ExamListAdmin(object):
