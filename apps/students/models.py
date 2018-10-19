@@ -215,9 +215,6 @@ class ScoreInfo(models.Model):
                             score.grade_rank -= 1
                             score.save()
 
-                # 到最后再讲total保存到数据库中
-                self.sum_score = total
-
         # 如果排名仍为0则更新年级排名
         if self.class_rank == 0:
             self.sum_score = total
@@ -279,8 +276,8 @@ class ScoreInfo(models.Model):
                             score.class_rank -= 1
                             score.save()
 
-                # 到最后再讲total保存到数据库中
-                self.sum_score = total
+        # 到最后再讲total保存到数据库中
+        self.sum_score = total
 
         super(ScoreInfo, self).save(*args, **kwargs)
 
