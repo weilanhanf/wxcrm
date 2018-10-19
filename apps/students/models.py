@@ -96,7 +96,6 @@ class ExamList(models.Model):
         verbose_name = '考试列表'
         verbose_name_plural = verbose_name
         db_table = '考试次序表'
-        # unique_together = ['time']
         # ordering = ['-time']
 
     def __str__(self):

@@ -461,7 +461,7 @@ class TeacherScoreListView(LoginRequiredMixin, View):
             # 每一页显示几条数据 如果all=1则显示全部
             page_count = score_queryset.count()
         else:
-            page_count = 1
+            page_count = 10
         p = Paginator(score_queryset, page_count, request=request)
         score_page = p.page(page)
 
