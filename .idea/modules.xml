@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://F:/路漫漫其修远兮/Python高级编程和异步IO并发编程/AdvancePython-master/.idea/AdvancePython-master.iml" filepath="F:/路漫漫其修远兮/Python高级编程和异步IO并发编程/AdvancePython-master/.idea/AdvancePython-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/../MxOnline/.idea/MxOnline.iml" filepath="$PROJECT_DIR$/../MxOnline/.idea/MxOnline.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/wxcrm.iml" filepath="$PROJECT_DIR$/.idea/wxcrm.iml" />
     </modules>

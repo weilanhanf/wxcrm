@@ -25,7 +25,7 @@ class LoginView(View):
             password = request.POST.get("password", "")
             password = password.lower()
             character = request.POST.get("character")
-            # print(username, password, character, type(username), type(password), type(character))
+            print(username, password, character, type(username), type(password), type(character))
             try:
                 if isinstance(username, str):
                     username = int(username)
@@ -33,10 +33,12 @@ class LoginView(View):
                 # 判断登录用户的身份，1为学生， 2为老师
                 if character == "2":
                     user = TeacherInfo.objects.get(number=username, password=password)
+                    print(user)
                     red = HttpResponseRedirect(reverse('teacher:teacher_index'))  # 重定向到老师首页
 
                 else:
                     user = StudentInfo.objects.get(file_number=username, password=password)
+                    print(user)
                     red = HttpResponseRedirect(reverse('student:student_index'))  # 重定向到学生首页
 
                 if user is not None:
@@ -44,7 +46,7 @@ class LoginView(View):
                     red.set_cookie('username', username, max_age=-1)
                     request.session['username'] = username
                     request.session['is_login'] = True
-                    request.session.set_expiry(0)
+                    # request.session.set_expiry(0)
                     return red
                 else:
                     # character 作为当老师认证登录失败的时候标识

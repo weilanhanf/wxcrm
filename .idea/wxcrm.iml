@@ -18,6 +18,7 @@
     <orderEntry type="jdk" jdkName="Python 3.5.2 virtualenv at C:\Users\ASUS-PC\Envs\wxcrm" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MxOnline" />
+    <orderEntry type="module" module-name="AdvancePython-master" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />

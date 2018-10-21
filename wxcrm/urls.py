@@ -24,6 +24,7 @@ from students.views import LogoutView, LoginView, RegisterView
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     # path('admin/', admin.site.urls),
+    url(r'^$', LoginView.as_view(), name="login"),
     url(r'^login/$', LoginView.as_view(), name="login"),
     url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^register/$', RegisterView.as_view(), name="register"),
