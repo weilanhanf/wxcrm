@@ -86,6 +86,7 @@ class ScoreInfoAdmin(object):
             clas = obj.file_number.clas  # 确定年级
 
             need_class_score_list = ScoreInfo.objects.filter(
+                file_number__art_science__exact=obj.file_number.art_science,
                 which_exam__id=exam_id,
                 file_number__grade=grade,
                 file_number__clas=clas,
@@ -98,6 +99,7 @@ class ScoreInfoAdmin(object):
 
             # 更新年级排名
             need_grade_score_list = ScoreInfo.objects.filter(
+                file_number__art_science__exact=obj.file_number.art_science,
                 which_exam__id=exam_id,
                 file_number__grade=grade,
                 grade_rank__gt=obj.grade_rank
