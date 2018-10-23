@@ -111,10 +111,6 @@
     </footer>
   </div>
   {% endblock %}
-<script type="text/javascript">
-    $('a[title="班级信息"]').attr('style', 'display:none');
-    $('a[title="添加小组件"]').attr('style', 'display:none');
-    $('li[class="dropdown g-add"]').attr('style', 'display:none');
-</script>
+{% vendor 'xadmin.base_site.js' %}
 {% endblock body %}
 

@@ -159,6 +159,7 @@ class ScoreInfo(models.Model):
         if self.grade_rank == 0:
             self.sum_score = total
             all_scores_grade_list = list(ScoreInfo.objects.filter(
+                file_number__art_science__exact=self.file_number.art_science,
                 which_exam__id=exam_id,
                 file_number__grade__id=grade.id
             ).order_by('sum_score'))  # 将本次考试的所有成绩记录排序并列表化
@@ -184,6 +185,7 @@ class ScoreInfo(models.Model):
             if self.sum_score != total:
                 # 数据库中总分与计算后的综合不相等，则说明是修改状态
                 score_grade_queryset = ScoreInfo.objects.filter(
+                    file_number__art_science__exact=self.file_number.art_science,
                     which_exam__id=exam_id,
                     file_number__grade__id=grade.id
                 ).order_by('-sum_score')
@@ -220,7 +222,8 @@ class ScoreInfo(models.Model):
             all_scores_class_list = list(ScoreInfo.objects.filter(
                 which_exam__id__exact=exam_id,
                 file_number__grade__id__exact=grade.id,
-                file_number__clas_id__exact=clas.id
+                file_number__clas_id__exact=clas.id,
+                file_number__art_science__exact = self.file_number.art_science,
             ).order_by('sum_score'))  # 将本次考试的所有成绩记录排序并列表化
             ordered_scores_class_list = [i.sum_score for i in all_scores_class_list]  # 获取所有的成绩
 
@@ -246,7 +249,8 @@ class ScoreInfo(models.Model):
                 score_class_queryset = ScoreInfo.objects.filter(
                     which_exam__id__exact=exam_id,
                     file_number__grade__id__exact=grade.id,
-                    file_number__clas_id__exact=clas.id
+                    file_number__clas_id__exact=clas.id,
+                    file_number__art_science__exact=self.file_number.art_science,
                 ).order_by('-sum_score')
 
                 # 找出比total大的总分排序
