@@ -34,7 +34,10 @@ class ClassInfoAdmin(object):
                     'history_teacher', 'sport_teacher', 'music_teacher', 'get_class_student_number', 'remark', ]
     # list_editable = ['remark']
     list_filter = ['class_number', 'grade', 'header', ]
-    search_fields = ['header__name', ]
+    search_fields = ['header__name', 'chinese_teacher__name', 'math_teacher__name', 'english_teacher__name',
+                     'physical_teacher__name', 'chemistry_teacher__name', 'biology_teacher__name',
+                     'politics_teacher__name', 'geography_teacher__name', 'history_teacher__name',
+                     'sport_teacher__name', 'music_teacher__name', ]
     show_bookmarks = False  # 去除标签功能
 
 
