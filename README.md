@@ -1,2 +1,17 @@
 # wxcrm
-xadmin for admin system, expanded Business logic in models and admin, 
+现已部署上线 服务器地址
+请不要删改数据
+
+管理人员入口
+39.108.176.210/xadmin
+管理人员账号：root
+管理人员密码：admin123123
+年级主任账号：liushuaicai
+年级主任密码：liushuaicai
+
+学生教师入口
+39.108.176.210
+教师测试账号：1024
+教师账号密码：123456
+学生测试账号：20180001
+学生账号密码：123456
