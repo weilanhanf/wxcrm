@@ -55,7 +55,7 @@
 
 修改wxcrm/setting.py 修改数据库配置，如下所示：
 
-<code>
+```
  DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -66,7 +66,7 @@
         'PORT': 3306,
     }
 }
-</code>
+```
 
 ### 创建数据库
 
@@ -96,6 +96,7 @@ mysql数据库中执行:
 <code>./python manage.py runserver</code>
  
 浏览器打开: <code>http://127.0.0.1</code> 即可进入普通用户入口
+
 浏览器打开: <code>http://127.0.0.1/xadmin</code> 即可进入超级用户入口
   
 ## 感谢
