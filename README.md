@@ -18,6 +18,7 @@
 ## 在线样例：
 
 ### 管理人员入口
+
 [http://39.108.176.210/xadmin](http://39.108.176.210/xadmin)
 
 管理人员账号：root
@@ -30,6 +31,7 @@
 
 
 ### 学生及教师入口
+
 [http://39.108.176.210](http://39.108.176.210)
 
 教师测试账号：1024
@@ -46,11 +48,13 @@
 ### 依赖包安装
 
 下载文件进入项目目录之后，使用pip安装依赖包
+
 <code>pip install -Ur requirements.txt</code>
 
 ### 数据库配置
 
 修改wxcrm/setting.py 修改数据库配置，如下所示：
+
 <code>
  DATABASES = {
     'default': {
@@ -67,11 +71,11 @@
 ### 创建数据库
 
 mysql数据库中执行:
-<code>
-CREATE DATABASE `wxcrm`
-</code>
+
+<code>CREATE DATABASE `wxcrm`</code>
 
 迁移数据库，终端下执行:
+
 <code>
 ./python manage.py makemigrations
 ./python manage.py migrate
@@ -80,17 +84,16 @@ CREATE DATABASE `wxcrm`
 ### 创建超级用户
 
 终端下执行:
-<code>
-./python manage.py createsuperuser
-</code>
+
+<code>./python manage.py createsuperuser</code>
+
 然后输入相应的超级用户名以及密码，邮箱即可。
 
 ### 开始运行
 
 终端下执行:
-<code>
-./python manage.py runserver
-</code>
+
+<code>./python manage.py runserver</code>
  
 浏览器打开: <code>http://127.0.0.1</code> 即可进入普通用户入口
 浏览器打开: <code>http://127.0.0.1/xadmin</code> 即可进入超级用户入口
