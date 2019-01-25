@@ -72,14 +72,14 @@
 
 mysql数据库中执行:
 
-<code>CREATE DATABASE `wxcrm`</code>
+<code>CREATE DATABASE 'wxcrm'</code>
 
 迁移数据库，终端下执行:
 
-<code>
+```
 ./python manage.py makemigrations
 ./python manage.py migrate
-</code>
+```
 
 ### 创建超级用户
 
