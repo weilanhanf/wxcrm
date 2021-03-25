@@ -21,7 +21,7 @@ Pillow==5.2.0
 pycparser==2.19
 PyMySQL==0.9.2
 pytz==2018.5
-PyYAML==4.21
+PyYAML==5.4
 six==1.11.0
 tablib==0.12.1
 unicodecsv==0.14.1
